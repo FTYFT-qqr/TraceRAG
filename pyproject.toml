@@ -19,6 +19,9 @@ dev = [
     "pytest>=8.0,<9.0",
 ]
 
+
+[tool.setuptools]
+packages = ["app"]
 [tool.pytest.ini_options]
 addopts = "-ra"
 pythonpath = ["."]

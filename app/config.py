@@ -27,7 +27,8 @@ class Settings:
         """Build settings from an environment mapping without loading secret files."""
 
         source = os.environ if environment is None else environment
-        port_value = source.get(f"{_ENV_PREFIX}PORT", str(cls.port))
+        defaults = cls()
+        port_value = source.get(f"{_ENV_PREFIX}PORT", str(defaults.port))
 
         try:
             port = int(port_value)
@@ -38,12 +39,12 @@ class Settings:
             raise ValueError(f"{_ENV_PREFIX}PORT must be between 1 and 65535.")
 
         return cls(
-            app_name=source.get(f"{_ENV_PREFIX}APP_NAME", cls.app_name),
-            environment=source.get(f"{_ENV_PREFIX}ENVIRONMENT", cls.environment),
-            version=source.get(f"{_ENV_PREFIX}VERSION", cls.version),
-            host=source.get(f"{_ENV_PREFIX}HOST", cls.host),
+            app_name=source.get(f"{_ENV_PREFIX}APP_NAME", defaults.app_name),
+            environment=source.get(f"{_ENV_PREFIX}ENVIRONMENT", defaults.environment),
+            version=source.get(f"{_ENV_PREFIX}VERSION", defaults.version),
+            host=source.get(f"{_ENV_PREFIX}HOST", defaults.host),
             port=port,
-            log_level=source.get(f"{_ENV_PREFIX}LOG_LEVEL", cls.log_level).upper(),
+            log_level=source.get(f"{_ENV_PREFIX}LOG_LEVEL", defaults.log_level).upper(),
         )
 
 

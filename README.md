@@ -22,7 +22,7 @@ Python 3.11 或更高版本：
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-python -m pip install -e ".[dev]"
+python -m pip install --index-url https://pypi.org/simple -e ".[dev]"
 Copy-Item .env.example .env
 uvicorn app.main:app --reload
 ```
