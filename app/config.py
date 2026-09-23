@@ -21,6 +21,11 @@ class Settings:
     host: str = "127.0.0.1"
     port: int = 8000
     log_level: str = "INFO"
+    api_key: str | None = None
+    base_url: str | None = None
+    embedding_model: str = "text-embedding-3-small"
+    chat_model: str = "gpt-4o-mini"
+    index_dir: str = "data/indexes/default"
 
     @classmethod
     def from_environment(cls, environment: Mapping[str, str] | None = None) -> "Settings":
@@ -44,6 +49,13 @@ class Settings:
             version=source.get(f"{_ENV_PREFIX}VERSION", defaults.version),
             host=source.get(f"{_ENV_PREFIX}HOST", defaults.host),
             port=port,
+            api_key=(source.get(f"{_ENV_PREFIX}API_KEY") or source.get("OPENAI_API_KEY") or None),
+            base_url=(source.get(f"{_ENV_PREFIX}BASE_URL") or None),
+            embedding_model=source.get(
+                f"{_ENV_PREFIX}EMBEDDING_MODEL", defaults.embedding_model
+            ),
+            chat_model=source.get(f"{_ENV_PREFIX}CHAT_MODEL", defaults.chat_model),
+            index_dir=source.get(f"{_ENV_PREFIX}INDEX_DIR", defaults.index_dir),
             log_level=source.get(f"{_ENV_PREFIX}LOG_LEVEL", defaults.log_level).upper(),
         )
 
