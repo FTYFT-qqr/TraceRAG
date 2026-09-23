@@ -8,6 +8,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from app.api import RuntimeFactory, create_api_router
+
 from app.config import Settings, get_settings
 from app.logging_config import configure_logging
 
@@ -23,8 +25,12 @@ class HealthResponse(BaseModel):
     version: str
 
 
-def create_app(settings: Settings | None = None) -> FastAPI:
-    """Create the FastAPI application with its stage-one health endpoint."""
+def create_app(
+    settings: Settings | None = None,
+    *,
+    runtime_factory: RuntimeFactory | None = None,
+) -> FastAPI:
+    """Create the application with its health and RAG API routes."""
 
     resolved_settings = settings or get_settings()
 
@@ -43,6 +49,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         title=resolved_settings.app_name,
         version=resolved_settings.version,
         lifespan=lifespan,
+    )
+    application.include_router(
+        create_api_router(resolved_settings, runtime_factory=runtime_factory)
     )
     application.state.settings = resolved_settings
 

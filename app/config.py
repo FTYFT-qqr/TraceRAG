@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from dataclasses import dataclass
 from functools import lru_cache
 from typing import Mapping
+
+from dotenv import load_dotenv
 
 
 _ENV_PREFIX = "TRACERAG_"
@@ -79,5 +82,6 @@ class Settings:
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
     """Return the cached settings for application startup."""
+    load_dotenv(Path.cwd() / ".env", override=False)
 
     return Settings.from_environment()
