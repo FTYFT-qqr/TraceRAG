@@ -66,6 +66,7 @@ class QueryResponse:
     answer: str
     rejected: bool
     citations: tuple[Citation, ...]
+    results: tuple[RetrievalResult, ...] = ()
 
 
 class UnsupportedDocumentError(ValueError):

@@ -26,6 +26,7 @@ class Settings:
     embedding_model: str = "text-embedding-3-small"
     chat_model: str = "gpt-4o-mini"
     index_dir: str = "data/indexes/default"
+    reject_threshold: float = 0.25
 
     @classmethod
     def from_environment(cls, environment: Mapping[str, str] | None = None) -> "Settings":
@@ -42,6 +43,20 @@ class Settings:
 
         if not 1 <= port <= 65535:
             raise ValueError(f"{_ENV_PREFIX}PORT must be between 1 and 65535.")
+        threshold_value = source.get(
+            f"{_ENV_PREFIX}REJECT_THRESHOLD", str(defaults.reject_threshold)
+        )
+        try:
+            reject_threshold = float(threshold_value)
+        except ValueError as exc:
+            raise ValueError(
+                f"{_ENV_PREFIX}REJECT_THRESHOLD must be a number between -1 and 1."
+            ) from exc
+        if not -1.0 <= reject_threshold <= 1.0:
+            raise ValueError(
+                f"{_ENV_PREFIX}REJECT_THRESHOLD must be between -1 and 1."
+            )
+
 
         return cls(
             app_name=source.get(f"{_ENV_PREFIX}APP_NAME", defaults.app_name),
@@ -56,6 +71,7 @@ class Settings:
             ),
             chat_model=source.get(f"{_ENV_PREFIX}CHAT_MODEL", defaults.chat_model),
             index_dir=source.get(f"{_ENV_PREFIX}INDEX_DIR", defaults.index_dir),
+            reject_threshold=reject_threshold,
             log_level=source.get(f"{_ENV_PREFIX}LOG_LEVEL", defaults.log_level).upper(),
         )
 
