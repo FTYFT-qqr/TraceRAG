@@ -38,6 +38,32 @@ class FaissVectorStore:
     def chunks(self) -> tuple[Chunk, ...]:
         return tuple(self._chunks)
 
+
+    def search(self, embedding: np.ndarray, top_k: int) -> list[tuple[Chunk, float]]:
+        """Return the top cosine matches with their source metadata."""
+
+        if top_k <= 0:
+            raise ValueError("top_k must be a positive integer.")
+        if self._index is None or not self._chunks:
+            return []
+
+        query = np.asarray(embedding, dtype=np.float32)
+        if query.ndim == 1:
+            query = query.reshape(1, -1)
+        if query.ndim != 2 or query.shape[0] != 1 or query.shape[1] != self._index.d:
+            raise ValueError("Query embedding dimension does not match the FAISS index.")
+        if not np.isfinite(query).all() or np.linalg.norm(query) == 0:
+            raise ValueError("Query embedding must contain finite non-zero values.")
+
+        query = query.copy()
+        faiss.normalize_L2(query)
+        scores, indexes = self._index.search(query, min(top_k, self.count))
+        results: list[tuple[Chunk, float]] = []
+        for score, index in zip(scores[0], indexes[0]):
+            if index < 0:
+                continue
+            results.append((self._chunks[int(index)], float(score)))
+        return results
     def add(self, chunks: list[Chunk], embeddings: np.ndarray) -> None:
         """Add aligned chunk/vector rows, normalizing them for cosine search."""
 
