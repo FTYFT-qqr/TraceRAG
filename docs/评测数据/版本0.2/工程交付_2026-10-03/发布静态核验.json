@@ -54,8 +54,15 @@
     "tests/test_runtime.py": "261b7e4e844aff5409f5b8da55c3c6337b8f37e3ac14db96ee1d6fb74d5255b7",
     "tests/test_ui.py": "f55e5db6a0a06e459fa42b6207ab4ffa883e1771c828bd19b2d52758655eec58",
     "tests/test_v02_evaluation.py": "0bab1b66d5a72f2ef58ab73142538fe568ed8676f60672dff69de4912f171a22",
-    "tests/test_vector_store.py": "8b459a4a508dfb99258c193c1ecd48ea599218b58416abdffe11d2439e5f0454"
+    "tests/test_vector_store.py": "8b459a4a508dfb99258c193c1ecd48ea599218b58416abdffe11d2439e5f0454",
+    ".gitattributes": "1de2af487ba50617ec5b6c211cf9e8aceb94647b7470ee45d8204d7b45a12613",
+    ".github/workflows/delivery.yml": "610653918bdab0c45b578918a4f18e11f71936227d04fe973602c1848d25714f"
   },
   "credential_candidates": [],
-  "local_version_updated": true
+  "local_version_updated": true,
+  "function_docstrings": {
+    "functions": 303,
+    "missing_chinese": 0
+  },
+  "local_links": 214
 }
