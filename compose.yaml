@@ -1,0 +1,43 @@
+name: tracerag
+
+services:
+  api:
+    build: .
+    image: tracerag:0.2.0
+    # 单独的容器配置不会把本机 Windows 权重/索引路径直接传入容器。
+    env_file: .env.docker
+    environment:
+      TRACERAG_VERSION: "0.2.0"
+      TRACERAG_INDEX_DIR: /var/lib/tracerag/indexes
+    ports:
+      - "127.0.0.1:${TRACERAG_DOCKER_API_PORT:-18000}:8000"
+    volumes:
+      - tracerag-index:/var/lib/tracerag
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+      start_period: 15s
+    restart: unless-stopped
+
+  ui:
+    image: tracerag:0.2.0
+    build: .
+    command: ["python", "-m", "streamlit", "run", "app/ui.py", "--server.address=0.0.0.0", "--server.port=8501", "--server.headless=true", "--browser.gatherUsageStats=false"]
+    environment:
+      TRACERAG_API_URL: http://api:8000
+    ports:
+      - "127.0.0.1:${TRACERAG_DOCKER_UI_PORT:-18501}:8501"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health', timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+    restart: unless-stopped
+
+volumes:
+  tracerag-index:

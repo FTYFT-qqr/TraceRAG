@@ -1,0 +1,1102 @@
+[
+  {
+    "id": "LIB-V2-01",
+    "query": "青禾社区图书馆的地址和服务台在哪里？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "图书馆位于松林路18号，服务台设在一楼入口右侧",
+    "expected_answer_facts": [
+      [
+        "松林路18号"
+      ],
+      [
+        "一楼入口右侧"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对地址与服务台位置均有引用",
+    "tags": [
+      "explicit_answer",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "LIB-V2-02",
+    "query": "图书馆 weekday 的开放时间是几点到几点？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "常规开放时间为周一至周五上午8点30分至晚上8点",
+    "expected_answer_facts": [
+      [
+        "上午8点30分",
+        "8点30分"
+      ],
+      [
+        "晚上8点"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对工作日开放时间",
+    "tags": [
+      "time",
+      "numeric",
+      "mixed_language"
+    ]
+  },
+  {
+    "id": "LIB-V2-03",
+    "query": "图书馆周末的开放时间是什么？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "周六和周日上午9点至下午5点",
+    "expected_answer_facts": [
+      [
+        "周六"
+      ],
+      [
+        "周日"
+      ],
+      [
+        "上午9点"
+      ],
+      [
+        "下午5点"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对周六周日时间范围",
+    "tags": [
+      "time",
+      "numeric"
+    ]
+  },
+  {
+    "id": "LIB-V2-04",
+    "query": "为什么每周三要到中午12点才开放？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "每周三上午进行设备维护，当天延迟到中午12点开放",
+    "expected_answer_facts": [
+      [
+        "设备维护"
+      ],
+      [
+        "中午12点"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对维护原因和延迟时间",
+    "tags": [
+      "time",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "LIB-V2-05",
+    "query": "一张借阅证最多能同时借几本普通图书，借期多长？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "每张借阅证最多可同时借阅5本普通图书，借期为21天",
+    "expected_answer_facts": [
+      [
+        "5本"
+      ],
+      [
+        "21天"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对数量与借期",
+    "tags": [
+      "numeric",
+      "range"
+    ]
+  },
+  {
+    "id": "LIB-V2-06",
+    "query": "普通图书到期前可以续借几次，续借会增加多少天？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "到期前可以在线续借一次，续借后延长14天",
+    "expected_answer_facts": [
+      [
+        "一次"
+      ],
+      [
+        "延长14天",
+        "14天"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对次数和延长期限",
+    "tags": [
+      "numeric"
+    ]
+  },
+  {
+    "id": "LIB-V2-07",
+    "query": "已经被别人预约的图书还可以续借吗？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "已经被其他读者预约的图书不能续借",
+    "expected_answer_facts": [
+      [
+        "不能续借",
+        "不可续借"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "确认否定事实没有被误判为拒答",
+    "tags": [
+      "supported_negative"
+    ]
+  },
+  {
+    "id": "LIB-V2-08",
+    "query": "24小时还书箱每天什么时候清空，晚上投递怎么算归还？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "还书箱每天上午9点统一清空，晚上投入的图书会在次日上午登记归还",
+    "expected_answer_facts": [
+      [
+        "上午9点"
+      ],
+      [
+        "次日上午登记归还"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对清空时间和登记日期",
+    "tags": [
+      "time",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "LIB-V2-09",
+    "query": "图书馆每月第一个周六的亲子阅读活动如何报名？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "图书馆每月第一个周六上午举办亲子阅读活动，需在活动开始前一天通过服务台登记",
+    "expected_answer_facts": [
+      [
+        "活动开始前一天"
+      ],
+      [
+        "服务台登记"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对活动时间与报名方式",
+    "tags": [
+      "time",
+      "multi_chunk"
+    ]
+  },
+  {
+    "id": "LIB-V2-10",
+    "query": "图书馆提供图书配送或读者寄存柜吗？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "馆内不提供图书配送或读者寄存柜服务",
+    "expected_answer_facts": [
+      [
+        "不提供图书配送",
+        "没有图书配送"
+      ],
+      [
+        "不提供读者寄存柜",
+        "没有读者寄存柜"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对两项服务均为有证据的否定",
+    "tags": [
+      "supported_negative",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "LIB-V2-11",
+    "query": "地方文献阅览角的资料可以借走吗？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "资料仅供现场阅读，不计入普通图书借阅数量",
+    "expected_answer_facts": [
+      [
+        "仅供现场阅读"
+      ],
+      [
+        "不计入普通图书借阅数量"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对现场阅读限制",
+    "tags": [
+      "supported_negative"
+    ]
+  },
+  {
+    "id": "LIB-V2-12",
+    "query": "借阅证丢失后补办具体要收多少钱？",
+    "answerable": false,
+    "expected_source": "library_service.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "文档没有说明借阅证补办费用；图书损坏赔偿金额不能挪用于补办费用",
+    "tags": [
+      "missing_answer",
+      "numeric"
+    ]
+  },
+  {
+    "id": "LIB-V2-13",
+    "query": "闭馆前还可以办理最后一批现场借还吗？提前多久？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "读者可在闭馆前十分钟办理最后一批现场借还",
+    "expected_answer_facts": [
+      [
+        "闭馆前十分钟"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对最后办理时间",
+    "tags": [
+      "time",
+      "numeric"
+    ]
+  },
+  {
+    "id": "LIB-V2-14",
+    "query": "地方文献和带有仅供阅览标记的资料能复印或带离阅览区吗？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "地方文献、少儿读物和带有“仅供阅览”标记的资料不得复印或带离阅览区",
+    "expected_answer_facts": [
+      [
+        "不得复印"
+      ],
+      [
+        "不得带离阅览区"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对复印与带离的双重限制",
+    "tags": [
+      "supported_negative",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "LAB-V2-01",
+    "query": "星屿实验室的地址和设备柜台在哪里？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "星屿实验室位于海棠园区C栋二楼201室，设备柜台设在实验室门外",
+    "expected_answer_facts": [
+      [
+        "海棠园区C栋二楼201室"
+      ],
+      [
+        "实验室门外"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对实验室地址和柜台位置",
+    "tags": [
+      "explicit_answer",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "LAB-V2-02",
+    "query": "借用蓝鲸X7至少要提前几个工作日预约，怎样才算成功？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "蓝鲸X7便携光谱仪需要至少提前3个工作日预约。预约时填写使用人姓名、课题编号和预计归还时间；收到柜台确认后才算预约成功",
+    "expected_answer_facts": [
+      [
+        "3个工作日"
+      ],
+      [
+        "收到柜台确认"
+      ],
+      [
+        "使用人姓名"
+      ],
+      [
+        "课题编号"
+      ],
+      [
+        "预计归还时间"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对提前时间、申请字段和确认条件",
+    "tags": [
+      "numeric",
+      "multi_chunk"
+    ]
+  },
+  {
+    "id": "LAB-V2-03",
+    "query": "蓝鲸X7 spectrometer 一次最多能借多久，计时从什么时候开始？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "蓝鲸X7每次借用最长4小时，借用时段从柜台完成交接后开始计算",
+    "expected_answer_facts": [
+      [
+        "最长4小时"
+      ],
+      [
+        "柜台完成交接后"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对时长与起算点",
+    "tags": [
+      "numeric",
+      "time",
+      "mixed_language"
+    ]
+  },
+  {
+    "id": "LAB-V2-04",
+    "query": "设备管理员每周哪几天、几点办理借还？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "设备管理员每周二和周四下午2点至5点在柜台办理借还手续",
+    "expected_answer_facts": [
+      [
+        "周二"
+      ],
+      [
+        "周四"
+      ],
+      [
+        "下午2点至5点"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对办理日期和时间范围",
+    "tags": [
+      "time",
+      "numeric"
+    ]
+  },
+  {
+    "id": "LAB-V2-05",
+    "query": "归还蓝鲸X7时必须交回哪些东西，少配件能先登记吗？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "归还时需要同时交回光谱仪、充电器和蓝色收纳箱，随后由管理员检查设备并登记归还时间。缺少配件时不能完成归还登记",
+    "expected_answer_facts": [
+      [
+        "光谱仪"
+      ],
+      [
+        "充电器"
+      ],
+      [
+        "蓝色收纳箱"
+      ],
+      [
+        "不能完成归还登记"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对配件清单与缺件后果",
+    "tags": [
+      "supported_negative",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "LAB-V2-06",
+    "query": "设备出现故障后应在多久内报修，可以自己拆机吗？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "设备出现故障或外观损伤时，应立即停止使用，并在一个工作日内通过实验室内部工单报修。借用人不得自行拆机或联系外部维修",
+    "expected_answer_facts": [
+      [
+        "立即停止使用"
+      ],
+      [
+        "一个工作日内"
+      ],
+      [
+        "不得自行拆机",
+        "不能自行拆机"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对报修时限与禁止行为",
+    "tags": [
+      "time",
+      "supported_negative",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "LAB-V2-07",
+    "query": "规定有没有写维修费用或损坏赔偿金额？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "本规定未列出维修费用或损坏赔偿金额，相关处理需等待管理员书面答复",
+    "expected_answer_facts": [
+      [
+        "未列出维修费用",
+        "没有列出维修费用"
+      ],
+      [
+        "未列出损坏赔偿金额",
+        "没有列出损坏赔偿金额"
+      ],
+      [
+        "等待管理员书面答复"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对有证据的否定事实与后续处理",
+    "tags": [
+      "supported_negative",
+      "missing_detail"
+    ]
+  },
+  {
+    "id": "LAB-V2-08",
+    "query": "没有预约可以直接取用光谱仪吗？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "未经预约不得直接取用设备",
+    "expected_answer_facts": [
+      [
+        "未经预约不得直接取用",
+        "不能直接取用"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对否定规则",
+    "tags": [
+      "supported_negative"
+    ]
+  },
+  {
+    "id": "LAB-V2-09",
+    "query": "谁可以使用光谱仪，首次借用前要做什么？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "光谱仪仅供经过实验室安全培训的成员使用，初次借用前需在系统中完成培训确认",
+    "expected_answer_facts": [
+      [
+        "经过实验室安全培训的成员"
+      ],
+      [
+        "完成培训确认"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对资格和培训要求",
+    "tags": [
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "LAB-V2-10",
+    "query": "每月最后一个工作日设备柜台还能借出设备吗？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "实验室每月最后一个工作日进行设备盘点，盘点期间柜台暂停借出",
+    "expected_answer_facts": [
+      [
+        "暂停借出"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对盘点期间的借出限制",
+    "tags": [
+      "supported_negative",
+      "time"
+    ]
+  },
+  {
+    "id": "LAB-V2-11",
+    "query": "蓝鲸X7最长可借多久，季度校准时还能预约借用吗？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": [
+      "蓝鲸X7每次借用最长4小时",
+      "校准期间设备会在预约页面标记为不可借用"
+    ],
+    "expected_answer_facts": [
+      [
+        "最长4小时"
+      ],
+      [
+        "每季度",
+        "季度校准"
+      ],
+      [
+        "不可借用",
+        "不能预约借用"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "需分别引用借用时长和季度校准规定，确认全部证据进入 Top-K",
+    "tags": [
+      "supported_negative",
+      "numeric",
+      "multi_chunk"
+    ]
+  },
+  {
+    "id": "LAB-V2-12",
+    "query": "归还设备后能放在门口直接离开吗？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "借用人归还后应在柜台等待管理员完成外观检查和配件点收，不得把设备留在门口",
+    "expected_answer_facts": [
+      [
+        "等待管理员完成外观检查和配件点收"
+      ],
+      [
+        "不得把设备留在门口"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对归还交接要求",
+    "tags": [
+      "supported_negative",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "LAB-V2-13",
+    "query": "出现读数异常时应先做什么，再联系谁？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "使用过程中如发现读数异常，应先保存当前测量记录，再停止继续采样并联系管理员",
+    "expected_answer_facts": [
+      [
+        "保存当前测量记录"
+      ],
+      [
+        "停止继续采样"
+      ],
+      [
+        "联系管理员"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对异常处理顺序",
+    "tags": [
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "LAB-V2-14",
+    "query": "外部访客可以自己借出实验室设备吗？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "外部访客需由实验室成员陪同，不得独立借出设备",
+    "expected_answer_facts": [
+      [
+        "由实验室成员陪同"
+      ],
+      [
+        "不得独立借出设备"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对访客限制",
+    "tags": [
+      "supported_negative"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-01",
+    "query": "南湖社区健康中心的地址和入口附近有什么？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "南湖社区健康中心位于枫桥路66号，入口旁设有全科门诊和登记台",
+    "expected_answer_facts": [
+      [
+        "枫桥路66号"
+      ],
+      [
+        "全科门诊"
+      ],
+      [
+        "登记台"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对地址和入口设施",
+    "tags": [
+      "explicit_answer",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-02",
+    "query": "普通门诊工作日上午和下午分别几点到几点？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "普通门诊接诊时间为周一至周五上午8点至11点30分、下午1点30分至5点",
+    "expected_answer_facts": [
+      [
+        "周一至周五",
+        "工作日"
+      ],
+      [
+        "上午8点至11点30分",
+        "上午为8点至11点30分"
+      ],
+      [
+        "下午1点30分至5点",
+        "下午为1点30分至5点"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对两段接诊时间",
+    "tags": [
+      "time",
+      "numeric",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-03",
+    "query": "普通门诊上午和下午分别什么时候停止取号？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "上午11点15分停止取号，下午4点45分停止取号",
+    "expected_answer_facts": [
+      [
+        "上午11点15分"
+      ],
+      [
+        "下午4点45分"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对两个停止取号时间",
+    "tags": [
+      "time",
+      "numeric"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-04",
+    "query": "儿童常规疫苗哪几天、几点接种，需要提前多久预约？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "儿童常规疫苗接种安排在每周二和周四下午2点至4点，接种前至少提前1天通过社区服务号预约",
+    "expected_answer_facts": [
+      [
+        "周二"
+      ],
+      [
+        "周四"
+      ],
+      [
+        "下午2点至4点"
+      ],
+      [
+        "提前1天",
+        "提前一天"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对接种安排和预约提前量",
+    "tags": [
+      "time",
+      "numeric",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-05",
+    "query": "儿童疫苗现场需要带什么证件？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "现场需携带儿童预防接种证和监护人身份证",
+    "expected_answer_facts": [
+      [
+        "儿童预防接种证"
+      ],
+      [
+        "监护人身份证"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对证件清单",
+    "tags": [
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-06",
+    "query": "65岁以上居民每年能预约几次年度体检？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "年度健康检查服务面向65岁及以上居民，每年可预约一次",
+    "expected_answer_facts": [
+      [
+        "65岁及以上"
+      ],
+      [
+        "每年可预约一次"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对年龄范围和频次",
+    "tags": [
+      "numeric",
+      "range"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-07",
+    "query": "年度体检做完后什么时候能查结果，纸质报告去哪里领？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "检查结果会在完成检查后的下一个工作日上午10点起，通过社区服务号提供查询；需要纸质报告的居民可在一楼登记台申请领取",
+    "expected_answer_facts": [
+      [
+        "下一个工作日上午10点起"
+      ],
+      [
+        "社区服务号"
+      ],
+      [
+        "一楼登记台"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对查询时间、渠道和纸质报告地点",
+    "tags": [
+      "time",
+      "multi_fact",
+      "multi_chunk"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-08",
+    "query": "家庭医生咨询窗口能处理哪些事情？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "咨询可处理慢性病随访、常用药续方和健康档案更新",
+    "expected_answer_facts": [
+      [
+        "慢性病随访"
+      ],
+      [
+        "常用药续方"
+      ],
+      [
+        "健康档案更新"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对服务范围",
+    "tags": [
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-09",
+    "query": "健康中心提供住院床位或住院收费信息吗？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "本指南不提供住院床位或住院收费信息",
+    "expected_answer_facts": [
+      [
+        "不提供住院床位",
+        "没有住院床位"
+      ],
+      [
+        "不提供住院收费信息",
+        "没有住院收费信息"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对有证据的否定事实",
+    "tags": [
+      "supported_negative",
+      "missing_detail",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-10",
+    "query": "检验采样的时间固定吗，应该以什么为准？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "采样时间以当天叫号屏和工作人员说明为准",
+    "expected_answer_facts": [
+      [
+        "当天叫号屏"
+      ],
+      [
+        "工作人员说明"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对时间以现场信息为准",
+    "tags": [
+      "supported_negative"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-11",
+    "query": "检验报告完成后可以在哪里查看，纸质报告去哪领？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "检验报告完成后可在社区服务号查看，纸质报告领取地点与年度体检报告相同",
+    "expected_answer_facts": [
+      [
+        "社区服务号查看"
+      ],
+      [
+        "与年度体检报告相同"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对线上查看和纸质领取说明",
+    "tags": [
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-12",
+    "query": "健康中心提供药品配送服务吗？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "中心不提供药品配送服务",
+    "expected_answer_facts": [
+      [
+        "不提供药品配送",
+        "没有药品配送"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对否定服务事实",
+    "tags": [
+      "supported_negative"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-13",
+    "query": "取消检查预约会自动取消疫苗预约吗？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "检查预约和疫苗预约属于不同服务，取消其中一项不会自动影响另一项",
+    "expected_answer_facts": [
+      [
+        "属于不同服务"
+      ],
+      [
+        "不会自动影响另一项"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对预约相互独立",
+    "tags": [
+      "supported_negative",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "CLINIC-V2-14",
+    "query": "健康中心的服务号会要求转账或银行卡密码吗？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "中心服务号仅发送预约、检查和健康档案通知，不会要求居民转账或提供银行卡密码",
+    "expected_answer_facts": [
+      [
+        "仅发送预约、检查和健康档案通知"
+      ],
+      [
+        "不会要求居民转账"
+      ],
+      [
+        "不会要求提供银行卡密码"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对通知范围和反诈骗否定事实",
+    "tags": [
+      "supported_negative",
+      "multi_fact"
+    ]
+  },
+  {
+    "id": "NONE-V2-01",
+    "query": "借阅证遗失后的补办费用是多少元？",
+    "answerable": false,
+    "expected_source": "library_service.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "必须拒答且不能引用",
+    "tags": [
+      "missing_answer",
+      "numeric"
+    ]
+  },
+  {
+    "id": "NONE-V2-02",
+    "query": "图书馆逾期一天的罚款是多少？",
+    "answerable": false,
+    "expected_source": "library_service.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "必须拒答且不能编造罚款",
+    "tags": [
+      "missing_answer",
+      "numeric"
+    ]
+  },
+  {
+    "id": "NONE-V2-03",
+    "query": "蓝鲸X7损坏后的赔偿金额具体是多少？",
+    "answerable": false,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "必须拒答且不能引用未列金额段",
+    "tags": [
+      "missing_answer",
+      "numeric"
+    ]
+  },
+  {
+    "id": "NONE-V2-04",
+    "query": "蓝鲸X7每次最多能借几天？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "蓝鲸X7每次借用最长4小时",
+    "expected_answer_facts": [["最长4小时"]],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "允许纠正提问单位，但必须引用最长4小时且不得捏造天数",
+    "tags": [
+      "unit_correction",
+      "numeric"
+    ]
+  },
+  {
+    "id": "NONE-V2-05",
+    "query": "南湖社区健康中心住院一晚的床位费是多少？",
+    "answerable": false,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "必须拒答且不能编造费用",
+    "tags": [
+      "missing_answer",
+      "numeric"
+    ]
+  },
+  {
+    "id": "NONE-V2-06",
+    "query": "健康中心普通门诊挂号费是多少？",
+    "answerable": false,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "必须拒答且不能引用无关时间信息",
+    "tags": [
+      "missing_answer",
+      "numeric"
+    ]
+  },
+  {
+    "id": "NONE-V2-07",
+    "query": "实验室外部维修公司的电话是多少？",
+    "answerable": false,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "必须拒答且不能编造电话",
+    "tags": [
+      "missing_answer"
+    ]
+  },
+  {
+    "id": "NONE-V2-08",
+    "query": "图书馆是否提供上门送书服务？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "馆内不提供图书配送或读者寄存柜服务",
+    "expected_answer_facts": [
+      [
+        "不提供图书配送",
+        "没有图书配送"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "“上门送书”按同义问法核对“不提供图书配送”这一有证据否定事实",
+    "tags": [
+      "supported_negative",
+      "synonym"
+    ]
+  }
+]

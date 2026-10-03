@@ -1,0 +1,236 @@
+{
+  "generated_on": "2026-10-01",
+  "baseline": "baseline-vector",
+  "runs": [
+    {
+      "name": "baseline-vector",
+      "spec": {
+        "name": "baseline-vector",
+        "strategy": "vector",
+        "chunk_size": 700,
+        "overlap": 100,
+        "rrf_k": 60,
+        "embedding_batch_size": 1,
+        "bm25_min_score": 0.0
+      },
+      "metrics": {
+        "top1_hits": 24,
+        "top3_hits": 40,
+        "top5_hits": 41,
+        "answerable_count": 43,
+        "quality_pass": 0,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "expected_evidence_cited": 0,
+        "refusal_pass": 0,
+        "refusal_count": 7,
+        "manual_review_count": 0,
+        "errors": 0,
+        "retrieval_pass": true,
+        "quality_executed": false,
+        "acceptance_pass": false
+      },
+      "delta_vs_baseline": {
+        "top1_hits": 0,
+        "top3_hits": 0,
+        "top5_hits": 0,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "refusal_pass": 0
+      },
+      "top5_gained_case_ids": [],
+      "top5_regressed_case_ids": [],
+      "top5_bad_case_ids": [
+        "CLINIC-V2-10",
+        "LAB-V2-07"
+      ]
+    },
+    {
+      "name": "chunk-short-vector",
+      "spec": {
+        "name": "chunk-short-vector",
+        "strategy": "vector",
+        "chunk_size": 350,
+        "overlap": 50,
+        "rrf_k": 60,
+        "embedding_batch_size": 1,
+        "bm25_min_score": 0.0
+      },
+      "metrics": {
+        "top1_hits": 30,
+        "top3_hits": 41,
+        "top5_hits": 42,
+        "answerable_count": 43,
+        "quality_pass": 0,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "expected_evidence_cited": 0,
+        "refusal_pass": 0,
+        "refusal_count": 7,
+        "manual_review_count": 0,
+        "errors": 0,
+        "retrieval_pass": true,
+        "quality_executed": false,
+        "acceptance_pass": false
+      },
+      "delta_vs_baseline": {
+        "top1_hits": 6,
+        "top3_hits": 1,
+        "top5_hits": 1,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "refusal_pass": 0
+      },
+      "top5_gained_case_ids": [
+        "CLINIC-V2-10",
+        "LAB-V2-07"
+      ],
+      "top5_regressed_case_ids": [
+        "LIB-V2-07"
+      ],
+      "top5_bad_case_ids": [
+        "LIB-V2-07"
+      ]
+    },
+    {
+      "name": "chunk-long-vector",
+      "spec": {
+        "name": "chunk-long-vector",
+        "strategy": "vector",
+        "chunk_size": 1000,
+        "overlap": 150,
+        "rrf_k": 60,
+        "embedding_batch_size": 1,
+        "bm25_min_score": 0.0
+      },
+      "metrics": {
+        "top1_hits": 29,
+        "top3_hits": 41,
+        "top5_hits": 42,
+        "answerable_count": 43,
+        "quality_pass": 0,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "expected_evidence_cited": 0,
+        "refusal_pass": 0,
+        "refusal_count": 7,
+        "manual_review_count": 0,
+        "errors": 0,
+        "retrieval_pass": true,
+        "quality_executed": false,
+        "acceptance_pass": false
+      },
+      "delta_vs_baseline": {
+        "top1_hits": 5,
+        "top3_hits": 1,
+        "top5_hits": 1,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "refusal_pass": 0
+      },
+      "top5_gained_case_ids": [
+        "LAB-V2-07"
+      ],
+      "top5_regressed_case_ids": [],
+      "top5_bad_case_ids": [
+        "CLINIC-V2-10"
+      ]
+    },
+    {
+      "name": "bm25-fixed-chunk",
+      "spec": {
+        "name": "bm25-fixed-chunk",
+        "strategy": "bm25",
+        "chunk_size": 700,
+        "overlap": 100,
+        "rrf_k": 60,
+        "embedding_batch_size": 1,
+        "bm25_min_score": 0.0
+      },
+      "metrics": {
+        "top1_hits": 42,
+        "top3_hits": 43,
+        "top5_hits": 43,
+        "answerable_count": 43,
+        "quality_pass": 0,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "expected_evidence_cited": 0,
+        "refusal_pass": 0,
+        "refusal_count": 7,
+        "manual_review_count": 0,
+        "errors": 0,
+        "retrieval_pass": true,
+        "quality_executed": false,
+        "acceptance_pass": false
+      },
+      "delta_vs_baseline": {
+        "top1_hits": 18,
+        "top3_hits": 3,
+        "top5_hits": 2,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "refusal_pass": 0
+      },
+      "top5_gained_case_ids": [
+        "CLINIC-V2-10",
+        "LAB-V2-07"
+      ],
+      "top5_regressed_case_ids": [],
+      "top5_bad_case_ids": []
+    },
+    {
+      "name": "hybrid-rrf-fixed-chunk",
+      "spec": {
+        "name": "hybrid-rrf-fixed-chunk",
+        "strategy": "hybrid",
+        "chunk_size": 700,
+        "overlap": 100,
+        "rrf_k": 60,
+        "embedding_batch_size": 1,
+        "bm25_min_score": 0.0
+      },
+      "metrics": {
+        "top1_hits": 30,
+        "top3_hits": 43,
+        "top5_hits": 43,
+        "answerable_count": 43,
+        "quality_pass": 0,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "expected_evidence_cited": 0,
+        "refusal_pass": 0,
+        "refusal_count": 7,
+        "manual_review_count": 0,
+        "errors": 0,
+        "retrieval_pass": true,
+        "quality_executed": false,
+        "acceptance_pass": false
+      },
+      "delta_vs_baseline": {
+        "top1_hits": 6,
+        "top3_hits": 3,
+        "top5_hits": 2,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "refusal_pass": 0
+      },
+      "top5_gained_case_ids": [
+        "CLINIC-V2-10",
+        "LAB-V2-07"
+      ],
+      "top5_regressed_case_ids": [],
+      "top5_bad_case_ids": []
+    }
+  ]
+}

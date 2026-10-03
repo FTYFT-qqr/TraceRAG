@@ -1,0 +1,24 @@
+# 与 compose.yaml 合用，为 API 加载本机已有的向量模型。
+services:
+  api:
+    build:
+      context: .
+      args:
+        INSTALL_LOCAL_EMBEDDINGS: "true"
+    environment:
+      TRACERAG_EMBEDDING_PROVIDER: local
+      TRACERAG_LOCAL_EMBEDDING_PATH: /models/embedding
+      TRACERAG_EMBEDDING_DEVICE: cpu
+    volumes:
+      - type: bind
+        source: ${TRACERAG_MODEL_DIR:-D:/rag/embedding}
+        target: /models/embedding
+        read_only: true
+        bind:
+          create_host_path: false
+  ui:
+    # 两个服务共享同一镜像标签，构建参数保持一致，避免 UI 构建覆盖 API 镜像。
+    build:
+      context: .
+      args:
+        INSTALL_LOCAL_EMBEDDINGS: "true"

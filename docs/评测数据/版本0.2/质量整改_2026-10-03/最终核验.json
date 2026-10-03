@@ -1,0 +1,107 @@
+{
+  "checked_on": "2026-10-03",
+  "questions_unchanged": true,
+  "corpus_unchanged": true,
+  "implementation_fingerprints_match": true,
+  "pytest_passed": 209,
+  "chinese_function_docstrings": 288,
+  "missing_chinese_docstrings": 0,
+  "runs": [
+    {
+      "report": "docs/版本0.2/评测报告/质量整改_2026-10-03/发布BM25/BM25发布验收.json",
+      "report_sha256": "856da8de96fea94cfaf125ea78de05b2dbed537d6f29f1fbd18934b3021980cf",
+      "metrics": {
+        "top1_hits": 42,
+        "top3_hits": 43,
+        "top5_hits": 43,
+        "answerable_count": 43,
+        "quality_pass": 43,
+        "answer_fact_match": 43,
+        "citation_traceable": 43,
+        "citation_original_support": 43,
+        "expected_evidence_cited": 43,
+        "refusal_pass": 7,
+        "refusal_count": 7,
+        "manual_review_count": 0,
+        "errors": 0,
+        "retrieval_pass": true,
+        "quality_executed": true,
+        "acceptance_pass": true
+      },
+      "focused_checks": {
+        "LAB-V2-02": {
+          "answer": "蓝鲸X7便携光谱仪需要至少提前3个工作日预约[1]。\n预约时填写使用人姓名、课题编号和预计归还时间[1]。\n收到柜台确认后才算预约成功[1]。",
+          "quality_pass": true,
+          "source_scope_valid": true
+        },
+        "LAB-V2-07": {
+          "answer": "维修排期由设备管理员确认[1]。\n本规定未列出维修费用或损坏赔偿金额，相关处理需等待管理员书面答复[1]。",
+          "quality_pass": true,
+          "source_scope_valid": true
+        },
+        "CLINIC-V2-10": {
+          "answer": "检验采样窗口位于一楼登记台旁，采样时间以当天叫号屏和工作人员说明为准[1]。",
+          "quality_pass": true,
+          "source_scope_valid": true
+        },
+        "CLINIC-V2-11": {
+          "answer": "检查结果会在完成检查后的下一个工作日上午10点起，通过社区服务号提供查询[1]。\n需要纸质报告的居民可在一楼登记台申请领取[1]。\n检验报告完成后可在社区服务号查看，纸质报告领取地点与年度体检报告相同[1]。",
+          "quality_pass": true,
+          "source_scope_valid": true
+        }
+      }
+    },
+    {
+      "report": "docs/版本0.2/评测报告/质量整改_2026-10-03/发布混合召回/混合召回发布验收.json",
+      "report_sha256": "3198522b420944a082a537640679b292690e101586bbb6569e83746a12f20c91",
+      "metrics": {
+        "top1_hits": 30,
+        "top3_hits": 43,
+        "top5_hits": 43,
+        "answerable_count": 43,
+        "quality_pass": 43,
+        "answer_fact_match": 43,
+        "citation_traceable": 43,
+        "citation_original_support": 43,
+        "expected_evidence_cited": 43,
+        "refusal_pass": 7,
+        "refusal_count": 7,
+        "manual_review_count": 0,
+        "errors": 0,
+        "retrieval_pass": true,
+        "quality_executed": true,
+        "acceptance_pass": true
+      },
+      "focused_checks": {
+        "LAB-V2-02": {
+          "answer": "蓝鲸X7便携光谱仪需要至少提前3个工作日预约[1]。\n预约时填写使用人姓名、课题编号和预计归还时间[1]。\n收到柜台确认后才算预约成功[1]。",
+          "quality_pass": true,
+          "source_scope_valid": true
+        },
+        "LAB-V2-07": {
+          "answer": "维修排期由设备管理员确认[1]。\n本规定未列出维修费用或损坏赔偿金额，相关处理需等待管理员书面答复[1]。",
+          "quality_pass": true,
+          "source_scope_valid": true
+        },
+        "CLINIC-V2-10": {
+          "answer": "检验采样窗口位于一楼登记台旁，采样时间以当天叫号屏和工作人员说明为准[1]。",
+          "quality_pass": true,
+          "source_scope_valid": true
+        },
+        "CLINIC-V2-11": {
+          "answer": "年度健康检查服务面向65岁及以上居民，每年可预约一次[1]。\n检查结果会在完成检查后的下一个工作日上午10点起，通过社区服务号提供查询[1]。\n需要纸质报告的居民可在一楼登记台申请领取[1]。\n检验报告完成后可在社区服务号查看，纸质报告领取地点与年度体检报告相同[1]。",
+          "quality_pass": true,
+          "source_scope_valid": true
+        }
+      }
+    }
+  ],
+  "local_strategy": "hybrid",
+  "rrf_k": 60,
+  "bm25_min_score": 0,
+  "concrete_report_location_checked": true,
+  "local_links_checked": 126,
+  "broken_links": [],
+  "api_http_status": 200,
+  "ui_http_status": 200
+}

@@ -1,4 +1,4 @@
-"""Load PDF, Markdown, and text files into source-aware page records."""
+"""读取 PDF、Markdown 和 TXT，并统一保留文件名及 PDF 页码。"""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ SUPPORTED_EXTENSIONS = {".pdf", ".md", ".markdown", ".txt"}
 
 
 def _safe_file_name(file_name: str) -> str:
-    """Keep only the uploaded file's name, regardless of client path syntax."""
+    """去掉客户端传入路径，只保留文件名，避免写入任意目录。"""
 
     normalized = file_name.replace("\\", "/").rsplit("/", 1)[-1].strip()
     if not normalized or normalized in {".", ".."}:
@@ -23,18 +23,19 @@ def _safe_file_name(file_name: str) -> str:
 
 
 def _decode_text(data: bytes, file_name: str) -> str:
+    """优先使用 UTF-8，兼容常见的 Windows GB18030 文本编码。"""
     try:
         return data.decode("utf-8-sig")
     except UnicodeDecodeError:
         try:
-            # Chinese Windows documents are often saved as GB18030.
+            # 中文 Windows 文本常使用 GB18030 保存，UTF-8 解码失败后再尝试此编码。
             return data.decode("gb18030")
         except UnicodeDecodeError as exc:
             raise ValueError(f"{file_name} is not valid UTF-8 or GB18030 text.") from exc
 
 
 def load_document(file_name: str, data: bytes) -> list[DocumentPage]:
-    """Parse one supported document while retaining file and PDF page metadata."""
+    """解析受支持的单个文件，并为内容和来源生成稳定身份。"""
 
     safe_name = _safe_file_name(file_name)
     suffix = "." + safe_name.rsplit(".", 1)[-1].lower() if "." in safe_name else ""
@@ -46,6 +47,7 @@ def load_document(file_name: str, data: bytes) -> list[DocumentPage]:
     if not data:
         raise ValueError(f"{safe_name} is empty.")
 
+    # 同名文件只要字节内容变化，document_id 就会变化，用于识别版本更新。
     document_id = hashlib.sha256(safe_name.encode("utf-8") + b"\0" + data).hexdigest()
     if suffix == ".pdf":
         try:
@@ -59,6 +61,7 @@ def load_document(file_name: str, data: bytes) -> list[DocumentPage]:
                     page_number=page_index,
                     content=page.extract_text() or "",
                 )
+                # 页码从 1 开始，保持与 PDF 阅读器和用户习惯一致。
                 for page_index, page in enumerate(reader.pages, start=1)
             ]
         except ValueError:

@@ -1,0 +1,64 @@
+# 无外部模型凭据的工程回归；推送到 GitHub 后由托管 runner 执行。
+name: 工程交付验收
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - name: 安装发布依赖
+        run: python -m pip install -c requirements-release.txt ".[dev]"
+      - name: 自动化测试
+        run: python -m pytest -p no:cacheprovider -q --junitxml=delivery-results/自动测试.xml
+      - name: 真实进程的固定协议验收
+        run: python scripts/delivery_smoke.py --output-dir delivery-results/固定协议验收
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: delivery-${{ matrix.os }}
+          path: delivery-results/
+          if-no-files-found: warn
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: 构建并验证镜像中的 API UI 与快照恢复
+        run: |
+          docker build -t tracerag:0.2.0 .
+          docker run --rm -v "$PWD/delivery-results:/results" tracerag:0.2.0 python scripts/delivery_smoke.py --output-dir /results/容器固定协议验收
+      - name: 验证 Compose 服务网络和健康检查
+        run: |
+          cp .env.docker.example .env.docker
+          docker compose --project-name tracerag-delivery-ci config --quiet
+          docker compose --project-name tracerag-delivery-ci up -d --wait
+          curl --fail http://127.0.0.1:18000/health
+          curl --fail http://127.0.0.1:18501/_stcore/health
+          docker compose --project-name tracerag-delivery-ci restart api
+          docker compose --project-name tracerag-delivery-ci up -d --wait
+      - name: 清理本轮独立容器
+        if: always()
+        run: docker compose --project-name tracerag-delivery-ci down
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: delivery-docker
+          path: delivery-results/
+          if-no-files-found: warn

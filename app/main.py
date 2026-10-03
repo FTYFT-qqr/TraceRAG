@@ -1,4 +1,4 @@
-"""FastAPI entry point for TraceRAG."""
+"""创建 FastAPI 应用、健康检查和服务生命周期钩子。"""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class HealthResponse(BaseModel):
-    """Response returned by the service health endpoint."""
+    """健康检查返回的服务状态和版本信息。"""
 
     status: str
     service: str
@@ -30,12 +30,13 @@ def create_app(
     *,
     runtime_factory: RuntimeFactory | None = None,
 ) -> FastAPI:
-    """Create the application with its health and RAG API routes."""
+    """使用指定配置创建服务，并注册系统及 RAG 路由。"""
 
     resolved_settings = settings or get_settings()
 
     @asynccontextmanager
     async def lifespan(application: FastAPI):
+        """在服务启停时统一初始化日志并留下生命周期记录。"""
         configure_logging(resolved_settings.log_level)
         logger.info(
             "TraceRAG service started (environment=%s, version=%s)",
@@ -57,7 +58,7 @@ def create_app(
 
     @application.get("/health", response_model=HealthResponse, tags=["system"])
     async def health_check() -> HealthResponse:
-        """Return the minimal process health information required for stage one."""
+        """返回最小健康信息，不在此处加载模型或 API 凭据。"""
 
         logger.debug("Health check requested")
         return HealthResponse(

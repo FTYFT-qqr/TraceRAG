@@ -1,4 +1,4 @@
-"""Deterministic text cleanup and fixed-window chunking with source metadata."""
+"""清理常见抽取噪声，并按固定窗口生成带来源元数据的 Chunk。"""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ _HORIZONTAL_WHITESPACE = re.compile(r"[\t\f\v ]+")
 
 
 def clean_text(text: str) -> str:
-    """Normalize common extraction artifacts without changing meaningful text."""
+    """统一常见空白字符和换行，不改动有意义的正文字符。"""
 
     text = unicodedata.normalize("NFC", text)
     text = text.replace("\r\n", "\n").replace("\r", "\n")
@@ -28,7 +28,7 @@ def clean_text(text: str) -> str:
 def chunk_pages(
     pages: list[DocumentPage], *, chunk_size: int = 700, overlap: int = 100
 ) -> list[Chunk]:
-    """Split pages into fixed character windows and assign stable traceable IDs."""
+    """按字符窗口切分各页文本，并为每段生成稳定的来源 ID。"""
 
     if chunk_size <= 0:
         raise ValueError("chunk_size must be a positive integer.")
@@ -45,6 +45,7 @@ def chunk_pages(
         while start < len(content):
             end = min(start + chunk_size, len(content))
             chunk_text = content[start:end]
+            # chunk_index 在整个文件内连续递增，页码另存于 page_number。
             chunk_index = len(chunks)
             identity = (
                 f"{page.document_id}|{page.file_name}|{page.page_number}|"

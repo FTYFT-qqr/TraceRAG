@@ -1,0 +1,51 @@
+{
+  "generated_on": "2026-10-01",
+  "baseline": "vector-quality-20261001",
+  "runs": [
+    {
+      "name": "vector-quality-20261001",
+      "spec": {
+        "name": "vector-quality-20261001",
+        "strategy": "vector",
+        "chunk_size": 700,
+        "overlap": 100,
+        "rrf_k": 60,
+        "embedding_batch_size": 1,
+        "bm25_min_score": 0.0
+      },
+      "metrics": {
+        "top1_hits": 24,
+        "top3_hits": 40,
+        "top5_hits": 41,
+        "answerable_count": 43,
+        "quality_pass": 18,
+        "answer_fact_match": 41,
+        "citation_traceable": 42,
+        "citation_original_support": 18,
+        "expected_evidence_cited": 42,
+        "refusal_pass": 7,
+        "refusal_count": 7,
+        "manual_review_count": 22,
+        "errors": 0,
+        "retrieval_pass": true,
+        "quality_executed": true,
+        "acceptance_pass": false
+      },
+      "delta_vs_baseline": {
+        "top1_hits": 0,
+        "top3_hits": 0,
+        "top5_hits": 0,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "refusal_pass": 0
+      },
+      "top5_gained_case_ids": [],
+      "top5_regressed_case_ids": [],
+      "top5_bad_case_ids": [
+        "CLINIC-V2-10",
+        "LAB-V2-07"
+      ]
+    }
+  ]
+}

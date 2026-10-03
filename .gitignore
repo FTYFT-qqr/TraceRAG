@@ -7,9 +7,19 @@ __pycache__/
 
 # Local configuration
 .env
+.env.*
+!.env.example
+!.env.docker.example
 
 # Local planning workspace
 .planning/
+
+# 本地编辑器、构建产物及历史隔离测试目录不进入发布。
+.obsidian/
+.pytest-*/
+data/pytest-*/
+build/
+dist/
 
 # Runtime document and index data (retain directory markers)
 data/raw/*
@@ -18,3 +28,5 @@ data/processed/*
 !data/processed/.gitkeep
 data/indexes/*
 !data/indexes/.gitkeep
+indexes/*
+!indexes/.gitkeep

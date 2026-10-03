@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tracerag"
-version = "0.1.0"
+version = "0.2.0"
 description = "A traceable enterprise knowledge-base question answering system."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -18,12 +18,16 @@ dependencies = [
     "python-multipart>=0.0.9,<1.0",
     "python-dotenv>=1.0,<2.0",
     "streamlit>=1.40,<2.0",
+    "requests>=2.32,<3.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "httpx>=0.27,<1.0",
     "pytest>=8.0,<9.0",
+]
+local-embeddings = [
+    "sentence-transformers>=5.0,<6.0",
 ]
 
 

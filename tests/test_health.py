@@ -1,3 +1,5 @@
+"""验证轻量健康检查返回服务名称、环境和版本。"""
+
 from fastapi.testclient import TestClient
 
 from app.config import Settings
@@ -5,6 +7,7 @@ from app.main import create_app
 
 
 def test_health_endpoint_returns_runtime_metadata() -> None:
+    """验证健康检查接口返回当前服务运行元数据。"""
     app = create_app(
         Settings(
             app_name="TraceRAG Test",

@@ -1,0 +1,169 @@
+[
+  {
+    "id": "LIB-01",
+    "query": "青禾社区图书馆的地址在哪里？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "图书馆位于松林路18号",
+    "expected_answer": "松林路18号",
+    "expected_answer_facts": [["松林路18号"]]
+  },
+  {
+    "id": "LIB-02",
+    "query": "图书馆周六和周日几点开放到几点？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "周六和周日上午9点至下午5点",
+    "expected_answer": "上午9点至下午5点",
+    "expected_answer_facts": [["上午9点"], ["下午5点"]]
+  },
+  {
+    "id": "LIB-03",
+    "query": "每周三图书馆几点开门？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "每周三上午进行设备维护，当天延迟到中午12点开放",
+    "expected_answer": "中午12点",
+    "expected_answer_facts": [["中午12点"], ["上午进行设备维护", "上午设备维护"]]
+  },
+  {
+    "id": "LIB-04",
+    "query": "被其他读者预约的图书能续借吗，普通续借会延长几天？",
+    "answerable": true,
+    "expected_source": "library_service.txt",
+    "expected_evidence": "续借后延长14天；已经被其他读者预约的图书不能续借",
+    "expected_answer": "延长14天，已被预约的图书不能续借",
+    "expected_answer_facts": [["延长14天", "延长十四天"], ["不能续借", "不可续借"]]
+  },
+  {
+    "id": "LAB-01",
+    "query": "借用蓝鲸X7便携光谱仪至少要提前几个工作日预约？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "蓝鲸X7便携光谱仪需要至少提前3个工作日预约",
+    "expected_answer": "至少提前3个工作日",
+    "expected_answer_facts": [["3个工作日", "三个工作日"]]
+  },
+  {
+    "id": "LAB-02",
+    "query": "蓝鲸X7每次最多能借多长时间？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "蓝鲸X7每次借用最长4小时",
+    "expected_answer": "最长4小时",
+    "expected_answer_facts": [["4小时", "四小时"]]
+  },
+  {
+    "id": "LAB-03",
+    "query": "实验室设备管理员每周什么时间办理借还？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "每周二和周四下午2点至5点在柜台办理借还手续",
+    "expected_answer": "周二和周四下午2点至5点",
+    "expected_answer_facts": [["周二"], ["周四"], ["下午2点至5点", "下午2点到5点"]]
+  },
+  {
+    "id": "LAB-04",
+    "query": "归还光谱仪还必须一并交回哪些物品？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "光谱仪、充电器和蓝色收纳箱",
+    "expected_answer": "设备、充电器和蓝色收纳箱",
+    "expected_answer_facts": [["光谱仪", "设备"], ["充电器"], ["蓝色收纳箱"]]
+  },
+  {
+    "id": "CLINIC-01",
+    "query": "南湖社区健康中心位于哪条路、多少号？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "南湖社区健康中心位于枫桥路66号",
+    "expected_answer": "枫桥路66号",
+    "expected_answer_facts": [["枫桥路66号"]]
+  },
+  {
+    "id": "CLINIC-02",
+    "query": "健康中心普通门诊下午几点停止取号？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "下午4点45分停止取号",
+    "expected_answer": "下午4点45分",
+    "expected_answer_facts": [["下午4点45分", "下午4:45"]]
+  },
+  {
+    "id": "CLINIC-03",
+    "query": "儿童常规疫苗安排在什么时候接种，需提前多久预约？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "每周二和周四下午2点至4点，接种前至少提前1天",
+    "expected_answer": "周二和周四下午2点至4点，至少提前1天预约",
+    "expected_answer_facts": [["周二"], ["周四"], ["下午2点至4点", "下午2点到4点"], ["提前1天", "提前一天"]]
+  },
+  {
+    "id": "CLINIC-04",
+    "query": "65岁以上居民的年度体检结果什么时候可以查询？",
+    "answerable": true,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": "完成检查后的下一个工作日上午10点起",
+    "expected_answer": "检查后的下一个工作日上午10点起",
+    "expected_answer_facts": [["下一个工作日", "下一工作日"], ["上午10点", "上午十点"], ["可通过社区服务号查询", "通过社区服务号提供查询"]]
+  },
+  {
+    "id": "LAB-05",
+    "query": "本规定是否列出维修费用？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "本规定未列出维修费用或损坏赔偿金额",
+    "expected_answer": "本规定未列出维修费用",
+    "expected_answer_facts": [["未列出维修费用", "没有列出维修费用", "未说明维修费用", "没有说明维修费用", "未写维修费用", "没有写维修费用", "未写明维修费用", "没有写明维修费用", "没有写出维修费用"]]
+  },
+  {
+    "id": "LAB-06",
+    "query": "文档有写维修费用吗？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "本规定未列出维修费用或损坏赔偿金额",
+    "expected_answer": "文档未列出维修费用",
+    "expected_answer_facts": [["未列出维修费用", "没有列出维修费用", "未说明维修费用", "没有说明维修费用", "未写维修费用", "没有写维修费用", "未写明维修费用", "没有写明维修费用", "没有写出维修费用"]]
+  },
+  {
+    "id": "LAB-07",
+    "query": "维修费用具体是多少？文档有写吗？",
+    "answerable": true,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": "本规定未列出维修费用或损坏赔偿金额",
+    "expected_answer": "文档未列出维修费用的具体数额",
+    "expected_answer_facts": [["未列出维修费用", "没有列出维修费用", "未说明维修费用", "没有说明维修费用", "未写维修费用", "没有写维修费用", "未写明维修费用", "没有写明维修费用", "没有写出维修费用"]]
+  },
+  {
+    "id": "NONE-01",
+    "query": "借阅证遗失后的补办费用是多少元？",
+    "answerable": false,
+    "expected_source": "library_service.txt",
+    "expected_evidence": null,
+    "expected_answer": null
+  },
+  {
+    "id": "NONE-02",
+    "query": "蓝鲸X7光谱仪损坏后的赔偿金额具体是多少？",
+    "answerable": false,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": null,
+    "expected_answer": null
+  },
+  {
+    "id": "NONE-03",
+    "query": "南湖社区健康中心住院一晚的床位费是多少？",
+    "answerable": false,
+    "expected_source": "clinic_service.txt",
+    "expected_evidence": null,
+    "expected_answer": null
+  },
+  {
+    "id": "NONE-04",
+    "query": "维修费用具体是多少？",
+    "answerable": false,
+    "expected_source": "lab_equipment.txt",
+    "expected_evidence": null,
+    "expected_answer": null
+  }
+]

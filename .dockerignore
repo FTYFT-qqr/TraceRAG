@@ -1,0 +1,16 @@
+# 使用白名单构建上下文，排除密钥、模型、运行索引和历史报告。
+**
+!Dockerfile
+!pyproject.toml
+!requirements-release.txt
+!README.md
+!app/
+!app/**
+!scripts/
+!scripts/**
+!tests/
+!tests/**
+!samples/
+!samples/**
+**/__pycache__/**
+**/*.pyc

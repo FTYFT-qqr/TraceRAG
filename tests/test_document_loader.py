@@ -1,3 +1,5 @@
+"""验证 PDF、Markdown 和 TXT 的读取及来源元数据。"""
+
 from __future__ import annotations
 
 from app.document_loader import load_document
@@ -5,7 +7,7 @@ from app.models import UnsupportedDocumentError
 
 
 def _make_pdf(page_texts: list[str]) -> bytes:
-    """Build a tiny valid PDF with text content without another test dependency."""
+    """直接构造含文本的最小 PDF，避免额外引入测试依赖。"""
 
     font_id = 3 + len(page_texts) * 2
     objects: list[bytes] = [
@@ -53,6 +55,7 @@ def _make_pdf(page_texts: list[str]) -> bytes:
 
 
 def test_load_pdf_extracts_page_text_and_source_metadata() -> None:
+    """确保 PDF 文本和从 1 开始的页码一起返回。"""
     pages = load_document("handbook.pdf", _make_pdf(["Leave policy", "Holiday policy"]))
 
     assert [page.content.strip() for page in pages] == ["Leave policy", "Holiday policy"]
@@ -62,6 +65,7 @@ def test_load_pdf_extracts_page_text_and_source_metadata() -> None:
 
 
 def test_load_markdown_and_text_files_as_source_aware_documents() -> None:
+    """验证 Markdown 和 TXT 加载结果保留文档来源。"""
     markdown = load_document("folder\\policy.MD", b"# Leave\n10 days")
     plain_text = load_document("policy.txt", "年假：10天".encode("gb18030"))
 
@@ -72,6 +76,7 @@ def test_load_markdown_and_text_files_as_source_aware_documents() -> None:
 
 
 def test_document_id_changes_when_file_content_changes() -> None:
+    """验证文档内容变化时文档身份随之变化。"""
     first = load_document("policy.txt", b"Version one")[0]
     second = load_document("policy.txt", b"Version two")[0]
 
@@ -79,6 +84,7 @@ def test_document_id_changes_when_file_content_changes() -> None:
 
 
 def test_loader_rejects_unsupported_empty_and_malformed_files() -> None:
+    """验证 Loader 拒绝不支持、空白和格式错误的文件。"""
     import pytest
 
     with pytest.raises(UnsupportedDocumentError):

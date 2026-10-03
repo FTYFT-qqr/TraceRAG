@@ -1,1 +1,4 @@
-"""TraceRAG application package."""
+"""TraceRAG 后端应用的 Python 包。"""
+
+# 包版本由配置和发布检查共同引用，避免 API 默认版本与交付文档漂移。
+__version__ = "0.2.0"

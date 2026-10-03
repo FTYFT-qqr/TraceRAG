@@ -1,4 +1,4 @@
-"""FAISS vector storage with a JSON mapping to source-aware chunks."""
+"""使用 FAISS 保存向量，并用 JSON 快照映射回可追溯文本片段。"""
 
 from __future__ import annotations
 
@@ -12,35 +12,45 @@ from pathlib import Path
 import faiss
 import numpy as np
 
-from app.models import Chunk
+from app.models import (
+    Chunk,
+    EmbeddingIdentity,
+    EmbeddingIndexCompatibilityError,
+    EmbeddingModelMismatchError,
+    LegacyEmbeddingIndexError,
+)
 
 
-_SNAPSHOT_VERSION = 1
+_SNAPSHOT_VERSION = 3
 _GENERATION_PATTERN = re.compile(r"^[0-9a-f]{32}$")
 
 
 class FaissVectorStore:
-    """Normalized inner-product FAISS index aligned with an ordered chunk list."""
+    """维护有序文本片段与归一化 FAISS 向量之间的一一对应关系。"""
 
-    def __init__(self) -> None:
+    def __init__(self, embedding_identity: EmbeddingIdentity | None = None) -> None:
+        """创建空的 FAISS 存储，并可预先绑定向量身份。"""
         self._index: faiss.Index | None = None
         self._chunks: list[Chunk] = []
+        self.embedding_identity = embedding_identity
 
     @property
     def count(self) -> int:
+        """返回当前索引中保存的 Chunk 数量。"""
         return len(self._chunks)
 
     @property
     def dimension(self) -> int | None:
+        """返回向量维度；索引为空时返回空值。"""
         return self._index.d if self._index is not None else None
 
     @property
     def chunks(self) -> tuple[Chunk, ...]:
+        """以不可变元组暴露当前 Chunk 顺序，避免外部修改索引状态。"""
         return tuple(self._chunks)
 
-
     def search(self, embedding: np.ndarray, top_k: int) -> list[tuple[Chunk, float]]:
-        """Return the top cosine matches with their source metadata."""
+        """返回相似度最高的片段及其来源信息。"""
 
         if top_k <= 0:
             raise ValueError("top_k must be a positive integer.")
@@ -64,8 +74,9 @@ class FaissVectorStore:
                 continue
             results.append((self._chunks[int(index)], float(score)))
         return results
+
     def add(self, chunks: list[Chunk], embeddings: np.ndarray) -> None:
-        """Add aligned chunk/vector rows, normalizing them for cosine search."""
+        """添加一组逐行对齐的片段和向量，并归一化以支持余弦检索。"""
 
         vectors = np.asarray(embeddings, dtype=np.float32)
         if vectors.ndim != 2 or vectors.shape[0] != len(chunks):
@@ -93,11 +104,46 @@ class FaissVectorStore:
         self._index.add(vectors)
         self._chunks.extend(chunks)
 
-    def save(self, directory: str | Path) -> str:
-        """Write an immutable snapshot and atomically switch its CURRENT pointer."""
+    def without_file_name(self, file_name: str) -> "FaissVectorStore":
+        """返回移除指定文件片段后的新索引，不修改当前实例。"""
+        if self._index is None or not self._chunks:
+            return FaissVectorStore(self.embedding_identity)
+
+        target_name = file_name.casefold()
+        keep_positions = [
+            index
+            for index, chunk in enumerate(self._chunks)
+            if chunk.file_name.casefold() != target_name
+        ]
+        kept_chunks = [self._chunks[index] for index in keep_positions]
+        candidate = FaissVectorStore(self.embedding_identity)
+        if not kept_chunks:
+            return candidate
+
+        # 从 Flat 索引重建保留向量，确保替换文档时其他文件的向量不变。
+        kept_vectors = np.vstack(
+            [self._index.reconstruct(index) for index in keep_positions]
+        ).astype(np.float32, copy=False)
+        candidate.add(kept_chunks, kept_vectors)
+        return candidate
+
+    def save(
+        self,
+        directory: str | Path,
+        *,
+        embedding_identity: EmbeddingIdentity,
+    ) -> str:
+        """写入不可变快照，身份元数据就绪后再原子切换 CURRENT。"""
 
         if self._index is None or not self._chunks:
             raise ValueError("Cannot save an empty vector store.")
+        if (
+            self.embedding_identity is not None
+            and self.embedding_identity != embedding_identity
+        ):
+            raise EmbeddingModelMismatchError(
+                "Cannot save vectors under a different embedding identity; rebuild the index."
+            )
 
         root = Path(directory)
         snapshots = root / "snapshots"
@@ -117,6 +163,7 @@ class FaissVectorStore:
                 "generation": generation,
                 "count": self.count,
                 "dimension": self.dimension,
+                "embedding_identity": embedding_identity.to_dict(),
             }
             (temporary / "manifest.json").write_text(
                 json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
@@ -125,14 +172,21 @@ class FaissVectorStore:
             pointer_tmp = root / f".CURRENT-{generation}.tmp"
             pointer_tmp.write_text(generation, encoding="ascii")
             os.replace(pointer_tmp, root / "CURRENT")
+            # 仅在磁盘指针切换成功后更新内存身份，失败时保留旧状态。
+            self.embedding_identity = embedding_identity
         except Exception:
             shutil.rmtree(temporary, ignore_errors=True)
             raise
         return generation
 
     @classmethod
-    def load(cls, directory: str | Path) -> "FaissVectorStore":
-        """Load and validate the immutable snapshot named by CURRENT."""
+    def load(
+        cls,
+        directory: str | Path,
+        *,
+        expected_embedding_identity: EmbeddingIdentity,
+    ) -> "FaissVectorStore":
+        """加载快照并拒绝旧格式或与当前模型不一致的索引。"""
 
         root = Path(directory)
         try:
@@ -150,18 +204,72 @@ class FaissVectorStore:
         except (OSError, json.JSONDecodeError, RuntimeError) as exc:
             raise ValueError("Saved vector index snapshot is incomplete or unreadable.") from exc
 
+        if manifest.get("version") != _SNAPSHOT_VERSION:
+            raise LegacyEmbeddingIndexError(
+                "Saved vector index has no compatible embedding identity; "
+                "its saved text must be re-embedded before use."
+            )
+        try:
+            stored_identity = EmbeddingIdentity.from_dict(
+                manifest.get("embedding_identity")
+            )
+        except ValueError as exc:
+            raise LegacyEmbeddingIndexError(
+                "Saved vector index is missing a valid embedding identity; "
+                "its saved text must be re-embedded before use."
+            ) from exc
+        if stored_identity != expected_embedding_identity:
+            raise EmbeddingModelMismatchError(
+                "Configured embedding model does not match the saved vector index; "
+                "use the original model or select a new index directory."
+            )
+
         if (
-            manifest.get("version") != _SNAPSHOT_VERSION
-            or manifest.get("generation") != generation
+            manifest.get("generation") != generation
             or manifest.get("count") != len(chunk_data)
             or manifest.get("dimension") != index.d
             or index.ntotal != len(chunk_data)
         ):
             raise ValueError("Saved vector index metadata does not match its FAISS index.")
 
-        store = cls()
+        store = cls(stored_identity)
         store._index = index
         store._chunks = [Chunk.from_dict(item) for item in chunk_data]
         if len({chunk.chunk_id for chunk in store._chunks}) != len(store._chunks):
             raise ValueError("Saved vector index contains duplicate chunk IDs.")
         return store
+
+    @classmethod
+    def load_chunks_for_reindex(cls, directory: str | Path) -> list[Chunk]:
+        """校验旧快照结构后只取文本元数据，绝不复用其未知来源向量。"""
+        root = Path(directory)
+        try:
+            generation = (root / "CURRENT").read_text(encoding="ascii").strip()
+        except OSError as exc:
+            raise FileNotFoundError(f"No saved vector index at {root}.") from exc
+        if not _GENERATION_PATTERN.fullmatch(generation):
+            raise ValueError("Vector index CURRENT pointer is invalid.")
+
+        snapshot = root / "snapshots" / generation
+        try:
+            manifest = json.loads((snapshot / "manifest.json").read_text(encoding="utf-8"))
+            chunk_data = json.loads((snapshot / "chunks.json").read_text(encoding="utf-8"))
+            index = faiss.read_index(str(snapshot / "index.faiss"))
+        except (OSError, json.JSONDecodeError, RuntimeError) as exc:
+            raise ValueError("Saved vector index snapshot is incomplete or unreadable.") from exc
+
+        # v1 缺少身份，v2 只记模型名/路径；二者都必须从文本重新向量化。
+        if manifest.get("version") not in {1, 2, _SNAPSHOT_VERSION}:
+            raise ValueError("Cannot re-embed an unsupported vector index version.")
+        if (
+            manifest.get("generation") != generation
+            or manifest.get("count") != len(chunk_data)
+            or manifest.get("dimension") != index.d
+            or index.ntotal != len(chunk_data)
+        ):
+            raise ValueError("Saved vector index metadata does not match its FAISS index.")
+
+        chunks = [Chunk.from_dict(item) for item in chunk_data]
+        if len({chunk.chunk_id for chunk in chunks}) != len(chunks):
+            raise ValueError("Saved vector index contains duplicate chunk IDs.")
+        return chunks
