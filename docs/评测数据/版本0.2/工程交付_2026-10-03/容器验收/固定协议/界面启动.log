@@ -1,0 +1,8 @@
+2026-10-03 14:29:27.815 Uvicorn server started on 127.0.0.1:50041
+
+  You can now view your Streamlit app in your browser.
+
+  URL: http://127.0.0.1:50041
+
+  Detected WSL. Using poll-based file watching for better compatibility. To force watchdog, set server.fileWatcherType = "watchdog".
+  Stopping...

@@ -1,0 +1,110 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.16, pytest-8.4.2, pluggy-1.6.0
+rootdir: /opt/tracerag
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1
+collected 213 items
+
+tests/test_api_config.py ..                                              [  0%]
+tests/test_api_workflow.py .........                                     [  5%]
+tests/test_chunking.py .....                                             [  7%]
+tests/test_config.py ................                                    [ 15%]
+tests/test_delivery.py F..F                                              [ 16%]
+tests/test_document_loader.py ....                                       [ 18%]
+tests/test_dotenv.py .                                                   [ 19%]
+tests/test_embeddings.py ...                                             [ 20%]
+tests/test_evaluation.py .................                               [ 28%]
+tests/test_evaluation_boundaries.py .................................... [ 45%]
+................                                                         [ 53%]
+tests/test_grounded_answer.py ......................                     [ 63%]
+tests/test_health.py .                                                   [ 63%]
+tests/test_rag.py .......................                                [ 74%]
+tests/test_relevance.py .........                                        [ 78%]
+tests/test_retriever.py .......                                          [ 82%]
+tests/test_runtime.py .........                                          [ 86%]
+tests/test_ui.py ...                                                     [ 87%]
+tests/test_v02_evaluation.py ..............                              [ 94%]
+tests/test_vector_store.py ............                                  [100%]
+
+=================================== FAILURES ===================================
+______________________ test_release_version_is_consistent ______________________
+
+    def test_release_version_is_consistent() -> None:
+        """包元数据、默认配置、健康检查和示例配置共享同一个发布版本。"""
+        metadata = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+        assert metadata["project"]["version"] == __version__ == Settings().version == "0.2.0"
+        for example in (".env.example", ".env.docker.example"):
+>           assert "TRACERAG_VERSION=0.2.0" in (ROOT / example).read_text(encoding="utf-8")
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_delivery.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/pathlib/_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/pathlib/_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/opt/tracerag/.env.example'), mode = 'r', buffering = -1
+encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/opt/tracerag/.env.example'
+
+/usr/local/lib/python3.13/pathlib/_local.py:537: FileNotFoundError
+_________________ test_container_context_uses_source_allowlist _________________
+
+    def test_container_context_uses_source_allowlist() -> None:
+        """容器只纳入构建所需源码，密钥、索引和大报告默认排除。"""
+>       patterns = (ROOT / ".dockerignore").read_text(encoding="utf-8").splitlines()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_delivery.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/pathlib/_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/pathlib/_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/opt/tracerag/.dockerignore'), mode = 'r', buffering = -1
+encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/opt/tracerag/.dockerignore'
+
+/usr/local/lib/python3.13/pathlib/_local.py:537: FileNotFoundError
+=============================== warnings summary ===============================
+../../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+------------------- generated xml file: /reports/容器自动测试.xml --------------------
+=========================== short test summary info ============================
+FAILED tests/test_delivery.py::test_release_version_is_consistent - FileNotFo...
+FAILED tests/test_delivery.py::test_container_context_uses_source_allowlist
+=================== 2 failed, 211 passed, 1 warning in 3.59s ===================

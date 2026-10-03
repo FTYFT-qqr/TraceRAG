@@ -48,5 +48,7 @@ def test_container_context_uses_source_allowlist() -> None:
     """容器只纳入构建所需源码，密钥、索引和大报告默认排除。"""
     patterns = (ROOT / ".dockerignore").read_text(encoding="utf-8").splitlines()
     assert "**" in patterns
-    assert not any(line.startswith("!") and any(word in line for word in (".env", "indexes", "docs", ".planning")) for line in patterns)
+    # 配置示例可进入镜像，真实凭据文件和目录仍不能被加入白名单。
+    exceptions = {"!.env.example", "!.env.docker.example"}
+    assert not any(line.startswith("!") and line not in exceptions and any(word in line for word in (".env", "indexes", "docs", ".planning")) for line in patterns)
     assert "127.0.0.1:" in (ROOT / "compose.yaml").read_text(encoding="utf-8")

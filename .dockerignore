@@ -1,9 +1,14 @@
 # 使用白名单构建上下文，排除密钥、模型、运行索引和历史报告。
 **
 !Dockerfile
+!.dockerignore
 !pyproject.toml
 !requirements-release.txt
 !README.md
+!.env.example
+!.env.docker.example
+!compose.yaml
+!compose.local.yaml
 !app/
 !app/**
 !scripts/
