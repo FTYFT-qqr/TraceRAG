@@ -4,6 +4,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 import tomllib
 from pathlib import Path
 
@@ -13,6 +14,7 @@ from app import __version__
 from app.config import Settings
 from app.main import create_app
 from scripts.delivery_provider import app as provider
+from scripts.delivery_smoke import stop
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,3 +68,25 @@ def test_delivery_cli_handles_legacy_windows_output_encoding() -> None:
     )
     assert completed.returncode == 0, completed.stderr.decode("utf-8", errors="replace")
     assert "新的独立报告目录" in completed.stdout.decode("utf-8")
+
+
+def test_delivery_stop_releases_child_working_directory(tmp_path: Path) -> None:
+    """停止验收进程后释放其工作目录，覆盖Windows虚拟环境启动器子进程。"""
+    work = tmp_path / "delivery-process"
+    work.mkdir()
+    process = subprocess.Popen(
+        [sys.executable, "-c", "from pathlib import Path; import time; Path('ready').write_text('ready'); time.sleep(60)"],
+        cwd=work, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
+    )
+    try:
+        deadline = time.monotonic() + 15
+        while not (work / "ready").exists() and time.monotonic() < deadline:
+            time.sleep(0.05)
+        assert (work / "ready").exists(), "子进程必须实际启动后再检查清理"
+        stop(process)
+        assert process.poll() is not None
+        (work / "ready").unlink()
+        work.rmdir()
+    finally:
+        stop(process)

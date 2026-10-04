@@ -48,6 +48,17 @@ def wait_ready(url: str, process: subprocess.Popen, timeout: float = 45) -> dict
 def stop(process: subprocess.Popen) -> None:
     """仅停止本脚本创建的子进程，等待退出后再释放日志和临时目录。"""
     if process.poll() is None:
+        if os.name == "nt":
+            # Windows venv启动器会再创建Python子进程，必须停止本轮PID的整个子树。
+            completed = subprocess.run(
+                ["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                capture_output=True, creationflags=subprocess.CREATE_NO_WINDOW,
+                timeout=20, check=False,
+            )
+            if completed.returncode and process.poll() is None:
+                raise RuntimeError("停止验收进程树失败，不能继续清理临时目录。")
+            process.wait(timeout=10)
+            return
         process.terminate()
         try:
             process.wait(timeout=10)
