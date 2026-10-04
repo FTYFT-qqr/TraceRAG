@@ -1,0 +1,148 @@
+{
+  "checked_at": "2026-10-04T02:39:22.453508+00:00",
+  "mode": "offline-fixed-protocol",
+  "scope": "真实应用 HTTP 链路及索引持久化；固定模型协议不作为真实模型质量结论。",
+  "python": "3.13.16 (main, Oct  1 2026, 21:42:25) [GCC 14.2.0]",
+  "checks": [
+    {
+      "name": "API版本和健康检查",
+      "passed": true,
+      "detail": {
+        "status": "ok",
+        "service": "TraceRAG",
+        "environment": "delivery-check",
+        "version": "0.2.0"
+      }
+    },
+    {
+      "name": "UI启动",
+      "passed": true,
+      "detail": "ok"
+    },
+    {
+      "name": "首次上传",
+      "passed": true,
+      "detail": {
+        "document_id": "190669ac709defc2e872c107d19523dc2b33767d1f2db13bcd2acc6a91cbf0d8",
+        "file_name": "工程演示设备.txt",
+        "page_count": 1,
+        "chunk_count": 1,
+        "index_generation": "a5e012fa623a40fda0f64bb114c7620c",
+        "already_indexed": false,
+        "replaced_existing": false
+      }
+    },
+    {
+      "name": "重复上传跳过",
+      "passed": true,
+      "detail": {
+        "document_id": "190669ac709defc2e872c107d19523dc2b33767d1f2db13bcd2acc6a91cbf0d8",
+        "file_name": "工程演示设备.txt",
+        "page_count": 1,
+        "chunk_count": 1,
+        "index_generation": "a5e012fa623a40fda0f64bb114c7620c",
+        "already_indexed": true,
+        "replaced_existing": false
+      }
+    },
+    {
+      "name": "有证据回答和来源",
+      "passed": true,
+      "detail": {
+        "answer": "工程演示设备每次借用最长4小时[1]。",
+        "rejected": false,
+        "citations": [
+          {
+            "chunk_id": "29e1b3e9f9e3bc77b5bd96bcb27cd39e93108794fad62dfcef3961777d145c9d",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。"
+          }
+        ],
+        "retrievals": [
+          {
+            "chunk_id": "29e1b3e9f9e3bc77b5bd96bcb27cd39e93108794fad62dfcef3961777d145c9d",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。",
+            "score": 0.03278688524590164,
+            "candidate_rank": 1,
+            "score_kind": "rrf",
+            "vector_score": 1.0,
+            "bm25_score": 2.972714748668402
+          }
+        ]
+      }
+    },
+    {
+      "name": "无证据拒答",
+      "passed": true,
+      "detail": {
+        "answer": "根据当前知识库，我无法确认这个问题。",
+        "rejected": true,
+        "citations": [],
+        "retrievals": [
+          {
+            "chunk_id": "29e1b3e9f9e3bc77b5bd96bcb27cd39e93108794fad62dfcef3961777d145c9d",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。",
+            "score": 0.03278688524590164,
+            "candidate_rank": 1,
+            "score_kind": "rrf",
+            "vector_score": 1.0,
+            "bm25_score": 3.835760966023744
+          }
+        ]
+      }
+    },
+    {
+      "name": "同名替换",
+      "passed": true,
+      "detail": {
+        "document_id": "7cf4517cf5ddd5911d2dd67aa48ecec3d68b84f9f1a26217ebf1ad2797d66d15",
+        "file_name": "工程演示设备.txt",
+        "page_count": 1,
+        "chunk_count": 1,
+        "index_generation": "92f287fb6aa94a68b50050ba1930595d",
+        "already_indexed": false,
+        "replaced_existing": true
+      }
+    },
+    {
+      "name": "重启恢复",
+      "passed": true,
+      "detail": {
+        "answer": "工程演示设备每次借用最长4小时[1]。",
+        "rejected": false,
+        "citations": [
+          {
+            "chunk_id": "7d4391fe76e8a6cb55bec01c8d4310bb35d6296d4aa0ec9f883179b7e595d0bf",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。\n\n最新登记规则要求登记姓名。"
+          }
+        ],
+        "retrievals": [
+          {
+            "chunk_id": "7d4391fe76e8a6cb55bec01c8d4310bb35d6296d4aa0ec9f883179b7e595d0bf",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。\n\n最新登记规则要求登记姓名。",
+            "score": 0.03278688524590164,
+            "candidate_rank": 1,
+            "score_kind": "rrf",
+            "vector_score": 1.0,
+            "bm25_score": 2.972714748668402
+          }
+        ]
+      }
+    },
+    {
+      "name": "恢复后仍跳过重复上传",
+      "passed": true,
+      "detail": "92f287fb6aa94a68b50050ba1930595d"
+    }
+  ],
+  "passed": true
+}

@@ -1,6 +1,9 @@
 """验证发布版本一致性、Docker文件排除规则和固定协议的输入输出。"""
 
 import json
+import os
+import subprocess
+import sys
 import tomllib
 from pathlib import Path
 
@@ -52,3 +55,14 @@ def test_container_context_uses_source_allowlist() -> None:
     exceptions = {"!.env.example", "!.env.docker.example"}
     assert not any(line.startswith("!") and line not in exceptions and any(word in line for word in (".env", "indexes", "docs", ".planning")) for line in patterns)
     assert "127.0.0.1:" in (ROOT / "compose.yaml").read_text(encoding="utf-8")
+
+
+def test_delivery_cli_handles_legacy_windows_output_encoding() -> None:
+    """旧控制台编码不能让中文帮助或验收结果导致进程退出失败。"""
+    environment = {**os.environ, "PYTHONIOENCODING": "cp1252", "PYTHONUTF8": "0"}
+    completed = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/delivery_smoke.py"), "--help"],
+        env=environment, capture_output=True, timeout=30, check=False,
+    )
+    assert completed.returncode == 0, completed.stderr.decode("utf-8", errors="replace")
+    assert "新的独立报告目录" in completed.stdout.decode("utf-8")

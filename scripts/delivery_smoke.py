@@ -160,6 +160,9 @@ def run(output: Path) -> dict:
 
 def main() -> None:
     """解析输出目录并以真实验收结果决定命令退出码。"""
+    # Windows托管runner的重定向输出可能使用cp1252，明确以UTF-8打印中文。
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True, help="新的独立报告目录，已有目录不会覆盖")
     arguments = parser.parse_args()

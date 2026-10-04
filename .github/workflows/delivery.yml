@@ -8,6 +8,11 @@ on:
 permissions:
   contents: read
 
+# 固定跨平台Python文本编码，子进程与中文报告使用一致的UTF-8。
+env:
+  PYTHONUTF8: "1"
+  PYTHONIOENCODING: "utf-8"
+
 jobs:
   python:
     strategy:
