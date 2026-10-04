@@ -1,0 +1,22 @@
+INFO:     Started server process [12]
+INFO:     Waiting for application startup.
+2026-10-04 02:57:03,777 | INFO | app.main | TraceRAG service started (environment=delivery-check, version=0.2.0)
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:58531 (Press CTRL+C to quit)
+INFO:     127.0.0.1:46146 - "GET /health HTTP/1.1" 200 OK
+2026-10-04 02:57:04,906 | INFO | httpx | HTTP Request: POST http://127.0.0.1:50491/v1/embeddings "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:38622 - "POST /documents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38628 - "POST /documents HTTP/1.1" 200 OK
+2026-10-04 02:57:04,915 | INFO | httpx | HTTP Request: POST http://127.0.0.1:50491/v1/embeddings "HTTP/1.1 200 OK"
+2026-10-04 02:57:04,919 | INFO | httpx | HTTP Request: POST http://127.0.0.1:50491/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:38644 - "POST /query HTTP/1.1" 200 OK
+2026-10-04 02:57:04,926 | INFO | httpx | HTTP Request: POST http://127.0.0.1:50491/v1/embeddings "HTTP/1.1 200 OK"
+2026-10-04 02:57:04,928 | INFO | httpx | HTTP Request: POST http://127.0.0.1:50491/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:38650 - "POST /query HTTP/1.1" 200 OK
+2026-10-04 02:57:04,931 | INFO | httpx | HTTP Request: POST http://127.0.0.1:50491/v1/embeddings "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:38658 - "POST /documents HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-10-04 02:57:05,099 | INFO | app.main | TraceRAG service stopped
+INFO:     Application shutdown complete.
+INFO:     Finished server process [12]

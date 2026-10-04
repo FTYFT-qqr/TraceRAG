@@ -1,0 +1,17 @@
+INFO:     Started server process [37892]
+INFO:     Waiting for application startup.
+2026-10-04 10:58:04,175 | INFO | app.main | TraceRAG service started (environment=delivery-check, version=0.2.0)
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:60628 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60639 - "GET /health HTTP/1.1" 200 OK
+2026-10-04 10:58:08,416 | INFO | httpx | HTTP Request: POST http://127.0.0.1:60627/v1/embeddings "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:60647 - "POST /documents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60651 - "POST /documents HTTP/1.1" 200 OK
+2026-10-04 10:58:08,481 | INFO | httpx | HTTP Request: POST http://127.0.0.1:60627/v1/embeddings "HTTP/1.1 200 OK"
+2026-10-04 10:58:08,489 | INFO | httpx | HTTP Request: POST http://127.0.0.1:60627/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:60652 - "POST /query HTTP/1.1" 200 OK
+2026-10-04 10:58:08,519 | INFO | httpx | HTTP Request: POST http://127.0.0.1:60627/v1/embeddings "HTTP/1.1 200 OK"
+2026-10-04 10:58:08,522 | INFO | httpx | HTTP Request: POST http://127.0.0.1:60627/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:60654 - "POST /query HTTP/1.1" 200 OK
+2026-10-04 10:58:08,529 | INFO | httpx | HTTP Request: POST http://127.0.0.1:60627/v1/embeddings "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:60655 - "POST /documents HTTP/1.1" 200 OK

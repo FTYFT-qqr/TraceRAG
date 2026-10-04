@@ -1,0 +1,101 @@
+{
+  "passed": true,
+  "mode": "real-edge-browser-automated",
+  "video": "TraceRAG_V0.2_完整演示.webm",
+  "duration_seconds": 333.15999999999997,
+  "sha256": "fa6a9b715588099cfa91da111093845fa5c81c573025b9110eb65abec82d7da2",
+  "editing": "两段真实浏览器录屏无损顺序合并；未替换页面内容或模型响应；无旁白。",
+  "source_clips": [
+    {
+      "path": "浏览器演示\\TraceRAG_V0.2_浏览器演示.webm",
+      "duration_seconds": 299.15999999999997
+    },
+    {
+      "path": "来源详情补充\\来源详情.webm",
+      "duration_seconds": 34.0
+    }
+  ],
+  "steps": [
+    {
+      "name": "空知识库界面",
+      "elapsed_seconds": 4.046
+    },
+    {
+      "name": "上传_lab_equipment.txt",
+      "elapsed_seconds": 39.886
+    },
+    {
+      "name": "上传_library_service.txt",
+      "elapsed_seconds": 58.29
+    },
+    {
+      "name": "上传_clinic_service.txt",
+      "elapsed_seconds": 74.712
+    },
+    {
+      "name": "重复文件跳过",
+      "elapsed_seconds": 84.763
+    },
+    {
+      "name": "完整预约回答",
+      "elapsed_seconds": 95.327
+    },
+    {
+      "name": "完整预约回答_检索原文",
+      "elapsed_seconds": 103.516
+    },
+    {
+      "name": "有证据的否定事实",
+      "elapsed_seconds": 114.141
+    },
+    {
+      "name": "有证据的否定事实_检索原文",
+      "elapsed_seconds": 122.25
+    },
+    {
+      "name": "关联地点与引用",
+      "elapsed_seconds": 136.383
+    },
+    {
+      "name": "关联地点与引用_检索原文",
+      "elapsed_seconds": 144.503
+    },
+    {
+      "name": "无证据拒答",
+      "elapsed_seconds": 156.59
+    },
+    {
+      "name": "API重启后保持界面",
+      "elapsed_seconds": 198.99
+    },
+    {
+      "name": "重启后无需重新上传",
+      "elapsed_seconds": 223.957
+    },
+    {
+      "name": "重启后无需重新上传_检索原文",
+      "elapsed_seconds": 232.052
+    },
+    {
+      "name": "重复文件跳过",
+      "elapsed_seconds": 242.063
+    }
+  ],
+  "supplement_start_seconds": 299.15999999999997,
+  "visible_answers": {
+    "完整预约回答": "蓝鲸X7便携光谱仪需要至少提前3个工作日预约[1]。 预约时填写使用人姓名、课题编号和预计归还时间[1]。 收到柜台确认后才算预约成功[1]。",
+    "有证据的否定事实": "维修排期由设备管理员确认[1]。 本规定未列出维修费用或损坏赔偿金额，相关处理需等待管理员书面答复[1]。",
+    "关联地点与引用": "年度健康检查服务面向65岁及以上居民，每年可预约一次[1]。 检查结果会在完成检查后的下一个工作日上午10点起，通过社区服务号提供查询[1]。 需要纸质报告的居民可在一楼登记台申请领取[1]。 检验报告完成后可在社区服务号查看，纸质报告领取地点与年度体检报告相同[1]。",
+    "无证据拒答": "根据当前知识库，我无法确认这个问题。",
+    "重启后无需重新上传": "蓝鲸X7便携光谱仪需要至少提前3个工作日预约[1]。 预约时填写使用人姓名、课题编号和预计归还时间[1]。 收到柜台确认后才算预约成功[1]。"
+  },
+  "visible_quality_checks": {
+    "complete_reservation": true,
+    "supported_negative": true,
+    "indirect_location": true,
+    "explicit_refusal_without_sources": true,
+    "restart_recovery": true,
+    "expanded_source_and_retrieval": true
+  },
+  "scope": "四个固定问题的可见事实与来源展示，不替代完整50题或内部Chunk身份验收。"
+}

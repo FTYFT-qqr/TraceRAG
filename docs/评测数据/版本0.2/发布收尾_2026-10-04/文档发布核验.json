@@ -1,0 +1,31 @@
+{
+  "markdown_before": 88,
+  "markdown_after": 16,
+  "local_links_and_anchors_checked": 162,
+  "preserved_non_markdown_files": 98,
+  "duplicate_markdown_replaced_by_json": 55,
+  "manual_review_rows_preserved": 68,
+  "extensions_after": {
+    ".md": 16,
+    ".json": 89,
+    ".webm": 6,
+    ".xml": 16,
+    ".log": 67,
+    ".png": 25
+  },
+  "xml_evidence": {
+    "最终Linux自动测试.xml": {
+      "tests": 220,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "最终Windows自动测试.xml": {
+      "tests": 220,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "errors": []
+}

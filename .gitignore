@@ -14,6 +14,9 @@ __pycache__/
 # Local planning workspace
 .planning/
 
+# 演示视频通过GitHub Release发布，源码仓库保留截图和机器可读证据。
+docs/评测数据/**/*.webm
+
 # 本地编辑器、构建产物及历史隔离测试目录不进入发布。
 .obsidian/
 .pytest-*/

@@ -1,0 +1,13 @@
+INFO:     Started server process [7580]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:60627 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60630 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60650 - "POST /v1/embeddings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60650 - "POST /v1/embeddings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60653 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60650 - "POST /v1/embeddings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60653 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60650 - "POST /v1/embeddings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60669 - "POST /v1/embeddings HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60670 - "POST /v1/chat/completions HTTP/1.1" 200 OK

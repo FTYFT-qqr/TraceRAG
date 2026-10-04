@@ -1,0 +1,36 @@
+{
+  "started_at": "2026-10-04T02:44:02.476Z",
+  "mode": "real-edge-browser-automated",
+  "compose_project": "tracerag-demo-v02-final",
+  "scope": "公开资料的实际浏览器录屏，不替代50题质量评测",
+  "steps": [
+    {
+      "name": "空知识库界面",
+      "elapsed_seconds": 4.113,
+      "screenshot": "01_空知识库界面.png",
+      "page_text": "FastAPI 地址\n\nDeploy\nTraceRAG\n\n上传资料，基于可追溯证据进行问答。\n\n1. 上传知识库文档\n\n支持 PDF、Markdown 和 TXT（单文件最大 10 MiB）\n\nupload\n\nUpload\n\n200MB per file • PDF, MD, MARKDOWN, TXT\n\n上传并建立索引\n\n2. 提问\n\n系统会从已上传的文档中查找相关文字，依据找到的内容回答，并标明来源。\n\n问题\n\nkeyboard_arrow_right\n\n参考范围（Top-K，可选）\n\n获取回答"
+    },
+    {
+      "name": "上传_lab_equipment.txt",
+      "elapsed_seconds": 46.145,
+      "screenshot": "02_上传_lab_equipment.txt.png",
+      "page_text": "FastAPI 地址\n\nDeploy\nTraceRAG\n\n上传资料，基于可追溯证据进行问答。\n\n1. 上传知识库文档\n\n支持 PDF、Markdown 和 TXT（单文件最大 10 MiB）\n\nlab_equipment.txt\n3.9KB\nadd\n\n上传并建立索引\n\n索引完成：lab_equipment.txt，解析 1 页，新增 3 个片段。\n\n2. 提问\n\n系统会从已上传的文档中查找相关文字，依据找到的内容回答，并标明来源。\n\n问题\n\nkeyboard_arrow_right\n\n参考范围（Top-K，可选）\n\n获取回答",
+      "file": "lab_equipment.txt",
+      "duplicate": false
+    },
+    {
+      "name": "上传_library_service.txt",
+      "elapsed_seconds": 66.674,
+      "screenshot": "03_上传_library_service.txt.png",
+      "page_text": "FastAPI 地址\n\nDeploy\nTraceRAG\n\n上传资料，基于可追溯证据进行问答。\n\n1. 上传知识库文档\n\n支持 PDF、Markdown 和 TXT（单文件最大 10 MiB）\n\nlibrary_service.txt\n4.0KB\nadd\n\n上传并建立索引\n\n索引完成：library_service.txt，解析 1 页，新增 3 个片段。\n\n2. 提问\n\n系统会从已上传的文档中查找相关文字，依据找到的内容回答，并标明来源。\n\n问题\n\nkeyboard_arrow_right\n\n参考范围（Top-K，可选）\n\n获取回答",
+      "file": "library_service.txt",
+      "duplicate": false
+    }
+  ],
+  "passed": false,
+  "error": "page.screenshot: Protocol error (Page.captureScreenshot): Unable to capture screenshot\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n",
+  "failure_page_text": "FastAPI 地址\n\nDeploy\nTraceRAG\n\n上传资料，基于可追溯证据进行问答。\n\n1. 上传知识库文档\n\n支持 PDF、Markdown 和 TXT（单文件最大 10 MiB）\n\nclinic_service.txt\n3.7KB\nadd\n\n上传并建立索引\n\n索引完成：clinic_service.txt，解析 1 页，新增 2 个片段。\n\n2. 提问\n\n系统会从已上传的文档中查找相关文字，依据找到的内容回答，并标明来源。\n\n问题\n\nkeyboard_arrow_right\n\n参考范围（Top-K，可选）\n\n获取回答",
+  "video": "TraceRAG_V0.2_浏览器演示.webm",
+  "finished_at": "2026-10-04T02:46:03.331Z",
+  "duration_seconds": 120.855
+}

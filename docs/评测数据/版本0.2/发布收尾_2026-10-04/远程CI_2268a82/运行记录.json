@@ -1,0 +1,268 @@
+{
+  "conclusion": "success",
+  "createdAt": "2026-10-04T02:56:22Z",
+  "databaseId": 37172565714,
+  "headSha": "2268a82eeda9acd597abf5ecd5e59c5ea44e2162",
+  "jobs": [
+    {
+      "completedAt": "2026-10-04T02:57:37Z",
+      "conclusion": "success",
+      "databaseId": 111348360827,
+      "name": "docker",
+      "startedAt": "2026-10-04T02:56:24Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-04T02:56:25Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-04T02:56:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:56:26Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-04T02:56:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:07Z",
+          "conclusion": "success",
+          "name": "构建并验证镜像中的 API UI 与快照恢复",
+          "number": 3,
+          "startedAt": "2026-10-04T02:56:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:33Z",
+          "conclusion": "success",
+          "name": "验证 Compose 服务网络和健康检查",
+          "number": 4,
+          "startedAt": "2026-10-04T02:57:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:34Z",
+          "conclusion": "success",
+          "name": "清理本轮独立容器",
+          "number": 5,
+          "startedAt": "2026-10-04T02:57:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:35Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 6,
+          "startedAt": "2026-10-04T02:57:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:35Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 12,
+          "startedAt": "2026-10-04T02:57:35Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:35Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 13,
+          "startedAt": "2026-10-04T02:57:35Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/FTYFT-qqr/TraceRAG/actions/runs/37172565714/job/111348360827"
+    },
+    {
+      "completedAt": "2026-10-04T02:57:59Z",
+      "conclusion": "success",
+      "databaseId": 111348360953,
+      "name": "python (windows-latest)",
+      "startedAt": "2026-10-04T02:56:25Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-04T02:56:26Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-04T02:56:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:56:41Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-04T02:56:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:56:41Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v7",
+          "number": 3,
+          "startedAt": "2026-10-04T02:56:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:41Z",
+          "conclusion": "success",
+          "name": "安装发布依赖",
+          "number": 4,
+          "startedAt": "2026-10-04T02:56:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:46Z",
+          "conclusion": "success",
+          "name": "自动化测试",
+          "number": 5,
+          "startedAt": "2026-10-04T02:57:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:54Z",
+          "conclusion": "success",
+          "name": "真实进程的固定协议验收",
+          "number": 6,
+          "startedAt": "2026-10-04T02:57:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:55Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 7,
+          "startedAt": "2026-10-04T02:57:54Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:55Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v7",
+          "number": 13,
+          "startedAt": "2026-10-04T02:57:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:57Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 14,
+          "startedAt": "2026-10-04T02:57:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:57Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 15,
+          "startedAt": "2026-10-04T02:57:57Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/FTYFT-qqr/TraceRAG/actions/runs/37172565714/job/111348360953"
+    },
+    {
+      "completedAt": "2026-10-04T02:57:04Z",
+      "conclusion": "success",
+      "databaseId": 111348360990,
+      "name": "python (ubuntu-latest)",
+      "startedAt": "2026-10-04T02:56:25Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-04T02:56:26Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-04T02:56:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:56:27Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v7",
+          "number": 2,
+          "startedAt": "2026-10-04T02:56:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:56:27Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v7",
+          "number": 3,
+          "startedAt": "2026-10-04T02:56:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:56:53Z",
+          "conclusion": "success",
+          "name": "安装发布依赖",
+          "number": 4,
+          "startedAt": "2026-10-04T02:56:27Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:56:58Z",
+          "conclusion": "success",
+          "name": "自动化测试",
+          "number": 5,
+          "startedAt": "2026-10-04T02:56:53Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:02Z",
+          "conclusion": "success",
+          "name": "真实进程的固定协议验收",
+          "number": 6,
+          "startedAt": "2026-10-04T02:56:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:03Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v7",
+          "number": 7,
+          "startedAt": "2026-10-04T02:57:02Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:03Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v7",
+          "number": 13,
+          "startedAt": "2026-10-04T02:57:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:03Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v7",
+          "number": 14,
+          "startedAt": "2026-10-04T02:57:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-04T02:57:03Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 15,
+          "startedAt": "2026-10-04T02:57:03Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/FTYFT-qqr/TraceRAG/actions/runs/37172565714/job/111348360990"
+    }
+  ],
+  "status": "completed",
+  "updatedAt": "2026-10-04T02:57:59Z",
+  "url": "https://github.com/FTYFT-qqr/TraceRAG/actions/runs/37172565714"
+}
