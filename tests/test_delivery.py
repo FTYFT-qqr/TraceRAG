@@ -23,9 +23,9 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_release_version_is_consistent() -> None:
     """包元数据、默认配置、健康检查和示例配置共享同一个发布版本。"""
     metadata = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-    assert metadata["project"]["version"] == __version__ == Settings().version == "0.2.0"
+    assert metadata["project"]["version"] == __version__ == Settings().version == "0.2.1"
     for example in (".env.example", ".env.docker.example"):
-        assert "TRACERAG_VERSION=0.2.0" in (ROOT / example).read_text(encoding="utf-8")
+        assert "TRACERAG_VERSION=0.2.1" in (ROOT / example).read_text(encoding="utf-8")
     with TestClient(create_app(Settings())) as client:
         assert client.get("/health").json()["version"] == __version__
 

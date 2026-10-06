@@ -47,8 +47,8 @@ jobs:
           persist-credentials: false
       - name: 构建并验证镜像中的 API UI 与快照恢复
         run: |
-          docker build -t tracerag:0.2.0 .
-          docker run --rm -v "$PWD/delivery-results:/results" tracerag:0.2.0 python scripts/delivery_smoke.py --output-dir /results/容器固定协议验收
+          docker build -t tracerag:0.2.1 .
+          docker run --rm -v "$PWD/delivery-results:/results" tracerag:0.2.1 python scripts/delivery_smoke.py --output-dir /results/容器固定协议验收
       - name: 验证 Compose 服务网络和健康检查
         run: |
           cp .env.docker.example .env.docker

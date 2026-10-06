@@ -1,0 +1,212 @@
+{
+  "generated_on": "2026-10-05",
+  "baseline": "业务泛化向量_题集v2",
+  "runs": [
+    {
+      "name": "业务泛化向量_题集v2",
+      "spec": {
+        "name": "业务泛化向量_题集v2",
+        "strategy": "vector",
+        "chunk_size": 700,
+        "overlap": 100,
+        "rrf_k": 60,
+        "embedding_batch_size": 1,
+        "bm25_min_score": 0.0
+      },
+      "metrics": {
+        "top1_hits": 26,
+        "top3_hits": 37,
+        "top5_hits": 39,
+        "answerable_count": 40,
+        "quality_pass": 39,
+        "answer_fact_match": 39,
+        "citation_traceable": 39,
+        "citation_original_support": 39,
+        "expected_evidence_cited": 39,
+        "refusal_pass": 10,
+        "refusal_count": 10,
+        "manual_review_count": 0,
+        "errors": 0,
+        "retrieval_pass": true,
+        "quality_executed": true,
+        "chat_request_count": 50,
+        "acceptance_pass": false
+      },
+      "performance": {
+        "schema_version": 1,
+        "metadata": {
+          "strategy": "vector",
+          "case_count": 50,
+          "quality_requested": true,
+          "corpus_dir": "D:/TraceRAG/samples/business/006",
+          "retrieval_measurement": "batch rankings for quality; independent Top-5 single-query probes for online latency",
+          "online_total_note": "未采集：质量评估复用预计算排名，未测量真实在线端到端问答"
+        },
+        "hardware": {
+          "os": "Windows",
+          "os_release": "11",
+          "machine": "AMD64",
+          "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+          "logical_cpu_count": 16
+        },
+        "total_seconds": 106.38277759999619,
+        "stages": {
+          "model_load": {
+            "status": "已采集",
+            "sample_count": 1,
+            "total_seconds": 13.116076699996484
+          },
+          "parse_chunk": {
+            "status": "已采集",
+            "sample_count": 1,
+            "total_seconds": 0.013402299999142997
+          },
+          "vectorize": {
+            "status": "已采集",
+            "sample_count": 1,
+            "total_seconds": 5.072822600006475
+          },
+          "index_build": {
+            "status": "已采集",
+            "sample_count": 2,
+            "total_seconds": 0.003759700004593469
+          },
+          "initialization": {
+            "status": "已采集",
+            "sample_count": 1,
+            "total_seconds": 19.309132200010936
+          },
+          "offline_retrieval": {
+            "status": "已采集",
+            "sample_count": 1,
+            "total_seconds": 7.831634500005748
+          },
+          "chat": {
+            "status": "已采集",
+            "sample_count": 50,
+            "total_seconds": 70.27841320002335
+          },
+          "chat_client_setup": {
+            "status": "已采集",
+            "sample_count": 1,
+            "total_seconds": 1.1024416000000201
+          }
+        },
+        "latency": {
+          "offline_retrieval": {
+            "status": "已采集",
+            "sample_count": 1,
+            "first_seconds": 7.831621000004816,
+            "steady_sample_count": 0,
+            "steady_p50_seconds": null,
+            "steady_p95_seconds": null
+          },
+          "online_retrieval": {
+            "status": "已采集",
+            "sample_count": 50,
+            "first_seconds": 0.15019299999403302,
+            "steady_sample_count": 49,
+            "steady_p50_seconds": 0.1670494999998482,
+            "steady_p95_seconds": 0.1827478799968958
+          },
+          "chat": {
+            "status": "已采集",
+            "sample_count": 50,
+            "first_seconds": 1.6635936999955447,
+            "steady_sample_count": 49,
+            "steady_p50_seconds": 1.3392269000032684,
+            "steady_p95_seconds": 2.399770219993662
+          },
+          "online_total": {
+            "status": "未采集",
+            "sample_count": 0,
+            "first_seconds": null,
+            "steady_sample_count": 0,
+            "steady_p50_seconds": null,
+            "steady_p95_seconds": null
+          }
+        },
+        "memory": {
+          "process_rss_bytes": {
+            "status": "已采集",
+            "value": 2094129152
+          },
+          "process_peak_rss_bytes": {
+            "status": "已采集",
+            "value": 2115149824
+          },
+          "gpu_free_bytes": {
+            "status": "未采集",
+            "value": null,
+            "reason": "CUDA 显存不可用"
+          },
+          "gpu_total_bytes": {
+            "status": "未采集",
+            "value": null,
+            "reason": "CUDA 显存不可用"
+          },
+          "gpu_process_allocated_bytes": {
+            "status": "未采集",
+            "value": null,
+            "reason": "CUDA 显存不可用"
+          },
+          "gpu_process_peak_allocated_bytes": {
+            "status": "未采集",
+            "value": null,
+            "reason": "CUDA 显存不可用"
+          }
+        },
+        "model_calls": {
+          "embedding": {
+            "status": "已采集",
+            "request_count": 52,
+            "failure_count": 0,
+            "retry_count": null,
+            "prompt_tokens": null,
+            "completion_tokens": null,
+            "total_tokens": null,
+            "request_duration_seconds": 21.074622299944167,
+            "token_usage_observed_count": 0,
+            "retry_observed_count": 0,
+            "retry_count_status": "未采集",
+            "prompt_tokens_status": "未采集",
+            "completion_tokens_status": "未采集",
+            "total_tokens_status": "未采集",
+            "request_duration_seconds_status": "已采集"
+          },
+          "chat": {
+            "status": "已采集",
+            "request_count": 50,
+            "failure_count": 0,
+            "retry_count": null,
+            "prompt_tokens": 144595,
+            "completion_tokens": 8829,
+            "total_tokens": 153424,
+            "request_duration_seconds": 70.26086520003446,
+            "token_usage_observed_count": 50,
+            "retry_observed_count": 0,
+            "retry_count_status": "未采集",
+            "prompt_tokens_status": "已采集",
+            "completion_tokens_status": "已采集",
+            "total_tokens_status": "已采集",
+            "request_duration_seconds_status": "已采集"
+          }
+        }
+      },
+      "delta_vs_baseline": {
+        "top1_hits": 0,
+        "top3_hits": 0,
+        "top5_hits": 0,
+        "answer_fact_match": 0,
+        "citation_traceable": 0,
+        "citation_original_support": 0,
+        "refusal_pass": 0
+      },
+      "top5_gained_case_ids": [],
+      "top5_regressed_case_ids": [],
+      "top5_bad_case_ids": [
+        "B006-A3-18"
+      ]
+    }
+  ]
+}

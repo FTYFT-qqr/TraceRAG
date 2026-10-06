@@ -27,7 +27,7 @@ _NUMERIC_VALUE = (
 )
 _NUMERIC_UNIT_CLAIM = re.compile(
     rf"(?<![\d.\-+负正{_CHINESE_NUMBER_CHARS}]){_NUMERIC_VALUE}\s*"
-    r"(?:个工作日|工作日|小时|分钟|秒钟?|天|年|个月|月|元|块钱|块|%|公斤|千克|厘米|毫米|米|次|本|岁|点|号|人|倍)"
+    r"(?:个工作日|工作日|小时|分钟|秒钟?|天|年|个月|月|元|块钱|块|%|公斤|千克|千瓦|摄氏度|厘米|毫米|米|次|本|岁|点|号|人|倍)"
     rf"(?![\d{_CHINESE_NUMBER_CHARS}])"
 )
 _CONTRADICTORY_PREFIX = re.compile(r"(?:并非|并不是|并没有|并未|并不|不是|不等于)")
@@ -355,16 +355,17 @@ _CITATION_MARKER = re.compile(r"\[\d+\]")
 
 
 def _unsupported_numeric_claims(answer: str, cited_texts: list[str]) -> list[str]:
-    """核对带单位及独立阿拉伯数值，引用标签不计入答案中的数值断言。"""
+    """核对完整带单位数值及独立数字，避免把负号或单位拆成伪断言。"""
 
     without_labels = _CITATION_MARKER.sub("", answer)
     without_labels = re.sub(r"([+\-−－负正])\s+(?=[\d零〇一二两三四五六七八九十百千万亿])", r"\1", without_labels)
-    claims = _NUMERIC_UNIT_CLAIM.findall(without_labels)
-    bare_numbers = _ARABIC_NUMBER.findall(without_labels) + _CHINESE_NUMBER_PATTERN.findall(without_labels)
-    claims.extend(
-        number for number in bare_numbers
-        if not any(_contains_fact(claim, number) for claim in claims)
-    )
+    unit_matches = list(_NUMERIC_UNIT_CLAIM.finditer(without_labels))
+    unit_spans = [match.span() for match in unit_matches]
+    claims = [match.group() for match in unit_matches]
+    # 已归入完整带单位数值的子匹配不再单独核对，例如“负18”中的“18”及“千瓦”中的“千”。
+    for match in re.finditer(_NUMERIC_VALUE, without_labels):
+        if not any(start <= match.start() and match.end() <= end for start, end in unit_spans):
+            claims.append(match.group())
     return list(dict.fromkeys(
         claim for claim in claims if not any(_contains_fact(source, claim) for source in cited_texts)
     ))

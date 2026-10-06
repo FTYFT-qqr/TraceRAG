@@ -1,4 +1,4 @@
-# 0.2.0 工程交付依赖约束，Python 3.13；平台专属依赖由 pip 按环境解析。
+# 0.2.1 工程交付依赖约束，Python 3.13；平台专属依赖由 pip 按环境解析。
 # 不包含可选本地模型的 torch/transformers 依赖，也不替代 pyproject.toml 的声明。
 altair==6.3.0
 annotated-doc==0.0.5

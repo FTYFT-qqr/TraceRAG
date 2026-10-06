@@ -1,0 +1,315 @@
+[
+  {
+    "id": "B006-S-A01",
+    "query": "岚峰主站的海拔是多少米？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "岚峰主站海拔2860米，备用站海拔3120米。",
+    "expected_answer_facts": [
+      [
+        "主站海拔2860米",
+        "2860米"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "near_value",
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-S-A02",
+    "query": "冬季外箱加热器在什么气温开启、什么气温关闭？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "冬季外箱加热器在气温降至负18摄氏度时开启，升至负12摄氏度时关闭。",
+    "expected_answer_facts": [
+      [
+        "负18摄氏度",
+        "-18摄氏度",
+        "零下18摄氏度"
+      ],
+      [
+        "负12摄氏度",
+        "-12摄氏度",
+        "零下12摄氏度"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "negative_number",
+      "numeric",
+      "condition"
+    ]
+  },
+  {
+    "id": "B006-S-A03",
+    "query": "防冻加热器的额定功率是多少千瓦？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "防冻加热器额定功率为1.5千瓦，通信柜电源额定功率为0.8千瓦。",
+    "expected_answer_facts": [
+      [
+        "1.5千瓦"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "unit",
+      "near_value"
+    ]
+  },
+  {
+    "id": "B006-S-A04",
+    "query": "主风速仪的采样间隔是多少秒？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "主风速仪每2秒采样一次，温湿度仪每30秒采样一次。",
+    "expected_answer_facts": [
+      [
+        "每2秒采样一次",
+        "2秒"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "near_value",
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-S-A05",
+    "query": "主雨量桶的口径是多少毫米？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "主雨量桶口径为200毫米，备用雨量桶口径为250毫米。",
+    "expected_answer_facts": [
+      [
+        "200毫米"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "unit",
+      "near_value"
+    ]
+  },
+  {
+    "id": "B006-S-A06",
+    "query": "雨量累计值每天何时归零？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "雨量累计值每日00:10归零，风速日报每日00:20生成。",
+    "expected_answer_facts": [
+      [
+        "每日00:10归零",
+        "00:10"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "time",
+      "near_value"
+    ]
+  },
+  {
+    "id": "B006-S-A07",
+    "query": "阵风达到什么条件分别触发红色告警和停塔作业？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "阵风超过15米/秒时触发红色告警，超过25米/秒时停止登塔作业。",
+    "expected_answer_facts": [
+      [
+        "超过15米/秒",
+        "15米/秒"
+      ],
+      [
+        "超过25米/秒",
+        "25米/秒"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "multi_fact",
+      "near_value"
+    ]
+  },
+  {
+    "id": "B006-S-A08",
+    "query": "温度探头与标准器的偏差达到什么条件必须校准？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "温度探头与标准器偏差超过0.6摄氏度须校准，偏差0.3摄氏度只登记。",
+    "expected_answer_facts": [
+      [
+        "超过0.6摄氏度",
+        "0.6摄氏度"
+      ],
+      [
+        "须校准"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "unit",
+      "condition",
+      "near_value"
+    ]
+  },
+  {
+    "id": "B006-S-A09",
+    "query": "数据上传失败到什么程度才转人工排查？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "连续3次上传失败须转人工排查，单次失败只进行自动重试。",
+    "expected_answer_facts": [
+      [
+        "连续3次上传失败"
+      ],
+      [
+        "转人工排查"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "exception",
+      "condition"
+    ]
+  },
+  {
+    "id": "B006-S-A10",
+    "query": "故障工单的首次响应时限是多少分钟？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "故障工单须在20分钟内首次响应，并在120分钟内提交处置记录。",
+    "expected_answer_facts": [
+      [
+        "20分钟内首次响应",
+        "20分钟内"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "near_value",
+      "time"
+    ]
+  },
+  {
+    "id": "B006-S-A11",
+    "query": "原始观测数据和故障日志分别保留多久？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "原始观测数据保留90天，故障日志保留180天。",
+    "expected_answer_facts": [
+      [
+        "原始观测数据保留90天",
+        "90天"
+      ],
+      [
+        "故障日志保留180天",
+        "180天"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "multi_fact",
+      "near_value"
+    ]
+  },
+  {
+    "id": "B006-S-A12",
+    "query": "雷暴预警期间，停止采样后可以登塔吗？",
+    "answerable": true,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": "雷暴预警期间禁止登塔，即使设备已停止采样。",
+    "expected_answer_facts": [
+      [
+        "禁止登塔"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对问题对象、全部数值及单位、否定条件和对应引文；额外断言须人工复核。",
+    "tags": [
+      "negative",
+      "exception",
+      "condition"
+    ]
+  },
+  {
+    "id": "B006-S-N01",
+    "query": "主风速仪的制造商名称是什么？",
+    "answerable": false,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未提供该字段；须明确拒答且没有引用。",
+    "tags": [
+      "unanswerable",
+      "missing_field"
+    ]
+  },
+  {
+    "id": "B006-S-N02",
+    "query": "岚峰主站的精确经纬度坐标是多少？",
+    "answerable": false,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未提供该字段；须明确拒答且没有引用。",
+    "tags": [
+      "unanswerable",
+      "missing_field"
+    ]
+  },
+  {
+    "id": "B006-S-N03",
+    "query": "观测站每月电费是多少元？",
+    "answerable": false,
+    "expected_source": "岚峰气象观测站运维规则.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未提供该字段；须明确拒答且没有引用。",
+    "tags": [
+      "unanswerable",
+      "missing_field"
+    ]
+  }
+]

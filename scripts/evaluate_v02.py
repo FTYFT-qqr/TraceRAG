@@ -7,6 +7,7 @@ import hashlib
 import json
 import re
 import sys
+import time
 from dataclasses import asdict, dataclass, replace
 from datetime import date
 from pathlib import Path
@@ -24,7 +25,7 @@ if __package__ in {None, ""}:
 from app.chat import ChatClient
 from app.chunking import chunk_pages
 from app.config import Settings
-from app.document_loader import load_document
+from app.document_loader import SUPPORTED_EXTENSIONS, load_document
 from app.chat import SYSTEM_PROMPT
 from app.embeddings import EmbeddingClient, SentenceTransformerEmbeddingClient
 from app.evaluation import assess_case
@@ -33,6 +34,7 @@ from app.rag import RAGService
 from app.relevance import RelevancePolicy
 from app.retriever import BM25Retriever, HybridRetriever, VectorRetriever
 from app.vector_store import FaissVectorStore
+from scripts.evaluation_performance import PerformanceRecorder, observe_model_create
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -96,6 +98,10 @@ def _parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--questions", type=Path, default=DEFAULT_QUESTIONS)
+    parser.add_argument("--corpus-dir", type=Path, default=CORPUS_DIR,
+                        help="评测语料目录；递归加载 PDF、Markdown、TXT")
+    parser.add_argument("--dataset-mode", choices=("legacy", "development", "acceptance"),
+                        default="legacy", help="旧版固定50题、006开发集或006正式40+10题")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--strategy", choices=("vector", "bm25", "hybrid"), default="vector")
     parser.add_argument("--chunk-size", type=int, default=700)
@@ -105,6 +111,8 @@ def _parse_args() -> argparse.Namespace:
                         help="BM25 原始分数须严格高于此值才可生成回答；不使用余弦门槛")
     parser.add_argument("--name", default=None, help="报告名称；默认按策略和切分参数生成")
     parser.add_argument("--quality", action="store_true", help="调用 Chat 模型执行回答质量与拒答验收")
+    parser.add_argument("--quality-scope", choices=("baseline", "all", "none"), default="baseline",
+                        help="指定执行 Chat 的轮次；须与 --quality 一起使用")
     parser.add_argument("--suite", action="store_true", help="运行固定切分、短切分、长切分、BM25 和混合召回对照")
     parser.add_argument("--embedding-model", default=None, help="仅用于远程 Embedding 的替代模型名")
     parser.add_argument("--embedding-path", type=Path, default=None, help="替代本地 Embedding 模型目录")
@@ -115,12 +123,16 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def load_cases(path: Path) -> list[dict[str, Any]]:
-    """加载并严格校验 V0.2 固定评测集 schema。"""
+def load_cases(path: Path, *, dataset_mode: str = "legacy") -> list[dict[str, Any]]:
+    """校验旧版固定集或 006 开发、正式题集的数量与共同结构。"""
 
     cases = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(cases, list) or len(cases) != 50:
-        raise ValueError("V0.2 evaluation set must contain exactly 50 cases.")
+    if dataset_mode not in {"legacy", "development", "acceptance"}:
+        raise ValueError(f"Unknown dataset mode: {dataset_mode}.")
+    if not isinstance(cases, list) or not cases:
+        raise ValueError("Evaluation set must be a non-empty JSON list.")
+    if dataset_mode in {"legacy", "acceptance"} and len(cases) != 50:
+        raise ValueError(f"{dataset_mode} evaluation set must contain exactly 50 cases.")
     required = {
         "id",
         "query",
@@ -158,37 +170,61 @@ def load_cases(path: Path) -> list[dict[str, Any]]:
                 raise ValueError(f"{case_id} must not define answer evidence.")
             if not case["refusal_expected"] or case["allow_citations"]:
                 raise ValueError(f"{case_id} has inconsistent refusal flags.")
-    if sum(bool(case["answerable"]) for case in cases) < 30:
-        raise ValueError("The V0.2 set must contain at least 30 answerable cases.")
-    if sum(not bool(case["answerable"]) for case in cases) < 5:
-        raise ValueError("The V0.2 set must contain at least 5 refusal cases.")
+    answerable_count = sum(bool(case["answerable"]) for case in cases)
+    refusal_count = len(cases) - answerable_count
+    if dataset_mode == "legacy" and (answerable_count < 30 or refusal_count < 5):
+        raise ValueError("The V0.2 set needs at least 30 answers and 5 refusals.")
+    if dataset_mode == "acceptance" and (answerable_count != 40 or refusal_count != 10):
+        raise ValueError("The 006 acceptance set must contain exactly 40 answers and 10 refusals.")
     if len({case["query"] for case in cases}) != len(cases):
         raise ValueError("Evaluation case queries must be unique for precomputed ranking reuse.")
     return cases
 
 
-def _load_pages() -> list:
-    """通过正式文档 Loader 读取固定样本文档。"""
+def _corpus_paths(corpus_dir: Path) -> list[Path]:
+    """查找语料文件，并拒绝递归目录中来源身份冲突的同名文件。"""
+
+    if not corpus_dir.is_dir():
+        raise ValueError(f"Evaluation corpus directory does not exist: {corpus_dir}.")
+    paths = sorted(
+        (path for path in corpus_dir.rglob("*")
+         if path.is_file() and path.suffix.lower() in SUPPORTED_EXTENSIONS),
+        key=lambda path: path.relative_to(corpus_dir).as_posix().casefold(),
+    )
+    if not paths:
+        raise ValueError(f"No PDF, Markdown or TXT evaluation documents in {corpus_dir}.")
+    names: set[str] = set()
+    for path in paths:
+        identity = path.name.casefold()
+        if identity in names:
+            raise ValueError(f"Duplicate evaluation source file name: {path.name}.")
+        names.add(identity)
+    return paths
+
+
+def _load_pages(corpus_dir: Path = CORPUS_DIR) -> list:
+    """通过正式 Loader 读取指定目录的文本、Markdown 和 PDF 页面。"""
 
     pages = []
-    for path in sorted(CORPUS_DIR.glob("*.txt")):
-        pages.extend(load_document(path.name, path.read_bytes()))
-    if not pages:
-        raise RuntimeError(f"No evaluation documents found in {CORPUS_DIR}.")
+    for path in _corpus_paths(corpus_dir):
+        document_pages = load_document(path.name, path.read_bytes())
+        if not any(page.content.strip() for page in document_pages):
+            raise ValueError(f"Evaluation source has no usable text: {path}.")
+        pages.extend(document_pages)
     return pages
 
 
-def validate_cases_against_corpus(cases: list[dict[str, Any]]) -> None:
-    """确认每道可回答题的预期来源和全部证据短语都存在于原文。"""
+def validate_cases_against_corpus(
+    cases: list[dict[str, Any]], corpus_dir: Path = CORPUS_DIR, pages: list | None = None,
+) -> None:
+    """确认来源、全部证据原文及 PDF 证据页码与加载结果一致。"""
 
-    source_texts = {
-        path.name: "\n".join(
-            page.content for page in load_document(path.name, path.read_bytes())
-        )
-        for path in sorted(CORPUS_DIR.glob("*.txt"))
-    }
+    loaded_pages = _load_pages(corpus_dir) if pages is None else pages
+    source_pages: dict[str, list] = {}
+    for page in loaded_pages:
+        source_pages.setdefault(page.file_name, []).append(page)
     unknown_sources = sorted(
-        {case["expected_source"] for case in cases} - source_texts.keys()
+        {case["expected_source"] for case in cases} - source_pages.keys()
     )
     if unknown_sources:
         raise ValueError(f"Evaluation set references unknown sources: {unknown_sources}.")
@@ -201,9 +237,20 @@ def validate_cases_against_corpus(cases: list[dict[str, Any]]) -> None:
         if not isinstance(evidence_items, list) or not evidence_items:
             mismatches.append(case["id"])
             continue
+        source_name = case["expected_source"]
+        page_number = case.get("expected_page_number")
+        # PDF 引用必须固定到可复核的 1-based 页码；TXT/MD 不接受伪造页码。
+        if source_name.lower().endswith(".pdf"):
+            if isinstance(page_number, bool) or not isinstance(page_number, int) or page_number < 1:
+                raise ValueError(f"{case['id']} needs a valid expected_page_number for PDF evidence.")
+            selected_pages = [page for page in source_pages[source_name] if page.page_number == page_number]
+        else:
+            if page_number is not None:
+                raise ValueError(f"{case['id']} has a page number for a non-PDF source.")
+            selected_pages = source_pages[source_name]
         if any(
-            not isinstance(evidence, str)
-            or evidence not in source_texts[case["expected_source"]]
+            not isinstance(evidence, str) or not evidence.strip()
+            or not any(evidence in page.content for page in selected_pages)
             for evidence in evidence_items
         ):
             mismatches.append(case["id"])
@@ -234,17 +281,68 @@ def _create_embedder(settings: Settings, *, batch_size: int) -> Any:
     )
 
 
-def _build_vector_store(chunks: list, embedder: Any) -> FaissVectorStore:
+def _build_vector_store(
+    chunks: list, embedder: Any, recorder: PerformanceRecorder | None = None,
+) -> FaissVectorStore:
     """只在内存中建立本轮向量索引，不触碰应用 indexes 目录。"""
 
     store = FaissVectorStore()
     vectors: list[np.ndarray] = []
-    for start in range(0, len(chunks), EMBEDDING_BATCH_SIZE):
-        batch = chunks[start : start + EMBEDDING_BATCH_SIZE]
-        vectors.append(embedder.embed_texts([chunk.content for chunk in batch]))
+    def vectorize() -> None:
+        """按固定批次执行真实向量化，以便单独统计模型阶段。"""
+
+        for start in range(0, len(chunks), EMBEDDING_BATCH_SIZE):
+            batch = chunks[start : start + EMBEDDING_BATCH_SIZE]
+            vectors.append(embedder.embed_texts([chunk.content for chunk in batch]))
+
+    if recorder is None:
+        vectorize()
+    else:
+        with recorder.stage("vectorize"):
+            vectorize()
     if vectors:
-        store.add(chunks, np.concatenate(vectors, axis=0))
+        if recorder is None:
+            store.add(chunks, np.concatenate(vectors, axis=0))
+        else:
+            with recorder.stage("index_build"):
+                store.add(chunks, np.concatenate(vectors, axis=0))
     return store
+
+
+def _observe_embedder(
+    embedder: Any, settings: Settings, recorder: PerformanceRecorder,
+) -> None:
+    """在实际 Embedding 边界计数；本地 encode 和远程 SDK 分别观测。"""
+
+    if settings.embedding_provider == "openai":
+        embedder._client.embeddings.create = observe_model_create(
+            embedder._client.embeddings.create, recorder, kind="embedding"
+        )
+        return
+    original = embedder.embed_texts
+    recorder.mark_model_observed("embedding")
+
+    def observed_texts(texts: list[str]) -> np.ndarray:
+        """每次非空本地模型推理记录一次，失败同样保留计数。"""
+
+        if not texts:
+            return original(texts)
+        started = time.perf_counter()
+        try:
+            vectors = original(texts)
+        except Exception:
+            recorder.record_model_call(
+                kind="embedding", success=False,
+                duration_seconds=time.perf_counter() - started,
+            )
+            raise
+        recorder.record_model_call(
+            kind="embedding", success=True,
+            duration_seconds=time.perf_counter() - started,
+        )
+        return vectors
+
+    embedder.embed_texts = observed_texts
 
 
 def build_retriever(
@@ -311,6 +409,8 @@ def _find_expected_rank(case: dict[str, Any], results: list) -> int | None:
             result.candidate_rank or rank
             for rank, result in enumerate(results, start=1)
             if result.chunk.file_name == case["expected_source"]
+            and (case.get("expected_page_number") is None
+                 or result.chunk.page_number == case["expected_page_number"])
             and evidence in result.chunk.content
         ]
         if matching_ranks:
@@ -352,20 +452,74 @@ def run_benchmark(
     spec: BenchmarkSpec,
     *,
     quality: bool,
+    corpus_dir: Path = CORPUS_DIR,
 ) -> dict[str, Any]:
     """运行一轮检索和可选回答质量评测，返回可序列化的逐题结果。"""
 
-    pages = _load_pages()
-    chunks = _build_chunks(pages, spec)
-    embedder = (
-        _create_embedder(settings, batch_size=spec.embedding_batch_size)
-        if spec.strategy in {"vector", "hybrid"}
-        else None
-    )
-    vector_store = _build_vector_store(chunks, embedder) if embedder is not None else None
-    retriever = build_retriever(spec, chunks, embedder, vector_store)
-    rankings_by_query = _precompute_rankings(retriever, cases, top_k=len(chunks))
-    chat = _make_chat(settings) if quality else None
+    recorder = PerformanceRecorder(metadata={
+        "strategy": spec.strategy,
+        "case_count": len(cases),
+        "quality_requested": quality,
+        "corpus_dir": corpus_dir.resolve().as_posix(),
+        "retrieval_measurement": "batch rankings for quality; independent Top-5 single-query probes for online latency",
+        "online_total_note": "未采集：质量评估复用预计算排名，未测量真实在线端到端问答",
+    })
+    with recorder.stage("initialization"):
+        with recorder.stage("parse_chunk"):
+            pages = _load_pages(corpus_dir)
+            chunks = _build_chunks(pages, spec)
+        if spec.strategy in {"vector", "hybrid"}:
+            # 远程 Embedding 只构造 API 客户端，本地模型才有实际加载耗时。
+            embedding_setup_stage = (
+                "model_load" if settings.embedding_provider == "local"
+                else "embedding_client_setup"
+            )
+            with recorder.stage(embedding_setup_stage):
+                embedder = _create_embedder(settings, batch_size=spec.embedding_batch_size)
+            _observe_embedder(embedder, settings, recorder)
+            vector_store = _build_vector_store(chunks, embedder, recorder)
+        else:
+            embedder = None
+            vector_store = None
+        with recorder.stage("index_build"):
+            retriever = build_retriever(spec, chunks, embedder, vector_store)
+        if quality:
+            with recorder.stage("chat_client_setup"):
+                chat = _make_chat(settings)
+        else:
+            chat = None
+    with recorder.stage("offline_retrieval"):
+        started = time.perf_counter()
+        rankings_by_query = _precompute_rankings(retriever, cases, top_k=len(chunks))
+        recorder.record_query_latency(
+            kind="offline_retrieval", duration_seconds=time.perf_counter() - started
+        )
+    # 独立按题调用实际检索器测量在线 Top-5；不替换质量验收所用的离线排名。
+    for case in cases:
+        started = time.perf_counter()
+        retriever.retrieve(case["query"], top_k=5)
+        recorder.record_query_latency(
+            kind="online_retrieval", duration_seconds=time.perf_counter() - started
+        )
+    chat_call_counter = [0]
+    if chat is not None:
+        original_create = observe_model_create(
+            chat._client.chat.completions.create, recorder, kind="chat"
+        )
+
+        def counted_create(*args: Any, **kwargs: Any) -> Any:
+            """仅在请求真正进入 Chat SDK 边界时标记逐题调用。"""
+
+            chat_call_counter[0] += 1
+            started = time.perf_counter()
+            try:
+                return original_create(*args, **kwargs)
+            finally:
+                recorder.record_query_latency(
+                    kind="chat", duration_seconds=time.perf_counter() - started
+                )
+
+        chat._client.chat.completions.create = counted_create
     cached_retriever = PrecomputedRetriever(rankings_by_query)
     relevance_policy = RelevancePolicy(
         vector_min_score=settings.reject_threshold, bm25_min_score=spec.bm25_min_score
@@ -381,10 +535,12 @@ def run_benchmark(
             "id": case["id"],
             **_retrieval_outcome(case, retrieval_results),
         }
+        previous_chat_calls = chat_call_counter[0]
         try:
             if rag is not None:
                 # 回答质量始终使用同一套 Top-5 RAG 规则，方便跨轮比较。
-                response = rag.query(case["query"], top_k=5)
+                with recorder.stage("chat"):
+                    response = rag.query(case["query"], top_k=5)
                 assessed = assess_case(case, response)
                 for key in (
                     "rejected",
@@ -425,6 +581,8 @@ def run_benchmark(
             outcome["quality_error"] = f"{type(exc).__name__}: {exc}"
             outcome["quality_pass"] = False
             outcome["manual_review_status"] = "执行错误"
+        outcome["chat_request_count"] = chat_call_counter[0] - previous_chat_calls
+        outcome["chat_called"] = outcome["chat_request_count"] > 0
         outcomes.append(outcome)
 
     answerable = [case for case in cases if case["answerable"]]
@@ -471,6 +629,7 @@ def run_benchmark(
     }
     metrics["retrieval_pass"] = metrics["top5_hits"] >= 10
     metrics["quality_executed"] = quality
+    metrics["chat_request_count"] = chat_call_counter[0]
     metrics["acceptance_pass"] = bool(
         quality
         and metrics["retrieval_pass"]
@@ -488,8 +647,10 @@ def run_benchmark(
         },
         "generated_on": date.today().isoformat(),
         "spec": asdict(spec),
+        "corpus_dir": corpus_dir.as_posix(),
         "chunk_count": len(chunks),
         "embedding_dimension": vector_store.dimension if vector_store is not None else None,
+        "performance": recorder.report(),
         "cases": outcomes,
         "metrics": metrics,
     }
@@ -531,7 +692,10 @@ def _safe_settings_snapshot(settings: Settings) -> dict[str, Any]:
         # 提示相同时，短句切分或评分代码变化也会影响结果，单独固定实现指纹。
         "implementation_sha256": {
             f"app/{name}.py": _file_sha256(PROJECT_ROOT / "app" / f"{name}.py")
-            for name in ("chat", "grounded_answer", "rag", "evaluation", "citations", "relevance", "retriever", "chunking")
+            for name in ("chat", "grounded_answer", "rag", "evaluation", "citations", "relevance", "retriever", "chunking", "document_loader")
+        } | {
+            f"scripts/{name}.py": _file_sha256(PROJECT_ROOT / "scripts" / f"{name}.py")
+            for name in ("evaluate_v02", "evaluation_performance")
         },
     }
 
@@ -563,6 +727,7 @@ def _markdown_report(
         f"- 日期：{result['generated_on']}",
         f"- 评测集：`{questions_path.as_posix()}`，共 {len(cases)} 题（有答案 {answerable_count}，无答案 {metrics['refusal_count']}）。",
         f"- 本轮：`{spec['name']}`；策略 `{spec['strategy']}`；Chunk `{spec['chunk_size']}/{spec['overlap']}`；RRF-K `{spec['rrf_k']}`。",
+        f"- 语料目录：`{result.get('corpus_dir', CORPUS_DIR.as_posix())}`；质量执行：{'已执行' if metrics['quality_executed'] else '未执行'}；实际 Chat 请求：{metrics.get('chat_request_count', '未采集')} 次。",
         f"- Embedding：`{settings.embedding_provider}` / `{settings.embedding_model}`；模型身份：`{settings.embedding_identity.to_dict()}`。",
         f"- 语料 Chunk 数：{result['chunk_count']}；Embedding 维度：{result['embedding_dimension'] or '无（仅稀疏检索）'}；应用生产索引目录未被写入。",
         f"- Top-1：{metrics['top1_hits']}/{answerable_count}；Top-3：{metrics['top3_hits']}/{answerable_count}；Top-5：{metrics['top5_hits']}/{answerable_count}。",
@@ -579,6 +744,14 @@ def _markdown_report(
                     "relevance_policy": result.get("relevance_policy")}, ensure_ascii=False, indent=2),
         "```",
         "",
+        "## 性能与模型调用",
+        "",
+        "单题 Top-5 检索为独立测量，不替换质量评测排名；在线端到端问答耗时未采集。",
+        "",
+        "```json",
+        json.dumps(result.get("performance", {"status": "未采集"}), ensure_ascii=False, indent=2),
+        "```",
+        "",
         "## 逐题结果",
         "",
     ]
@@ -591,10 +764,13 @@ def _markdown_report(
                 f"- 问题：{case['query']}",
                 f"- 标签：{', '.join(case['tags'])}",
                 f"- 预期来源：{case['expected_source']}",
+                f"- PDF 证据页码：{case.get('expected_page_number', '不适用')}",
                 f"- 预期证据：{json.dumps(case['expected_evidence'], ensure_ascii=False)}",
                 f"- 预期证据排名：{outcome.get('expected_evidence_rank', '无')}",
                 f"- Top-1/3/5：{'是' if outcome.get('hit_top1') else '否'} / {'是' if outcome.get('hit_top3') else '否'} / {'是' if outcome.get('hit_top5') else '否'}",
                 f"- 回答质量：{outcome.get('quality_pass', '未执行')}",
+                f"- 实际 Chat 请求：{outcome.get('chat_request_count', '未采集')} 次；是否调用：{outcome.get('chat_called', '未采集')}",
+                f"- 人工复核状态：{outcome.get('manual_review_status', '未执行')}",
                 f"- 引用映射可追溯：{outcome.get('citations_traceable', '未执行')}；引用原文支持预期事实：{outcome.get('expected_facts_supported_by_citations', '未执行')}；引用支持全部预期证据：{outcome.get('citation_supports_expected_evidence', '未执行')}",
                 f"- 人工复核条件：{case['manual_review_condition']}",
             ]
@@ -639,6 +815,7 @@ def _write_result(
     cases: list[dict[str, Any]],
     result: dict[str, Any],
     output_dir: Path,
+    corpus_dir: Path = CORPUS_DIR,
 ) -> tuple[Path, Path]:
     """写入逐题 JSON 和便于人工阅读的 Markdown 两份证据。"""
 
@@ -652,9 +829,10 @@ def _write_result(
             "questions": questions_path.as_posix(),
             "questions_sha256": _file_sha256(questions_path),
             "corpus": {
-                path.name: _file_sha256(path)
-                for path in sorted(CORPUS_DIR.glob("*.txt"))
+                path.relative_to(corpus_dir).as_posix(): _file_sha256(path)
+                for path in _corpus_paths(corpus_dir)
             },
+            "corpus_dir": corpus_dir.resolve().as_posix(),
         },
         "settings": _safe_settings_snapshot(settings),
     }
@@ -743,15 +921,15 @@ def _comparison_markdown(comparison: dict[str, Any]) -> str:
         f"- 参考基线：`{comparison['baseline']}`",
         "- 回答质量指标如标记为未执行，表示本轮仅评估本地检索，尚未进行 Chat 回答验收。",
         "",
-        "| 轮次 | Top-1 | Top-3 | Top-5 | Top-5 新增命中 | Top-5 退化 | Top-5 Bad Case |",
-        "| --- | ---: | ---: | ---: | --- | --- | --- |",
+        "| 轮次 | Top-1 | Top-3 | Top-5 | 质量执行 | Chat请求 | Top-5 新增命中 | Top-5 退化 | Top-5 Bad Case |",
+        "| --- | ---: | ---: | ---: | --- | ---: | --- | --- | --- |",
     ]
     for run in comparison["runs"]:
         metrics = run["metrics"]
         delta = run.get("delta_vs_baseline", {})
         lines.append(
             "| `{name}` | {top1}/{count} ({d1:+d}) | {top3}/{count} ({d3:+d}) | "
-            "{top5}/{count} ({d5:+d}) | {gained} | {regressed} | {bad} |".format(
+            "{top5}/{count} ({d5:+d}) | {quality} | {chat} | {gained} | {regressed} | {bad} |".format(
                 name=run["name"],
                 top1=metrics["top1_hits"],
                 top3=metrics["top3_hits"],
@@ -760,6 +938,8 @@ def _comparison_markdown(comparison: dict[str, Any]) -> str:
                 d1=delta.get("top1_hits", 0),
                 d3=delta.get("top3_hits", 0),
                 d5=delta.get("top5_hits", 0),
+                quality="已执行" if metrics.get("quality_executed") else "未执行",
+                chat=metrics.get("chat_request_count", "未采集"),
                 gained=", ".join(run.get("top5_gained_case_ids", [])) or "无",
                 regressed=", ".join(run.get("top5_regressed_case_ids", [])) or "无",
                 bad=", ".join(run.get("top5_bad_case_ids", [])) or "无",
@@ -829,6 +1009,7 @@ def build_comparison(
                 "name": result["spec"]["name"],
                 "spec": result["spec"],
                 "metrics": result["metrics"],
+                "performance": result.get("performance", {"status": "未采集"}),
                 "delta_vs_baseline": {
                     key: result["metrics"].get(key, 0) - baseline_metrics.get(key, 0)
                     for key in (
@@ -886,11 +1067,23 @@ def main() -> int:
     """执行单轮或完整套件，并以验收状态作为退出码。"""
 
     args = _parse_args()
+    corpus_dir = getattr(args, "corpus_dir", CORPUS_DIR)
+    dataset_mode = getattr(args, "dataset_mode", "legacy")
+    quality_scope = getattr(args, "quality_scope", "baseline")
+    if not args.quality and quality_scope != "baseline":
+        raise ValueError("--quality-scope all/none requires --quality.")
+    if dataset_mode != "legacy" and args.output_dir.exists() and any(args.output_dir.iterdir()):
+        raise FileExistsError(f"Evaluation batch output directory is not empty: {args.output_dir}.")
     if args.chunk_size <= 0 or args.overlap < 0 or args.overlap >= args.chunk_size:
         raise ValueError("Chunk size must be positive and overlap must be smaller than chunk size.")
     settings = _settings_from_args(args)
-    cases = load_cases(args.questions)
-    validate_cases_against_corpus(cases)
+    # 旧调用形式保持兼容；业务题集必须显式选择数据模式与语料目录。
+    if dataset_mode == "legacy" and corpus_dir == CORPUS_DIR:
+        cases = load_cases(args.questions)
+        validate_cases_against_corpus(cases)
+    else:
+        cases = load_cases(args.questions, dataset_mode=dataset_mode)
+        validate_cases_against_corpus(cases, corpus_dir)
     base_specs = _default_suite() if args.suite else [
         BenchmarkSpec(
             name=args.name or f"{args.strategy}-chunk-{args.chunk_size}-{args.overlap}",
@@ -920,9 +1113,14 @@ def main() -> int:
             cases,
             spec,
             # 仅对固定参考基线运行 50 题回答验收，避免对照矩阵重复消耗 Chat API。
-            quality=args.quality and run_index == 0,
+            quality=args.quality and quality_scope != "none"
+            and (quality_scope == "all" or run_index == 0),
+            **({"corpus_dir": corpus_dir} if corpus_dir != CORPUS_DIR else {}),
         )
-        json_path, markdown_path = _write_result(run_settings, args.questions, cases, result, args.output_dir)
+        if corpus_dir == CORPUS_DIR:
+            json_path, markdown_path = _write_result(run_settings, args.questions, cases, result, args.output_dir)
+        else:
+            json_path, markdown_path = _write_result(run_settings, args.questions, cases, result, args.output_dir, corpus_dir)
         all_results.append(result)
         metrics = result["metrics"]
         print(
@@ -940,7 +1138,11 @@ def main() -> int:
     comparison_path.write_text(json.dumps(comparison, ensure_ascii=False, indent=2), encoding="utf-8")
     comparison_markdown_path = args.output_dir / "对照摘要.md"
     comparison_markdown_path.write_text(_comparison_markdown(comparison), encoding="utf-8")
-    return _evaluation_exit_code(all_results, quality_requested=args.quality)
+    if quality_scope == "all" and args.quality and any(
+        not result["metrics"].get("quality_executed") for result in all_results
+    ):
+        return 1
+    return _evaluation_exit_code(all_results, quality_requested=args.quality and quality_scope != "none")
 
 
 if __name__ == "__main__":

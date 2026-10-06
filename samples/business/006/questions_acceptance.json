@@ -1,0 +1,932 @@
+[
+  {
+    "id": "B006-A1-06",
+    "query": "耐候试制件需要什么包装？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "耐候试制件须使用防潮袋单件封装。",
+    "expected_answer_facts": [
+      [
+        "防潮袋单件封装"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-A1-07",
+    "query": "加急订单的截止受理时刻是什么？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "加急订单仅在工作日15点前受理。",
+    "expected_answer_facts": [
+      [
+        "工作日15点前"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "exception",
+      "time"
+    ]
+  },
+  {
+    "id": "B006-A1-08",
+    "query": "首件确认由哪个岗位签字？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "首件确认单须由质量工程师签字。",
+    "expected_answer_facts": [
+      [
+        "质量工程师签字"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-A1-09",
+    "query": "批量开工前要先完成什么记录？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "批量开工前必须完成设备点检记录。",
+    "expected_answer_facts": [
+      [
+        "设备点检记录"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-A1-10",
+    "query": "材料替代申请交给谁审批？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "材料替代申请由工艺主管审批。",
+    "expected_answer_facts": [
+      [
+        "工艺主管审批"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-A1-11",
+    "query": "超过多少毫米的尺寸偏差需要复测？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "尺寸偏差超过0.5毫米时必须复测。",
+    "expected_answer_facts": [
+      [
+        "超过0.5毫米"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "condition"
+    ]
+  },
+  {
+    "id": "B006-A1-12",
+    "query": "不合格样件应放在哪里？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "不合格样件应放入红色隔离箱。",
+    "expected_answer_facts": [
+      [
+        "红色隔离箱"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-A1-13",
+    "query": "客户自带材料在入库前需要做什么？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "客户自带材料入库前须拍照登记。",
+    "expected_answer_facts": [
+      [
+        "拍照登记"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "condition"
+    ]
+  },
+  {
+    "id": "B006-A1-14",
+    "query": "已经开始加工的订单能否免费取消？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "已开始加工的订单不支持免费取消。",
+    "expected_answer_facts": [
+      [
+        "不支持免费取消"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "negative",
+      "condition"
+    ]
+  },
+  {
+    "id": "B006-A1-15",
+    "query": "成品出库由谁复核数量？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "成品出库数量由仓储复核员核对。",
+    "expected_answer_facts": [
+      [
+        "仓储复核员"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-A1-16",
+    "query": "试制报告通过什么方式交付？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "试制报告通过客户专用邮箱交付。",
+    "expected_answer_facts": [
+      [
+        "客户专用邮箱"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-A1-17",
+    "query": "客户对尺寸复测结果有异议时可以做什么？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "客户可在收件后2个工作日内申请尺寸复核。",
+    "expected_answer_facts": [
+      [
+        "2个工作日内"
+      ],
+      [
+        "申请尺寸复核"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "condition"
+    ]
+  },
+  {
+    "id": "B006-A1-05",
+    "query": "普通试制单的最小批量是多少，逾期成品如何处置？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": [
+      "普通试制单的最小批量为12件。",
+      "逾期30天未领取的成品转入暂存架。"
+    ],
+    "expected_answer_facts": [
+      [
+        "12件"
+      ],
+      [
+        "逾期30天"
+      ],
+      [
+        "转入暂存架"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "multi_segment",
+      "multi_fact",
+      "numeric"
+    ]
+  },
+  {
+    "id": "B006-A2-06",
+    "query": "冻品装车采用哪个温区？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "冻品装车使用负18摄氏度温区。",
+    "expected_answer_facts": [
+      [
+        "负18摄氏度"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "near_name"
+    ]
+  },
+  {
+    "id": "B006-A2-07",
+    "query": "交接时封签号码在哪里登记？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "封签号码必须登记在电子交接单。",
+    "expected_answer_facts": [
+      [
+        "电子交接单"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-A2-08",
+    "query": "司机发现封签破损应先联系谁？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "发现封签破损时司机须先联系值班调度。",
+    "expected_answer_facts": [
+      [
+        "值班调度"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "condition"
+    ]
+  },
+  {
+    "id": "B006-A2-09",
+    "query": "卸货等待超过多久要记录异常？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "卸货等待超过45分钟须记录异常原因。",
+    "expected_answer_facts": [
+      [
+        "超过45分钟"
+      ],
+      [
+        "记录异常原因"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "condition"
+    ]
+  },
+  {
+    "id": "B006-A2-10",
+    "query": "鲜品到站温度高于多少度要隔离？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "鲜品到站温度高于8摄氏度须先隔离。",
+    "expected_answer_facts": [
+      [
+        "高于8摄氏度"
+      ],
+      [
+        "先隔离"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "condition"
+    ]
+  },
+  {
+    "id": "B006-A2-11",
+    "query": "冻品开箱抽查由谁共同见证？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "冻品开箱抽查须由收货员与司机共同见证。",
+    "expected_answer_facts": [
+      [
+        "收货员与司机共同见证"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-A2-12",
+    "query": "夜间交接允许先签字后查温吗？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "夜间交接不得先签字后查验温度。",
+    "expected_answer_facts": [
+      [
+        "不得先签字后查验温度"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "negative"
+    ]
+  },
+  {
+    "id": "B006-A2-13",
+    "query": "临时改道由谁批准？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "临时改道须获得运输主管批准。",
+    "expected_answer_facts": [
+      [
+        "运输主管批准"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-A2-14",
+    "query": "车辆故障时备车须在多久内到场？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "车辆故障后备车应在90分钟内到场。",
+    "expected_answer_facts": [
+      [
+        "90分钟内"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric"
+    ]
+  },
+  {
+    "id": "B006-A2-15",
+    "query": "异常温度曲线保存在哪里？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "异常温度曲线须上传至批次追溯档案。",
+    "expected_answer_facts": [
+      [
+        "批次追溯档案"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-A2-16",
+    "query": "拒收货物的暂存标识是什么颜色？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "拒收货物须贴紫色暂存标识。",
+    "expected_answer_facts": [
+      [
+        "紫色暂存标识"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "near_name"
+    ]
+  },
+  {
+    "id": "B006-A2-17",
+    "query": "返程空箱需要在何时消毒？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "返程空箱须在次日首车出发前消毒。",
+    "expected_answer_facts": [
+      [
+        "次日首车出发前消毒"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "time",
+      "condition"
+    ]
+  },
+  {
+    "id": "B006-A2-05",
+    "query": "鲜品装车前预冷目标是多少，电子交接单须保存多久？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": [
+      "鲜品装车前车厢须预冷至4摄氏度。",
+      "电子交接单须保留18个月。"
+    ],
+    "expected_answer_facts": [
+      [
+        "4摄氏度"
+      ],
+      [
+        "保留18个月"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "multi_segment",
+      "multi_fact",
+      "numeric"
+    ]
+  },
+  {
+    "id": "B006-A3-05",
+    "query": "企业发现抄表数值异常应在几天内申诉？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "抄表异议须在通知后7个自然日内提出。",
+    "expected_answer_facts": [
+      [
+        "7个自然日内"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "condition"
+    ],
+    "expected_page_number": 1
+  },
+  {
+    "id": "B006-A3-06",
+    "query": "园区电费发票从哪个入口下载？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "电费发票可在企业服务门户下载。",
+    "expected_answer_facts": [
+      [
+        "企业服务门户"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ],
+    "expected_page_number": 1
+  },
+  {
+    "id": "B006-A3-07",
+    "query": "公共照明常规关闭时间是几点？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "公共照明常规于23点关闭。",
+    "expected_answer_facts": [
+      [
+        "23点关闭"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "time"
+    ],
+    "expected_page_number": 2
+  },
+  {
+    "id": "B006-A3-08",
+    "query": "夜间施工申请需要提前多久提交？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "夜间施工用电申请须提前48小时提交。",
+    "expected_answer_facts": [
+      [
+        "提前48小时"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "condition"
+    ],
+    "expected_page_number": 2
+  },
+  {
+    "id": "B006-A3-09",
+    "query": "夜间施工用电由谁审批？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "夜间施工用电由园区安全主管审批。",
+    "expected_answer_facts": [
+      [
+        "园区安全主管"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "near_name"
+    ],
+    "expected_page_number": 2
+  },
+  {
+    "id": "B006-A3-10",
+    "query": "配电柜周边多少米内不得堆放物品？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "配电柜周边1.5米内不得堆放物品。",
+    "expected_answer_facts": [
+      [
+        "1.5米内"
+      ],
+      [
+        "不得堆放物品"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "negative"
+    ],
+    "expected_page_number": 2
+  },
+  {
+    "id": "B006-A3-11",
+    "query": "园区计划停电至少提前多久告知？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "计划停电至少提前72小时告知企业。",
+    "expected_answer_facts": [
+      [
+        "提前72小时"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric"
+    ],
+    "expected_page_number": 2
+  },
+  {
+    "id": "B006-A3-12",
+    "query": "突发停电应从哪个号码报修？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "突发停电应拨打园区报修短号806。",
+    "expected_answer_facts": [
+      [
+        "报修短号806"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric"
+    ],
+    "expected_page_number": 2
+  },
+  {
+    "id": "B006-A3-13",
+    "query": "充电车位每次连续占用上限是多少？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "充电车位单次连续占用上限为4小时。",
+    "expected_answer_facts": [
+      [
+        "4小时"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric"
+    ],
+    "expected_page_number": 3
+  },
+  {
+    "id": "B006-A3-14",
+    "query": "消防通道的充电插座可以使用吗？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "消防通道插座禁止用于车辆充电。",
+    "expected_answer_facts": [
+      [
+        "禁止用于车辆充电"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "negative"
+    ],
+    "expected_page_number": 3
+  },
+  {
+    "id": "B006-A3-15",
+    "query": "漏水报警由谁先到现场确认？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "漏水报警由值班水务员先到现场确认。",
+    "expected_answer_facts": [
+      [
+        "值班水务员"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "near_name"
+    ],
+    "expected_page_number": 3
+  },
+  {
+    "id": "B006-A3-16",
+    "query": "每季度节能建议提交到哪里？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "季度节能建议提交至能源服务部邮箱。",
+    "expected_answer_facts": [
+      [
+        "能源服务部邮箱"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ],
+    "expected_page_number": 3
+  },
+  {
+    "id": "B006-A3-17",
+    "query": "新增大功率设备的申报阈值是多少？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "新增功率超过30千瓦的设备须事先申报。",
+    "expected_answer_facts": [
+      [
+        "超过30千瓦"
+      ],
+      [
+        "事先申报"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric",
+      "condition"
+    ],
+    "expected_page_number": 3
+  },
+  {
+    "id": "B006-A3-18",
+    "query": "非工作时间的故障工单由谁接收？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "非工作时间故障工单由夜班值守员接收。",
+    "expected_answer_facts": [
+      [
+        "夜班值守员"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "time"
+    ],
+    "expected_page_number": 3
+  },
+  {
+    "id": "B006-N01",
+    "query": "工坊试制件的国际快递运费是多少？",
+    "answerable": false,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未给出该信息；必须明确拒答且不得附引用。",
+    "tags": [
+      "unanswerable",
+      "fee"
+    ]
+  },
+  {
+    "id": "B006-N02",
+    "query": "工坊负责人姓名和手机号码是什么？",
+    "answerable": false,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未给出该信息；必须明确拒答且不得附引用。",
+    "tags": [
+      "unanswerable",
+      "identity"
+    ]
+  },
+  {
+    "id": "B006-N03",
+    "query": "普通试制单可以使用哪张信用卡付款？",
+    "answerable": false,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未给出该信息；必须明确拒答且不得附引用。",
+    "tags": [
+      "unanswerable",
+      "payment"
+    ]
+  },
+  {
+    "id": "B006-N04",
+    "query": "成品暂存架的精确货位编号是什么？",
+    "answerable": false,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未给出该信息；必须明确拒答且不得附引用。",
+    "tags": [
+      "unanswerable",
+      "location"
+    ]
+  },
+  {
+    "id": "B006-N05",
+    "query": "远舟冷链的车牌号码是什么？",
+    "answerable": false,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未给出该信息；必须明确拒答且不得附引用。",
+    "tags": [
+      "unanswerable",
+      "identity"
+    ]
+  },
+  {
+    "id": "B006-N06",
+    "query": "冻品运输的保险金额是多少元？",
+    "answerable": false,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未给出该信息；必须明确拒答且不得附引用。",
+    "tags": [
+      "unanswerable",
+      "amount"
+    ]
+  },
+  {
+    "id": "B006-N07",
+    "query": "值班调度的手机号码是多少？",
+    "answerable": false,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未给出该信息；必须明确拒答且不得附引用。",
+    "tags": [
+      "unanswerable",
+      "contact"
+    ]
+  },
+  {
+    "id": "B006-N08",
+    "query": "青岚园区商业电价每千瓦时是多少元？",
+    "answerable": false,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未给出该信息；必须明确拒答且不得附引用。",
+    "tags": [
+      "unanswerable",
+      "fee"
+    ]
+  },
+  {
+    "id": "B006-N09",
+    "query": "园区安全主管的姓名是什么？",
+    "answerable": false,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未给出该信息；必须明确拒答且不得附引用。",
+    "tags": [
+      "unanswerable",
+      "identity"
+    ]
+  },
+  {
+    "id": "B006-N10",
+    "query": "企业服务门户的网址是什么？",
+    "answerable": false,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": null,
+    "expected_answer_facts": [],
+    "allow_citations": false,
+    "refusal_expected": true,
+    "manual_review_condition": "资料未给出该信息；必须明确拒答且不得附引用。",
+    "tags": [
+      "unanswerable",
+      "url"
+    ]
+  }
+]

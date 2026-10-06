@@ -36,6 +36,35 @@ class DocumentUploadResponse(BaseModel):
     replaced_existing: bool = False
 
 
+class DocumentSummaryResponse(BaseModel):
+    """展示当前文档的真实片段数量及已索引 PDF 页数。"""
+
+    document_id: str
+    file_name: str
+    chunk_count: int
+    indexed_page_count: int | None
+
+
+class DocumentListResponse(BaseModel):
+    """返回当前知识库目录与快照标识。"""
+
+    documents: list[DocumentSummaryResponse]
+    document_count: int
+    chunk_count: int
+    index_generation: str
+
+
+class DocumentDeleteResponse(BaseModel):
+    """返回删除后的快照及剩余文档和片段数。"""
+
+    document_id: str
+    file_name: str
+    deleted_chunk_count: int
+    index_generation: str
+    document_count: int
+    chunk_count: int
+
+
 class QueryRequest(BaseModel):
     """约束问题长度及最终交给模型参考的片段数量。"""
 
@@ -116,7 +145,7 @@ def create_api_router(
     *,
     runtime_factory: RuntimeFactory | None = None,
 ) -> APIRouter:
-    """创建 V0.1 两个数据路由，并按首次请求延迟初始化运行时。"""
+    """创建文档管理和问答路由，并按首次请求延迟初始化运行时。"""
 
     router = APIRouter()
     factory = runtime_factory or RAGRuntime.from_settings
@@ -146,6 +175,54 @@ def create_api_router(
                         detail="TraceRAG runtime is unavailable; check provider credentials and index data.",
                     ) from exc
             return runtime
+
+    @router.get("/documents", response_model=DocumentListResponse, tags=["documents"])
+    def list_documents() -> DocumentListResponse:
+        """在运行时锁内读取当前目录，避免列表与索引切换发生竞争。"""
+        active_runtime = get_runtime()
+        try:
+            with runtime_lock:
+                documents = active_runtime.list_documents()
+                generation = active_runtime._current_generation()
+        except EmbeddingIndexCompatibilityError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except Exception as exc:
+            logger.exception("Could not read the current document catalog")
+            raise HTTPException(status_code=503, detail="Could not read the document catalog.") from exc
+        return DocumentListResponse(
+            documents=[DocumentSummaryResponse(
+                document_id=document.document_id,
+                file_name=document.file_name,
+                chunk_count=document.chunk_count,
+                indexed_page_count=document.indexed_page_count,
+            ) for document in documents],
+            document_count=len(documents),
+            chunk_count=sum(document.chunk_count for document in documents),
+            index_generation=generation,
+        )
+
+    @router.delete("/documents/{document_id}", response_model=DocumentDeleteResponse, tags=["documents"])
+    def delete_document(document_id: str) -> DocumentDeleteResponse:
+        """按文档标识提交删除，不接收或删除调用方指定的文件路径。"""
+        active_runtime = get_runtime()
+        try:
+            with runtime_lock:
+                result = active_runtime.delete_document(document_id)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail="Document is no longer in the current knowledge base.") from exc
+        except EmbeddingIndexCompatibilityError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        except Exception as exc:
+            logger.exception("Document deletion failed; the previous snapshot is retained")
+            raise HTTPException(status_code=503, detail="Could not save the document deletion; try again.") from exc
+        return DocumentDeleteResponse(
+            document_id=result.document_id,
+            file_name=result.file_name,
+            deleted_chunk_count=result.deleted_chunk_count,
+            index_generation=result.generation,
+            document_count=result.document_count,
+            chunk_count=result.chunk_count,
+        )
 
     @router.post("/documents", response_model=DocumentUploadResponse, tags=["documents"])
     def upload_document(file: UploadFile = File(...)) -> DocumentUploadResponse:

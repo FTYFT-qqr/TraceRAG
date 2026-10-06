@@ -13,6 +13,7 @@ from types import SimpleNamespace
 
 import requests
 
+from app import __version__
 from app.evaluation import assess_case
 
 
@@ -43,7 +44,7 @@ def wait_healthy(api_url: str, ui_url: str, timeout: float = 180) -> dict:
                 session.trust_env = False
                 response = session.get(f"{ui_url}/_stcore/health", timeout=5)
                 response.raise_for_status()
-            if health["status"] == "ok" and health["version"] == "0.2.0" and response.text.strip() == "ok":
+            if health["status"] == "ok" and health["version"] == __version__ and response.text.strip() == "ok":
                 return health
         except (requests.RequestException, KeyError) as exc:
             last_error = type(exc).__name__

@@ -1,0 +1,28 @@
+{
+  "dataset": "TraceRAG-006-acceptance-v2",
+  "revision_date": "2026-10-05",
+  "revision_reason": "B006-A1-17 的 v1 问法把来源未声明的复测结果异议流程当作前提。",
+  "source_type": "原创模拟业务语料",
+  "corpus_files": [
+    "云栖工坊订单服务.txt",
+    "远舟冷链交接手册.md",
+    "青岚园区能源服务规则.pdf"
+  ],
+  "development_questions": "questions_development.json",
+  "acceptance_questions": "questions_acceptance_v2.json",
+  "answerable_count": 40,
+  "unanswerable_count": 10,
+  "source_v1_question_sha256": "40bd3f4f02b4026cc8fbcbde98d7be2e11eaf42481de546eecfdef51d1e27b6e",
+  "sha256": {
+    "云栖工坊订单服务.txt": "15f8f8c8656d2fb675bfe8cbe48f1fe87c5122afd96429494ac617209ee95999",
+    "远舟冷链交接手册.md": "4583bc868ff64b7f49a0f44ea9645579342cdf4546e8410e83e79eca1b38b497",
+    "青岚园区能源服务规则.pdf": "7fe4f85bd8dab5a80c22b069f48968d69632203da7d9fa418b54a7c9c0e04bc1",
+    "questions_development.json": "b869d4c6ef6d6922a393d89a6b4917e5f8f45efdd470270534faf85c53f4d56d",
+    "questions_acceptance_v2.json": "04e9e4b3bebb0f680e34938c01da915522e74f29fbd758c716cad85f689b9e00"
+  },
+  "changed_case_id": "B006-A1-17",
+  "changed_field": "query",
+  "original_query": "客户对尺寸复测结果有异议时可以做什么？",
+  "revised_query": "客户收件后多长时间内可申请哪项复核？",
+  "expected_facts_unchanged": true
+}

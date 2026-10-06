@@ -1,8 +1,8 @@
 # TraceRAG
 
-TraceRAG 是一个可溯源的知识库问答系统。当前包版本为 **0.2.0**，包含文档导入、向量/BM25/RRF 检索、原文回答、逐句引用与离线评测。
+TraceRAG 是一个可溯源的知识库问答系统。当前包版本为 **0.2.1**，包含文档导入、向量/BM25/RRF 检索、原文回答、逐句引用、资料库管理与离线评测。
 
-正式版本入口：[V0.2.0 发布与演示视频](https://github.com/FTYFT-qqr/TraceRAG/releases/tag/v0.2.0)。下载该标签的源码，或执行 `git clone --branch v0.2.0 --single-branch https://github.com/FTYFT-qqr/TraceRAG.git`，可获取对应发布版本。
+正式版本入口：[V0.2.1 发布](https://github.com/FTYFT-qqr/TraceRAG/releases/tag/v0.2.1)。该版本包含资料库管理、新版界面及独立业务评测工具；验收范围与限制见 [007 发布整改](docs/版本记录/V0.2/007_完成度检查与发布验收整改.md)。旧版发布与演示视频保留在 [V0.2.0](https://github.com/FTYFT-qqr/TraceRAG/releases/tag/v0.2.0)。
 
 系统仅根据检索到的证据作答；相关度不足、模型回答无法映射到有效来源时会拒答。
 
@@ -68,7 +68,7 @@ python -m uvicorn app.main:app --reload
 
 访问 <http://127.0.0.1:8000/health>，应返回健康状态。可在 `.env` 中调整 `TRACERAG_` 前缀的配置；`.env` 不会提交到版本库。
 
-Chat 服务需要 API 密钥：在 `.env` 中填写 `TRACERAG_API_KEY`，也可用已有的 `OPENAI_API_KEY` 环境变量。Embedding 默认使用 OpenAI 兼容 API；也可以切换为本地 Sentence Transformers 模型。没有 Chat API 密钥时 `/health` 仍可访问，但上传和问答接口会返回 503。
+Chat 服务需要 API 密钥：在 `.env` 中填写 `TRACERAG_API_KEY`，也可用已有的 `OPENAI_API_KEY` 环境变量。Embedding 默认使用 OpenAI 兼容 API；也可以切换为本地 Sentence Transformers 模型。没有 Chat API 密钥时 `/health` 仍可访问，但需要运行时的目录、上传、删除和问答接口会返回 503。
 
 ### 使用本地 BGE-M3
 
@@ -119,9 +119,14 @@ V0.1 真实模型最小验收为 Top-5 14/15、有答案质量 15/15、正确拒
 python scripts/evaluate_retrieval.py
 # V0.2 五策略本地检索对照，使用新目录
 python scripts/evaluate_v02.py --suite --output-dir docs/评测数据/版本0.2/临时运行_新轮次
+
+# 006 新业务语料验收示例：每个策略使用独立的新输出目录
+python scripts/evaluate_v02.py --corpus-dir samples/business/006 --questions samples/business/006/questions_acceptance_v2.json --dataset-mode acceptance --strategy hybrid --quality --name 业务泛化混合召回 --output-dir docs/评测数据/版本0.2/业务泛化_新轮次/混合
 ```
 
-评测只使用 `samples/acceptance/` 中的公开样例，在内存中建立隔离索引，不读取上传资料或写应用索引。V0.1 脚本固定写入 `docs/评测数据/版本0.1/验收记录/检索验收记录.md`，不提供输出路径参数；重跑前先备份历史文件，运行后将新结果另存至新批次目录并恢复历史原件。V0.2 默认只检索，增加 `--quality` 才执行真实 Chat 质量评测；问题及检索样例会发送给 `.env` 配置的 Chat 服务。
+V0.2 评测默认使用 `samples/acceptance/` 的公开样例；`--corpus-dir` 可切换到新业务资料目录，配合 `--questions` 和 `--dataset-mode acceptance|development` 指定题集。评测在内存中建立隔离索引，不读取上传资料或写应用索引。V0.1 脚本固定写入 `docs/评测数据/版本0.1/验收记录/检索验收记录.md`，不提供输出路径参数；重跑前先备份历史文件，运行后将新结果另存至新批次目录并恢复历史原件。V0.2 默认只检索，增加 `--quality` 才执行真实 Chat 质量评测；问题及检索样例会发送给 `.env` 配置的 Chat 服务。`--suite --quality` 默认仅首轮做回答质量；如需所有轮次执行真实回答可加 `--quality-scope all`，或分别运行单策略。
+
+006 的模拟业务资料 v2 完整 50 题已实测：BM25 与混合召回各通过 40/40 有答案题和 10/10 拒答题；纯向量有 1 题证据排在 Top-5 之外，质量为 39/40。三策略报告各包含真实 Chat、逐题引用和性能数据；详见[006 结果与边界](docs/版本记录/V0.2/006_业务泛化评测与性能基线.md)。这些模拟题的表现不能代表真实业务准确率。
 
 BM25 使用独立原始分门槛，混合召回按原始通道判断是否允许生成，RRF 只排序。纯检索命中门槛满足且无错误时退出码为 0；质量模式还要求全部质量验收通过，失败或待复核返回 1。各轮失败、重评分及 Bad Case 见[评测与人工复核](docs/版本记录/V0.2/003_评测与人工复核.md)。
 
@@ -130,13 +135,17 @@ BM25 使用独立原始分门槛，混合召回按原始通道判断是否允许
 | Method | Path | Description |
 | --- | --- | --- |
 | GET | `/health` | 返回服务、环境和版本信息 |
+| GET | `/documents` | 列出当前文档、片段数量、已索引页数和快照标识 |
 | POST | `/documents` | 上传 PDF、Markdown 或 TXT，解析并写入本地向量索引（最大 10 MiB） |
+| DELETE | `/documents/{document_id}` | 从当前知识库移除文档并提交新快照；历史快照仍保留 |
 | POST | `/query` | 返回回答、拒答状态、引用来源和 Top-K 调试检索结果 |
+
+当前工作区已实现资料库界面与列表、删除接口。新增列表/删除、前端交互及空快照测试后，当前源码完整回归为 **259 项通过**；隔离固定协议工程链路 **19/19**、新版候选镜像的容器链路 **10/10** 通过，准确输入与报告见[007 完成度与发布验收整改](docs/版本记录/V0.2/007_完成度检查与发布验收整改.md)。此前 V0.2.0 的 222 项回归保留为历史记录，不能替代当前源码验收。
 
 ## 当前限制
 
 - PDF 仅提取已有文本层；当前尚未支持扫描件 OCR、图片和复杂表格。
 - 向量策略按原始余弦分预筛选，默认门槛 `0.25`；BM25 和混合策略使用独立原始通道门槛，RRF 只排序。门槛应按模型和资料调整，不能单独证明答案正确。
-- 在线召回支持 `TRACERAG_RETRIEVAL_STRATEGY=vector|bm25|hybrid`；缺省为 vector。混合召回复用已有向量索引与 Chunk 文本，切换策略后重启 API，无需重新上传；同名更新后会刷新 BM25。`TRACERAG_BM25_MIN_SCORE` 默认 0，`TRACERAG_RRF_K` 默认 60。API 与界面区分余弦、BM25 和 RRF 排序分。暂不支持用户登录、知识库隔离、删除文档或 Reranker。
+- 在线召回支持 `TRACERAG_RETRIEVAL_STRATEGY=vector|bm25|hybrid`；缺省为 vector。混合召回复用已有向量索引与 Chunk 文本，切换策略后重启 API，无需重新上传；同名更新及删除后会刷新 BM25。`TRACERAG_BM25_MIN_SCORE` 默认 0，`TRACERAG_RRF_K` 默认 60。API 与界面区分余弦、BM25 和 RRF 排序分。暂不支持用户登录、知识库隔离或 Reranker。
 - 回答显示所选原文短句及逐句引用，保持来源语言；模型必须返回内部编号选择 JSON。协议错误会明确报错，不能回退到未经校验的自由文本。原文引用不能单独保证问题覆盖完整，仍需业务评测。
 - FastAPI 没有认证授权，默认仅绑定 `127.0.0.1`；不要在未加访问控制时暴露到公网。

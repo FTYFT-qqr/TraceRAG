@@ -1,0 +1,319 @@
+{
+  "checked_at": "2026-10-06T06:59:30.623766+00:00",
+  "mode": "offline-fixed-protocol",
+  "scope": "真实应用 HTTP 链路及索引持久化；固定模型协议不作为真实模型质量结论。",
+  "source_identity": {
+    "git_head": "25f62c8c4e34472fc32f5f9897a3afe23cbc2726",
+    "source_sha256": "561941b86891be51e75b5d8772b97ed3c23c0caeec76ea371d4d5d3e3b3c287c",
+    "files_sha256": {
+      "pyproject.toml": "3f14718c14bfcc5173057d68806e9a70bc7ba68327b045fd65725c220063e973",
+      "Dockerfile": "a1516878c557e838dced0b558c9f3095f792967e9bbc11e686589c29785b53a9",
+      "requirements-release.txt": "efb4c1bc535253e071ebb5a0daa4f43b2c21d3c7017ed287ebddb93cd8789e53",
+      "app/__init__.py": "3d224ec4ce462eb4ecb95673dde467d13c9ebd35c9b359ef47be4572d716bc9c",
+      "app/api.py": "f0a71daeeb01cdc4d3c09dfe2d8fa401e4eb1e7a345f113532470e1880deca40",
+      "app/chat.py": "ce5e6c6a7dddff6c5097ac417732a200466916f0cab1d94116065d53c0a10712",
+      "app/chunking.py": "eb8c16060a00b9d6553d2cb8a7318daa0eac2bbaaefa3c2f155ee1e4b54f0f83",
+      "app/citations.py": "39424829918cfc0226bac44fc9ee12a1140f43e22862fef77b34d68e1e487cd6",
+      "app/config.py": "b36cef7363ae79f0da96a392435dc9360a78acf6fa8338195af0663ef966ebe5",
+      "app/document_loader.py": "89b21e2e52bcd5c901ee2fc141caaf3f153857fc3f020cdf0ee0a7698f792630",
+      "app/embeddings.py": "329068cf46e02fd8b97fd6b4084b1b5dd65d9163e478284d1873faea45af1940",
+      "app/evaluation.py": "fe65ddb8e5c34e0b81974513ce484c42b4881a5c885c54ec7656c8f8a57ab992",
+      "app/grounded_answer.py": "aadde1a4e232cfd17b4468d95ca48f061b2cae8986188c1c494319e0fdc539ae",
+      "app/logging_config.py": "156fa2e8e983c30e22e7878009ef4e5efa465eeb979e63ab0ddc57411d2cd131",
+      "app/main.py": "9a3474174e9a67133eb4022228b05c8af07aa70892321dff009abe2ac546939d",
+      "app/models.py": "09622cf373a1c65ded3ca4f186643062cdba3e93da00d01ec282c8ce4eba2ce1",
+      "app/rag.py": "b2c0b2b0032095e90916caa4ef7b5f9729eb760324db9a323d3960a692c73a9c",
+      "app/relevance.py": "6acf632f94960c41638c3ddbfd406228e03486bad2ef567f05c4c6e726cd3019",
+      "app/retriever.py": "9e669425328182e2bd438bf51b8894a807157902d13c4dbaa6a81e36dbcd6465",
+      "app/runtime.py": "2cef9045432d4e917078af99057d090973661e9d9dd8f6017bb0582d444e84b7",
+      "app/ui.py": "0469a582d1fdf434483fcbc73e5b6d95d583c4724a66add2cb6615bafcea4f7d",
+      "app/ui_styles.py": "6e79e5fd6355af77b387cd3a46ca72e475d168cd3649bdcc8d462b349c4d6fb9",
+      "app/ui_workspace.py": "3cc00dab69829736fe0ec33e415a34c2e5f6045f2ea27894503e5c2f7fe2eb22",
+      "app/vector_store.py": "8eb96e9bb9bf465cd5e609c33bb0f88be1fc42b188d006554be3e96712c130d7",
+      "scripts/delivery_smoke.py": "eff8f6275b6cdd5aa32e1590781ffd3e958880271369115f4c8669c60ce0a052",
+      "scripts/delivery_provider.py": "fbb33992aa954855f8cffbf0ec56517d96fddaa0ff05de907bd5578f5680f0bf"
+    },
+    "working_tree_may_have_changes": true
+  },
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "checks": [
+    {
+      "name": "API版本和健康检查",
+      "passed": true,
+      "detail": {
+        "status": "ok",
+        "service": "TraceRAG",
+        "environment": "delivery-check",
+        "version": "0.2.1"
+      }
+    },
+    {
+      "name": "UI启动",
+      "passed": true,
+      "detail": "ok"
+    },
+    {
+      "name": "首次上传",
+      "passed": true,
+      "detail": {
+        "document_id": "190669ac709defc2e872c107d19523dc2b33767d1f2db13bcd2acc6a91cbf0d8",
+        "file_name": "工程演示设备.txt",
+        "page_count": 1,
+        "chunk_count": 1,
+        "index_generation": "58b44e3dbc75433bb24babe2d8478386",
+        "already_indexed": false,
+        "replaced_existing": false
+      }
+    },
+    {
+      "name": "首次上传后目录和真实计数",
+      "passed": true,
+      "detail": {
+        "documents": [
+          {
+            "document_id": "190669ac709defc2e872c107d19523dc2b33767d1f2db13bcd2acc6a91cbf0d8",
+            "file_name": "工程演示设备.txt",
+            "chunk_count": 1,
+            "indexed_page_count": null
+          }
+        ],
+        "document_count": 1,
+        "chunk_count": 1,
+        "index_generation": "58b44e3dbc75433bb24babe2d8478386"
+      }
+    },
+    {
+      "name": "重复上传跳过",
+      "passed": true,
+      "detail": {
+        "document_id": "190669ac709defc2e872c107d19523dc2b33767d1f2db13bcd2acc6a91cbf0d8",
+        "file_name": "工程演示设备.txt",
+        "page_count": 1,
+        "chunk_count": 1,
+        "index_generation": "58b44e3dbc75433bb24babe2d8478386",
+        "already_indexed": true,
+        "replaced_existing": false
+      }
+    },
+    {
+      "name": "有证据回答和来源",
+      "passed": true,
+      "detail": {
+        "answer": "工程演示设备每次借用最长4小时[1]。",
+        "rejected": false,
+        "citations": [
+          {
+            "chunk_id": "29e1b3e9f9e3bc77b5bd96bcb27cd39e93108794fad62dfcef3961777d145c9d",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。"
+          }
+        ],
+        "retrievals": [
+          {
+            "chunk_id": "29e1b3e9f9e3bc77b5bd96bcb27cd39e93108794fad62dfcef3961777d145c9d",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。",
+            "score": 0.03278688524590164,
+            "candidate_rank": 1,
+            "score_kind": "rrf",
+            "vector_score": 1.0,
+            "bm25_score": 2.972714748668402
+          }
+        ]
+      }
+    },
+    {
+      "name": "无证据拒答",
+      "passed": true,
+      "detail": {
+        "answer": "根据当前知识库，我无法确认这个问题。",
+        "rejected": true,
+        "citations": [],
+        "retrievals": [
+          {
+            "chunk_id": "29e1b3e9f9e3bc77b5bd96bcb27cd39e93108794fad62dfcef3961777d145c9d",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。",
+            "score": 0.03278688524590164,
+            "candidate_rank": 1,
+            "score_kind": "rrf",
+            "vector_score": 1.0,
+            "bm25_score": 3.835760966023744
+          }
+        ]
+      }
+    },
+    {
+      "name": "同名替换",
+      "passed": true,
+      "detail": {
+        "document_id": "7cf4517cf5ddd5911d2dd67aa48ecec3d68b84f9f1a26217ebf1ad2797d66d15",
+        "file_name": "工程演示设备.txt",
+        "page_count": 1,
+        "chunk_count": 1,
+        "index_generation": "6b4e5f3ba64c4ff5bfb3906cd2a3ac04",
+        "already_indexed": false,
+        "replaced_existing": true
+      }
+    },
+    {
+      "name": "替换后目录只保留新版",
+      "passed": true,
+      "detail": {
+        "documents": [
+          {
+            "document_id": "7cf4517cf5ddd5911d2dd67aa48ecec3d68b84f9f1a26217ebf1ad2797d66d15",
+            "file_name": "工程演示设备.txt",
+            "chunk_count": 1,
+            "indexed_page_count": null
+          }
+        ],
+        "document_count": 1,
+        "chunk_count": 1,
+        "index_generation": "6b4e5f3ba64c4ff5bfb3906cd2a3ac04"
+      }
+    },
+    {
+      "name": "未知标识删除返回404",
+      "passed": true,
+      "detail": {
+        "status_code": 404,
+        "body": {
+          "detail": "Document is no longer in the current knowledge base."
+        }
+      }
+    },
+    {
+      "name": "重启恢复",
+      "passed": true,
+      "detail": {
+        "answer": "工程演示设备每次借用最长4小时[1]。",
+        "rejected": false,
+        "citations": [
+          {
+            "chunk_id": "7d4391fe76e8a6cb55bec01c8d4310bb35d6296d4aa0ec9f883179b7e595d0bf",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。\n\n最新登记规则要求登记姓名。"
+          }
+        ],
+        "retrievals": [
+          {
+            "chunk_id": "7d4391fe76e8a6cb55bec01c8d4310bb35d6296d4aa0ec9f883179b7e595d0bf",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。\n\n最新登记规则要求登记姓名。",
+            "score": 0.03278688524590164,
+            "candidate_rank": 1,
+            "score_kind": "rrf",
+            "vector_score": 1.0,
+            "bm25_score": 2.972714748668402
+          }
+        ]
+      }
+    },
+    {
+      "name": "恢复后仍跳过重复上传",
+      "passed": true,
+      "detail": "6b4e5f3ba64c4ff5bfb3906cd2a3ac04"
+    },
+    {
+      "name": "删除最后文档生成空快照",
+      "passed": true,
+      "detail": {
+        "document_id": "7cf4517cf5ddd5911d2dd67aa48ecec3d68b84f9f1a26217ebf1ad2797d66d15",
+        "file_name": "工程演示设备.txt",
+        "deleted_chunk_count": 1,
+        "index_generation": "b9cd6cff8c314d628e38e2d8d9f06e44",
+        "document_count": 0,
+        "chunk_count": 0
+      }
+    },
+    {
+      "name": "空快照目录",
+      "passed": true,
+      "detail": {
+        "documents": [],
+        "document_count": 0,
+        "chunk_count": 0,
+        "index_generation": "b9cd6cff8c314d628e38e2d8d9f06e44"
+      }
+    },
+    {
+      "name": "删除后查询没有旧片段",
+      "passed": true,
+      "detail": {
+        "answer": "根据当前知识库，我无法确认这个问题。",
+        "rejected": true,
+        "citations": [],
+        "retrievals": []
+      }
+    },
+    {
+      "name": "重启后空快照仍为空",
+      "passed": true,
+      "detail": {
+        "documents": [],
+        "document_count": 0,
+        "chunk_count": 0,
+        "index_generation": "b9cd6cff8c314d628e38e2d8d9f06e44"
+      }
+    },
+    {
+      "name": "重启后旧内容仍不可检索",
+      "passed": true,
+      "detail": {
+        "answer": "根据当前知识库，我无法确认这个问题。",
+        "rejected": true,
+        "citations": [],
+        "retrievals": []
+      }
+    },
+    {
+      "name": "空快照后可再次上传",
+      "passed": true,
+      "detail": {
+        "document_id": "190669ac709defc2e872c107d19523dc2b33767d1f2db13bcd2acc6a91cbf0d8",
+        "file_name": "工程演示设备.txt",
+        "page_count": 1,
+        "chunk_count": 1,
+        "index_generation": "0897d3b9d7dd4b7e8f2ed7720e6bc7d9",
+        "already_indexed": false,
+        "replaced_existing": false
+      }
+    },
+    {
+      "name": "再次上传后恢复问答",
+      "passed": true,
+      "detail": {
+        "answer": "工程演示设备每次借用最长4小时[1]。",
+        "rejected": false,
+        "citations": [
+          {
+            "chunk_id": "29e1b3e9f9e3bc77b5bd96bcb27cd39e93108794fad62dfcef3961777d145c9d",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。"
+          }
+        ],
+        "retrievals": [
+          {
+            "chunk_id": "29e1b3e9f9e3bc77b5bd96bcb27cd39e93108794fad62dfcef3961777d145c9d",
+            "file_name": "工程演示设备.txt",
+            "page_number": null,
+            "text": "工程演示设备使用规定\n工程演示设备每次借用最长4小时。\n本手册未列出工程演示设备的购买价格。",
+            "score": 0.03278688524590164,
+            "candidate_rank": 1,
+            "score_kind": "rrf",
+            "vector_score": 1.0,
+            "bm25_score": 2.972714748668402
+          }
+        ]
+      }
+    }
+  ],
+  "passed": true
+}

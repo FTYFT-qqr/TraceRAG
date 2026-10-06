@@ -1,0 +1,63 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.53kB 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.13-slim
+#2 DONE 0.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 387B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 27.69kB 0.0s done
+#4 DONE 0.0s
+
+#5 [ 1/11] FROM docker.io/library/python:3.13-slim@sha256:bb2988715db2cf7ace7b53f38f3cffbef7c7046a656bee66245eb0ed386e2e81
+#5 resolve docker.io/library/python:3.13-slim@sha256:bb2988715db2cf7ace7b53f38f3cffbef7c7046a656bee66245eb0ed386e2e81 0.0s done
+#5 DONE 0.0s
+
+#6 [ 6/11] RUN python -m pip install --no-cache-dir -c requirements-release.txt "."
+#6 CACHED
+
+#7 [ 2/11] WORKDIR /opt/tracerag
+#7 CACHED
+
+#8 [ 3/11] RUN apt-get update && apt-get install -y --no-install-recommends libgomp1     && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [ 4/11] COPY pyproject.toml requirements-release.txt README.md ./
+#9 CACHED
+
+#10 [ 5/11] COPY app ./app
+#10 CACHED
+
+#11 [ 7/11] RUN if [ "true" = "true" ]; then          python -m pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu          && python -m pip install --no-cache-dir -c requirements-release.txt ".[local-embeddings]";        fi     && mkdir -p /var/lib/tracerag /models/embedding
+#11 CACHED
+
+#12 [ 8/11] COPY scripts ./scripts
+#12 DONE 0.1s
+
+#13 [ 9/11] COPY tests ./tests
+#13 DONE 0.1s
+
+#14 [10/11] COPY samples ./samples
+#14 DONE 0.1s
+
+#15 [11/11] COPY .env.example .env.docker.example .dockerignore compose.yaml compose.local.yaml ./
+#15 DONE 0.1s
+
+#16 exporting to image
+#16 exporting layers
+#16 exporting layers 0.2s done
+#16 exporting manifest sha256:01e29ea70ef7293153d9dc4ced461fc6e0ec22c12fd19a85d5b2d0ae62d03e91 0.0s done
+#16 exporting config sha256:e1f81a04605861057ff7f7b79d14460bf5a12642117650085e0475a1af8da315 0.0s done
+#16 exporting attestation manifest sha256:1e8f74142c011d6596037860d5c6da1b6efbc5f5c7fd624c7a281ce3bbb5c013 0.0s done
+#16 exporting manifest list sha256:4c14c786355d513ef772096268df2b2d2a777685937830bac4cd53f0a10d3fd1 0.0s done
+#16 naming to docker.io/library/tracerag-007-candidate2:20261006 done
+#16 unpacking to docker.io/library/tracerag-007-candidate2:20261006 0.1s done
+#16 DONE 0.5s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/ftymkpoc2gz2q31lbuusxrn5x

@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-06",
+  "scope": "V0.2 007 第一优先第 2 项：前端操作验收",
+  "source_sha256": {
+    "app/ui_workspace.py": "75eda39a4361969a7bd4fc4a1884fa280f18c1050400e110bbacc0283e3e8d05",
+    "tests/test_ui_workspace_007.py": "b4090bb2ac2168e1dea60f5321883681832769f4acc4c0a26e12a39d8c70610e"
+  },
+  "automated_component_run": {
+    "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/test_ui.py tests/test_ui_workspace_007.py",
+    "result": "8 passed in 3.47s",
+    "isolation": "Streamlit AppTest + 内存模拟 API；未读写正式知识库，未调用模型",
+    "covered": [
+      "首次上传显示新增片段并清理旧答案",
+      "完全重复上传跳过且保留已有答案",
+      "同名不同内容替换并清理旧答案",
+      "名称和 PDF 格式组合筛选",
+      "移除弹窗出现、保留资料不删除、确认移除发送 DELETE 并清理旧答案",
+      "外部目录 generation 变化清理旧答案",
+      "服务掉线清理旧答案并禁用问答、上传和移除",
+      "目录读取失败不误报为空资料库",
+      "窄屏 CSS 断点与最小按钮高度静态检查"
+    ],
+    "dialog_testing_note": "Streamlit AppTest 不执行 st.dialog fragment 的二次点击；列表中的移除入口和弹窗内容通过完整页面驱动，确认按钮通过同一弹窗函数的 AppTest 单独驱动。"
+  },
+  "browser_run": {
+    "kind": "实际浏览器渲染与导航；未在浏览器内执行上传或删除",
+    "browser": "Microsoft Edge headless via DevTools",
+    "isolation": "固定模拟目录 API + 独立 Streamlit 端口；无密钥、无正式知识库、无模型请求",
+    "operations": ["等待真实 Streamlit 内容出现", "点击资料库导航", "切换桌面与窄屏视口", "窄屏滚动至资料库底部"],
+    "viewports": {"desktop": [1440, 1000], "narrow": [390, 844]},
+    "catalog": {"documents": 3, "chunks": 7, "formats": ["PDF", "Markdown", "TXT"]},
+    "layout_metrics": {
+      "desktop": {"viewport_width": 1440, "document_scroll_width": 1440},
+      "narrow": {"viewport_width": 390, "document_scroll_width": 390}
+    },
+    "horizontal_overflow_observed": false,
+    "images": ["桌面_隔离资料库.png", "窄屏_隔离资料库.png", "窄屏_资料库底部.png"]
+  },
+  "limits": [
+    "浏览器截图只验证隔离固定目录的渲染、导航和滚动；上传、删除与状态清理由 AppTest 验收。",
+    "原生 CUA 浏览器自动化因 Windows sandbox helper_unknown_error 无法启动；没有将加载骨架截图或未验证的断连页面纳入证据。",
+    "没有在真实模型或用户现有知识库中做本次前端验收。"
+  ]
+}

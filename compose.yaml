@@ -3,11 +3,11 @@ name: tracerag
 services:
   api:
     build: .
-    image: tracerag:0.2.0
+    image: tracerag:0.2.1
     # 单独的容器配置不会把本机 Windows 权重/索引路径直接传入容器。
     env_file: .env.docker
     environment:
-      TRACERAG_VERSION: "0.2.0"
+      TRACERAG_VERSION: "0.2.1"
       TRACERAG_INDEX_DIR: /var/lib/tracerag/indexes
     ports:
       - "127.0.0.1:${TRACERAG_DOCKER_API_PORT:-18000}:8000"
@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
 
   ui:
-    image: tracerag:0.2.0
+    image: tracerag:0.2.1
     build: .
     command: ["python", "-m", "streamlit", "run", "app/ui.py", "--server.address=0.0.0.0", "--server.port=8501", "--server.headless=true", "--browser.gatherUsageStats=false"]
     environment:

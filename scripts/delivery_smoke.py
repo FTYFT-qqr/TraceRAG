@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import socket
@@ -14,6 +15,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+
+from app import __version__
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -67,8 +70,30 @@ def stop(process: subprocess.Popen) -> None:
             process.wait(timeout=10)
 
 
+def source_identity() -> dict:
+    """记录本轮实际源码及提交标识，区分未提交工作区与历史版本。"""
+    tracked = [ROOT / "pyproject.toml", ROOT / "Dockerfile", ROOT / "requirements-release.txt"]
+    tracked.extend(sorted((ROOT / "app").rglob("*.py")))
+    tracked.extend([ROOT / "scripts" / "delivery_smoke.py", ROOT / "scripts" / "delivery_provider.py"])
+    fingerprints = {
+        path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in tracked if path.is_file()
+    }
+    digest = hashlib.sha256(json.dumps(fingerprints, sort_keys=True).encode("utf-8")).hexdigest()
+    revision = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
+        text=True, timeout=10, check=False,
+    )
+    return {
+        "git_head": revision.stdout.strip() if revision.returncode == 0 else None,
+        "source_sha256": digest,
+        "files_sha256": fingerprints,
+        "working_tree_may_have_changes": True,
+    }
+
+
 def run(output: Path) -> dict:
-    """检查安装后启动、上传、重复跳过、替换、回答、拒答、UI及重启恢复。"""
+    """检查隔离应用的上传、文档管理、查询、UI及跨进程快照恢复。"""
     output.mkdir(parents=True, exist_ok=False)
     processes = []
     handles = []
@@ -76,12 +101,20 @@ def run(output: Path) -> dict:
         "checked_at": datetime.now(timezone.utc).isoformat(),
         "mode": "offline-fixed-protocol",
         "scope": "真实应用 HTTP 链路及索引持久化；固定模型协议不作为真实模型质量结论。",
+        "source_identity": source_identity(),
         "python": sys.version, "checks": [], "passed": False,
     }
+
+    def save() -> None:
+        """逐项写入机器可读结果，异常退出时仍保留已执行的证据。"""
+        (output / "工程验收.json").write_text(
+            json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
+        )
 
     def record(name: str, condition: bool, detail: object) -> None:
         """保存单项结果并立即中止失败链路，避免生成虚假的通过报告。"""
         report["checks"].append({"name": name, "passed": bool(condition), "detail": detail})
+        save()
         if not condition:
             raise AssertionError(f"工程验收失败：{name}")
 
@@ -122,7 +155,7 @@ def run(output: Path) -> dict:
             wait_ready(f"http://127.0.0.1:{provider_port}/openapi.json", provider)
             api = start("接口启动", api_arguments)
             health = wait_ready(f"http://127.0.0.1:{api_port}/health", api)
-            record("API版本和健康检查", health["version"] == "0.2.0" and health["status"] == "ok", health)
+            record("API版本和健康检查", health["version"] == __version__ and health["status"] == "ok", health)
             ui = start("界面启动", ["-m", "streamlit", "run", str(ROOT / "app" / "ui.py"), "--server.address=127.0.0.1", f"--server.port={ui_port}", "--server.headless=true", "--browser.gatherUsageStats=false"])
             ui_health = wait_ready(f"http://127.0.0.1:{ui_port}/_stcore/health", ui)
             record("UI启动", ui_health == "ok", ui_health)
@@ -143,6 +176,20 @@ def run(output: Path) -> dict:
 
             first = upload(content)
             record("首次上传", first["chunk_count"] > 0 and not first["already_indexed"], first)
+            listed = requests.get(f"{base}/documents", timeout=30)
+            listed.raise_for_status()
+            catalog = listed.json()
+            record(
+                "首次上传后目录和真实计数",
+                catalog["document_count"] == 1
+                and catalog["chunk_count"] == first["chunk_count"]
+                and catalog["index_generation"] == first["index_generation"]
+                and catalog["documents"] == [{
+                    "document_id": first["document_id"], "file_name": first["file_name"],
+                    "chunk_count": first["chunk_count"], "indexed_page_count": None,
+                }],
+                catalog,
+            )
             duplicate = upload(content)
             record("重复上传跳过", duplicate["already_indexed"] and duplicate["index_generation"] == first["index_generation"], duplicate)
             supported = query("工程演示设备最长可以借用多久？")
@@ -151,12 +198,55 @@ def run(output: Path) -> dict:
             record("无证据拒答", unsupported["rejected"] and not unsupported["citations"], unsupported)
             replacement = upload(content + "\n最新登记规则要求登记姓名。".encode("utf-8"))
             record("同名替换", replacement["replaced_existing"] and replacement["index_generation"] != first["index_generation"], replacement)
+            listed = requests.get(f"{base}/documents", timeout=30)
+            listed.raise_for_status()
+            catalog = listed.json()
+            record(
+                "替换后目录只保留新版",
+                catalog["document_count"] == 1
+                and catalog["chunk_count"] == replacement["chunk_count"]
+                and catalog["documents"][0]["document_id"] == replacement["document_id"]
+                and catalog["index_generation"] == replacement["index_generation"],
+                catalog,
+            )
+            unknown = requests.delete(f"{base}/documents/unknown-document-id", timeout=30)
+            record("未知标识删除返回404", unknown.status_code == 404, {"status_code": unknown.status_code, "body": unknown.json()})
             stop(api)
             restored = start("接口重启", api_arguments)
             wait_ready(f"{base}/health", restored)
             recovered = query("工程演示设备最长可以借用多久？")
             record("重启恢复", not recovered["rejected"] and "4小时" in recovered["answer"] and any("最新登记规则" in hit["text"] for hit in recovered["retrievals"]), recovered)
             record("恢复后仍跳过重复上传", upload(content + "\n最新登记规则要求登记姓名。".encode("utf-8"))["already_indexed"], replacement["index_generation"])
+            deleted_response = requests.delete(f"{base}/documents/{replacement['document_id']}", timeout=30)
+            deleted_response.raise_for_status()
+            deleted = deleted_response.json()
+            record(
+                "删除最后文档生成空快照",
+                deleted["document_id"] == replacement["document_id"]
+                and deleted["deleted_chunk_count"] == replacement["chunk_count"]
+                and deleted["document_count"] == 0 and deleted["chunk_count"] == 0
+                and deleted["index_generation"] != replacement["index_generation"],
+                deleted,
+            )
+            listed = requests.get(f"{base}/documents", timeout=30)
+            listed.raise_for_status()
+            catalog = listed.json()
+            record("空快照目录", catalog["documents"] == [] and catalog["document_count"] == 0 and catalog["chunk_count"] == 0 and catalog["index_generation"] == deleted["index_generation"], catalog)
+            empty_answer = query("工程演示设备最长可以借用多久？")
+            record("删除后查询没有旧片段", empty_answer["rejected"] and not empty_answer["citations"] and not empty_answer["retrievals"], empty_answer)
+            stop(restored)
+            restored_empty = start("空快照接口重启", api_arguments)
+            wait_ready(f"{base}/health", restored_empty)
+            listed = requests.get(f"{base}/documents", timeout=30)
+            listed.raise_for_status()
+            catalog = listed.json()
+            record("重启后空快照仍为空", catalog["documents"] == [] and catalog["index_generation"] == deleted["index_generation"], catalog)
+            empty_answer = query("工程演示设备最长可以借用多久？")
+            record("重启后旧内容仍不可检索", empty_answer["rejected"] and not empty_answer["citations"] and not empty_answer["retrievals"], empty_answer)
+            reuploaded = upload(content)
+            record("空快照后可再次上传", not reuploaded["already_indexed"] and reuploaded["chunk_count"] > 0 and reuploaded["index_generation"] != deleted["index_generation"], reuploaded)
+            restored_answer = query("工程演示设备最长可以借用多久？")
+            record("再次上传后恢复问答", not restored_answer["rejected"] and "4小时" in restored_answer["answer"] and restored_answer["citations"][0]["file_name"] == "工程演示设备.txt", restored_answer)
             report["passed"] = True
         except Exception as exc:
             report["error"] = f"{type(exc).__name__}: {exc}"
@@ -165,7 +255,7 @@ def run(output: Path) -> dict:
                 stop(process)
             for handle in handles:
                 handle.close()
-    (output / "工程验收.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    save()
     return report
 
 

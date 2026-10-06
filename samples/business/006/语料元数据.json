@@ -1,0 +1,25 @@
+{
+  "dataset": "TraceRAG-006",
+  "created_on": "2026-10-05",
+  "source_type": "原创模拟业务语料",
+  "provenance": "为评测专门编写，无外部企业、政府或园区资料来源；不得当作真实业务规则引用。",
+  "scope_limit": "只能验证系统对本组模拟政策文本的检索和回答，不能代表真实业务分布。",
+  "corpus_files": [
+    "云栖工坊订单服务.txt",
+    "远舟冷链交接手册.md",
+    "青岚园区能源服务规则.pdf"
+  ],
+  "development_questions": "questions_development.json",
+  "acceptance_questions": "questions_acceptance.json",
+  "development_count": 12,
+  "acceptance_answerable_count": 40,
+  "acceptance_unanswerable_count": 10,
+  "pdf_page_number_basis": "1-based，与 app.document_loader.load_document 一致",
+  "sha256": {
+    "云栖工坊订单服务.txt": "15f8f8c8656d2fb675bfe8cbe48f1fe87c5122afd96429494ac617209ee95999",
+    "远舟冷链交接手册.md": "4583bc868ff64b7f49a0f44ea9645579342cdf4546e8410e83e79eca1b38b497",
+    "青岚园区能源服务规则.pdf": "7fe4f85bd8dab5a80c22b069f48968d69632203da7d9fa418b54a7c9c0e04bc1",
+    "questions_development.json": "b869d4c6ef6d6922a393d89a6b4917e5f8f45efdd470270534faf85c53f4d56d",
+    "questions_acceptance.json": "40bd3f4f02b4026cc8fbcbde98d7be2e11eaf42481de546eecfdef51d1e27b6e"
+  }
+}

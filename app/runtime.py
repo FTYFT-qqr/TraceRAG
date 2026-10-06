@@ -43,6 +43,28 @@ class IngestResult:
     replaced_existing: bool = False
 
 
+@dataclass(frozen=True, slots=True)
+class DocumentSummary:
+    """描述当前可检索文档，页数仅统计有片段的 PDF 页面。"""
+
+    document_id: str
+    file_name: str
+    chunk_count: int
+    indexed_page_count: int | None
+
+
+@dataclass(frozen=True, slots=True)
+class DeleteResult:
+    """记录已从当前快照移除的文档和剩余知识库规模。"""
+
+    document_id: str
+    file_name: str
+    deleted_chunk_count: int
+    generation: str
+    document_count: int
+    chunk_count: int
+
+
 class RAGRuntime:
     """在单个应用进程中持有已校验的索引和模型客户端。"""
 
@@ -254,6 +276,58 @@ class RAGRuntime:
             generation,
             False,
             replaced_existing=bool(old_file_chunks),
+        )
+
+    def _active_store(self) -> FaissVectorStore:
+        """读取当前磁盘快照；尚未持久化时使用已有内存索引。"""
+        self._ensure_embedding_identity()
+        if (self.index_dir / "CURRENT").is_file():
+            return FaissVectorStore.load(
+                self.index_dir, expected_embedding_identity=self.embedding_identity,
+            )
+        return self.vector_store
+
+    def list_documents(self) -> list[DocumentSummary]:
+        """按文档标识聚合当前 Chunk，返回真实数量和 PDF 页面覆盖。"""
+        grouped: dict[str, list[Chunk]] = {}
+        for chunk in self._active_store().chunks:
+            grouped.setdefault(chunk.document_id, []).append(chunk)
+        documents = [
+            DocumentSummary(
+                document_id=document_id,
+                file_name=chunks[0].file_name,
+                chunk_count=len(chunks),
+                indexed_page_count=(
+                    len({chunk.page_number for chunk in chunks if chunk.page_number is not None})
+                    if any(chunk.page_number is not None for chunk in chunks) else None
+                ),
+            )
+            for document_id, chunks in grouped.items()
+        ]
+        return sorted(documents, key=lambda document: (document.file_name.casefold(), document.document_id))
+
+    def delete_document(self, document_id: str) -> DeleteResult:
+        """提交候选快照后切换检索器，保存失败时不改变原知识库。"""
+        base_store = self._active_store()
+        removed = [chunk for chunk in base_store.chunks if chunk.document_id == document_id]
+        if not removed:
+            raise KeyError(document_id)
+        candidate_store = base_store.without_document_id(document_id)
+        # 先准备新检索管线，避免磁盘提交后才发现稀疏表无法构造。
+        candidate_runtime = RAGRuntime(
+            self.settings, self.embedder, self.chat_client, candidate_store,
+        )
+        generation = candidate_store.save(self.index_dir, embedding_identity=self.embedding_identity)
+        self.vector_store = candidate_store
+        self.retriever = candidate_runtime.retriever
+        self.rag = candidate_runtime.rag
+        return DeleteResult(
+            document_id=document_id,
+            file_name=removed[0].file_name,
+            deleted_chunk_count=len(removed),
+            generation=generation,
+            document_count=len({chunk.document_id for chunk in candidate_store.chunks}),
+            chunk_count=candidate_store.count,
         )
 
     def _current_generation(self) -> str:

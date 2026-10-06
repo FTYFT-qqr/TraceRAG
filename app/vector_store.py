@@ -127,6 +127,25 @@ class FaissVectorStore:
         candidate.add(kept_chunks, kept_vectors)
         return candidate
 
+    def without_document_id(self, document_id: str) -> "FaissVectorStore":
+        """构建移除指定文档后的独立索引；空结果仍保留向量维度。"""
+        positions = [
+            position for position, chunk in enumerate(self._chunks)
+            if chunk.document_id != document_id
+        ]
+        candidate = FaissVectorStore(self.embedding_identity)
+        if self._index is None:
+            return candidate
+        if not positions:
+            # 零行 Flat 索引仍可保存并恢复，不能删除 CURRENT 暴露旧知识库。
+            candidate._index = faiss.IndexFlatIP(self._index.d)
+            return candidate
+        candidate.add(
+            [self._chunks[position] for position in positions],
+            np.vstack([self._index.reconstruct(position) for position in positions]),
+        )
+        return candidate
+
     def save(
         self,
         directory: str | Path,
@@ -135,7 +154,7 @@ class FaissVectorStore:
     ) -> str:
         """写入不可变快照，身份元数据就绪后再原子切换 CURRENT。"""
 
-        if self._index is None or not self._chunks:
+        if self._index is None:
             raise ValueError("Cannot save an empty vector store.")
         if (
             self.embedding_identity is not None

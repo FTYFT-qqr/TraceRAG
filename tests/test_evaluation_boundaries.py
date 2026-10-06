@@ -69,6 +69,48 @@ def test_complete_numeric_values_decide_quality(
         assert outcome["manual_review_status"] == "自动核验失败"
 
 
+@pytest.mark.parametrize("source,fact,answer,unsupported,passes", [
+    (
+        "条款 06：冻品装车使用负18摄氏度温区。",
+        "冻品装车使用负18摄氏度温区",
+        "条款 06：冻品装车使用负18摄氏度温区。[1]",
+        [], True,
+    ),
+    (
+        "条款 17：新增功率超过30千瓦的设备须事先申报。",
+        "新增功率超过30千瓦的设备须事先申报",
+        "条款 17：新增功率超过30千瓦的设备须事先申报。[1]",
+        [], True,
+    ),
+    (
+        "条款 06：冻品装车使用负18摄氏度温区。",
+        "冻品装车使用负18摄氏度温区",
+        "条款 06：冻品装车使用18摄氏度温区。[1]",
+        ["18摄氏度"], False,
+    ),
+    (
+        "条款 06：冻品装车使用负18摄氏度温区。",
+        "冻品装车使用负18摄氏度温区",
+        "条款 06：冻品装车使用负8摄氏度温区。[1]",
+        ["负8摄氏度"], False,
+    ),
+    (
+        "条款 17：新增功率超过30千瓦的设备须事先申报。",
+        "新增功率超过30千瓦的设备须事先申报",
+        "条款 17：新增功率超过3千瓦的设备须事先申报。[1]",
+        ["3千瓦"], False,
+    ),
+])
+def test_temperature_and_power_numbers_keep_complete_sign_and_unit(
+    source: str, fact: str, answer: str, unsupported: list[str], passes: bool
+) -> None:
+    """真实 006 案例须通过，错符号或错数值须按完整单位拒绝。"""
+
+    outcome = _assessed(source, fact, answer)
+    assert outcome["unsupported_numeric_claims"] == unsupported
+    assert outcome["quality_pass"] is passes
+
+
 @pytest.mark.parametrize("connector", ["并", "并且", "且", "以及", "而且", "同时", "和"])
 def test_extra_assertion_after_matching_fact_requires_review(connector: str) -> None:
     """正确短语后追加的无来源断言必须复核，不能因部分命中自动通过。"""

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tracerag"
-version = "0.2.0"
+version = "0.2.1"
 description = "A traceable enterprise knowledge-base question answering system."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -17,7 +17,7 @@ dependencies = [
     "openai>=1.60,<3.0",
     "python-multipart>=0.0.9,<1.0",
     "python-dotenv>=1.0,<2.0",
-    "streamlit>=1.40,<2.0",
+    "streamlit>=1.64,<2.0",
     "requests>=2.32,<3.0",
 ]
 

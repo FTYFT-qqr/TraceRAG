@@ -1,0 +1,226 @@
+[
+  {
+    "id": "B006-D1-01",
+    "query": "工坊试制订单由哪个窗口受理？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "试制订单统一由一号服务窗口受理。",
+    "expected_answer_facts": [
+      [
+        "一号服务窗口"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-D1-02",
+    "query": "试制订单需要提前几天提交？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "试制订单须提前3个工作日提交。",
+    "expected_answer_facts": [
+      [
+        "提前3个工作日"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric"
+    ]
+  },
+  {
+    "id": "B006-D1-03",
+    "query": "工坊接受电话口头改图吗？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "图纸变更不接受电话口头通知。",
+    "expected_answer_facts": [
+      [
+        "不接受电话口头通知"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "negative"
+    ]
+  },
+  {
+    "id": "B006-D1-04",
+    "query": "订单样件编号由谁分配？",
+    "answerable": true,
+    "expected_source": "云栖工坊订单服务.txt",
+    "expected_evidence": "样件编号由计划专员在确认订单后分配。",
+    "expected_answer_facts": [
+      [
+        "计划专员"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-D2-01",
+    "query": "冷链车辆出车前应核对什么标签？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "出车前司机须核对车厢温区标签。",
+    "expected_answer_facts": [
+      [
+        "车厢温区标签"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-D2-02",
+    "query": "交接单由哪个岗位创建？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "交接单由发货调度员创建。",
+    "expected_answer_facts": [
+      [
+        "发货调度员"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ]
+  },
+  {
+    "id": "B006-D2-03",
+    "query": "温度记录仪电量不足时能否发车？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "记录仪电量低于20%时不得发车。",
+    "expected_answer_facts": [
+      [
+        "低于20%"
+      ],
+      [
+        "不得发车"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "negative",
+      "numeric"
+    ]
+  },
+  {
+    "id": "B006-D2-04",
+    "query": "到站照片要保存几张？",
+    "answerable": true,
+    "expected_source": "远舟冷链交接手册.md",
+    "expected_evidence": "到站时须保存2张封签照片。",
+    "expected_answer_facts": [
+      [
+        "2张封签照片"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "numeric"
+    ]
+  },
+  {
+    "id": "B006-D3-01",
+    "query": "园区能源抄表由哪个部门负责？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "园区月度抄表由能源服务部负责。",
+    "expected_answer_facts": [
+      [
+        "能源服务部"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ],
+    "expected_page_number": 1
+  },
+  {
+    "id": "B006-D3-02",
+    "query": "月度用能通知一般在每月几号发布？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "月度用能通知于每月5日发布。",
+    "expected_answer_facts": [
+      [
+        "每月5日"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "time"
+    ],
+    "expected_page_number": 1
+  },
+  {
+    "id": "B006-D3-03",
+    "query": "企业申请电表更名需要什么材料？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "电表更名申请须附营业执照复印件。",
+    "expected_answer_facts": [
+      [
+        "营业执照复印件"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "direct"
+    ],
+    "expected_page_number": 1
+  },
+  {
+    "id": "B006-D3-04",
+    "query": "物业可以代企业签署用能确认书吗？",
+    "answerable": true,
+    "expected_source": "青岚园区能源服务规则.pdf",
+    "expected_evidence": "物业不得代企业签署用能确认书。",
+    "expected_answer_facts": [
+      [
+        "不得代企业签署"
+      ]
+    ],
+    "allow_citations": true,
+    "refusal_expected": false,
+    "manual_review_condition": "核对全部预期事实、证据原文和引用来源；额外断言须人工复核。",
+    "tags": [
+      "negative"
+    ],
+    "expected_page_number": 1
+  }
+]

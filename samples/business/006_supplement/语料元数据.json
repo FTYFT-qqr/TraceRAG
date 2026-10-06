@@ -1,0 +1,19 @@
+{
+  "dataset": "TraceRAG-006-supplement-r1",
+  "created_on": "2026-10-05",
+  "source_type": "原创模拟业务语料",
+  "provenance": "为数字引用判定整改后的补充回归专门编写，无外部真实气象站资料来源。",
+  "scope_limit": "15题补充回归不能替代已冻结的006完整50题独立验收，也不能代表真实业务准确率。",
+  "corpus_files": [
+    "岚峰气象观测站运维规则.txt"
+  ],
+  "questions": "questions_supplement.json",
+  "answerable_count": 12,
+  "unanswerable_count": 3,
+  "cli_dataset_mode": "development",
+  "not_full_independent_acceptance": true,
+  "sha256": {
+    "岚峰气象观测站运维规则.txt": "71b3f7c8de429b93a58a8580858ee3b73af0e85329d1dd2c96db274f492ec91d",
+    "questions_supplement.json": "1fde036fed3a81345c18953ae2787290b5ef825430c8d6e96236bb1fc0c534fb"
+  }
+}

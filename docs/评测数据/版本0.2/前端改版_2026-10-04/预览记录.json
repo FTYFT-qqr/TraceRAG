@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-04",
+  "kind": "layout_preview_only",
+  "viewports": {
+    "desktop": [
+      1440,
+      1000
+    ],
+    "mobile": [
+      390,
+      844
+    ]
+  },
+  "live_preview": {
+    "api": "http://127.0.0.1:18010",
+    "ui": "http://127.0.0.1:18510",
+    "index_scope": ".planning/2026-10-04-tracerag-frontend/preview-index",
+    "state": "isolated_empty_index"
+  },
+  "sample_data": "docs/评测数据/版本0.2/质量整改_2026-10-03/最终混合召回/混合召回最终验收.json",
+  "sample_note": "历史公开样本，仅用于组件排版，顶部标注，上传和移除禁用；不是当前知识库统计或新质量验收。",
+  "visual_results": {
+    "streamlit_exceptions_observed": 0,
+    "horizontal_overflow_observed": false,
+    "images": [
+      "桌面问答空状态.png",
+      "桌面资料库.png",
+      "窄屏问答空状态.png",
+      "历史样本资料列表.png",
+      "历史样本回答.png",
+      "历史样本引用展开.png",
+      "窄屏资料列表.png",
+      "窄屏历史样本回答.png"
+    ]
+  },
+  "static_results": {
+    "python_ast_modules": 6,
+    "git_diff_check": "no_report"
+  },
+  "automated_tests_run": false,
+  "remote_models_called": false,
+  "existing_knowledge_base_modified": false,
+  "docker_rebuilt": false,
+  "pending": [
+    "新增列表与删除接口的隔离功能回归",
+    "删除最后一份、重启恢复、再次上传",
+    "保存失败保持原 generation",
+    "既有回归与新版镜像验收"
+  ]
+}

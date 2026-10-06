@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-06",
+  "scope": "V0.2 007 发布候选当前工作区的完整 Python 回归；与历史 v0.2.0 的 222 项批次分开",
+  "command": ".\\.venv\\Scripts\\python.exe -m pytest -p no:cacheprovider -q --junitxml docs/评测数据/版本0.2/007_完整回归_2026-10-06/自动测试.xml",
+  "result": {
+    "tests": 259,
+    "passed": 259,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "third_party_deprecation_warnings": 2,
+    "duration_seconds": 19.21,
+    "xml_path": "自动测试.xml",
+    "xml_sha256": "290d258497fd663b565911da96ab962730bf13548360fed069ac9225ab865926"
+  },
+  "source_identity": {
+    "git_base_head_before_commit": "25f62c8c4e34472fc32f5f9897a3afe23cbc2726",
+    "state": "尚未提交的完整发布候选工作区；Git HEAD 单独不能代表本次测试源码",
+    "docker_copy_file_count": 92,
+    "docker_copy_files_sha256": "bfedf8eeecb8268b9582a6366da78b51927bf727f2d89a3538cb66e908ecfb4d",
+    "inventory_report": "../007_容器镜像_2026-10-06_发布候选/容器工程验收.json"
+  },
+  "environment": {
+    "runner": "本机 Windows，项目 .venv",
+    "dependency_check": "python -m pip check：No broken requirements found"
+  }
+}
