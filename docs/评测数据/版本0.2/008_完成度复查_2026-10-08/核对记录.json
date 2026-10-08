@@ -130,14 +130,40 @@
     "image_source_mismatches": 0,
     "image_source_sha256": "28ebfe777e98b7d829d66dd3451a11adb97222633680fffe62db1c98c6aa42af",
     "models_called": false,
-    "real_business_evaluation": "skipped by earlier user decision"
+    "real_business_evaluation": "skipped by earlier user decision",
+    "commit_sha": "db18f5f18b21b0a9d8a41607d5357820e6d28e20",
+    "remote_branch": "codex/full-delivery-v0.2",
+    "github_actions_run_id": 37750178006,
+    "github_actions_conclusion": "success"
   },
   "limits": {
     "tests_rerun": true,
     "models_called": false,
     "docker_started_or_rebuilt": true,
-    "committed_or_pushed": false,
+    "committed_or_pushed": true,
     "real_business_evaluation": "skipped by earlier user decision"
   },
-  "comparison_scope": "文件指纹在本次 README 等状态文档修订之前读取；记录当时工作区快照。"
+  "comparison_scope": "文件指纹在本次 README 等状态文档修订之前读取；记录当时工作区快照。",
+  "release_candidate_ci": {
+    "run_id": 37750178006,
+    "run_url": "https://github.com/FTYFT-qqr/TraceRAG/actions/runs/37750178006",
+    "head_sha": "db18f5f18b21b0a9d8a41607d5357820e6d28e20",
+    "branch": "codex/full-delivery-v0.2",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "python (windows-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "python (ubuntu-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "docker",
+        "conclusion": "success"
+      }
+    ]
+  }
 }
