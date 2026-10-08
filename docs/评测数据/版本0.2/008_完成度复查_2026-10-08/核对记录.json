@@ -131,9 +131,9 @@
     "image_source_sha256": "28ebfe777e98b7d829d66dd3451a11adb97222633680fffe62db1c98c6aa42af",
     "models_called": false,
     "real_business_evaluation": "skipped by earlier user decision",
-    "commit_sha": "db18f5f18b21b0a9d8a41607d5357820e6d28e20",
+    "commit_sha": "058ef5500998dabeb719ff02c7bd20f5897f3a66",
     "remote_branch": "codex/full-delivery-v0.2",
-    "github_actions_run_id": 37750178006,
+    "github_actions_run_id": 37751222292,
     "github_actions_conclusion": "success"
   },
   "limits": {
@@ -141,13 +141,15 @@
     "models_called": false,
     "docker_started_or_rebuilt": true,
     "committed_or_pushed": true,
-    "real_business_evaluation": "skipped by earlier user decision"
+    "real_business_evaluation": "skipped by earlier user decision",
+    "tagged": true,
+    "release_published": true
   },
   "comparison_scope": "文件指纹在本次 README 等状态文档修订之前读取；记录当时工作区快照。",
   "release_candidate_ci": {
-    "run_id": 37750178006,
-    "run_url": "https://github.com/FTYFT-qqr/TraceRAG/actions/runs/37750178006",
-    "head_sha": "db18f5f18b21b0a9d8a41607d5357820e6d28e20",
+    "run_id": 37751222292,
+    "run_url": "https://github.com/FTYFT-qqr/TraceRAG/actions/runs/37751222292",
+    "head_sha": "058ef5500998dabeb719ff02c7bd20f5897f3a66",
     "branch": "codex/full-delivery-v0.2",
     "status": "completed",
     "conclusion": "success",
@@ -165,5 +167,16 @@
         "conclusion": "success"
       }
     ]
+  },
+  "public_release": {
+    "id": 406611663,
+    "tag": "v0.2.1",
+    "url": "https://github.com/FTYFT-qqr/TraceRAG/releases/tag/v0.2.1",
+    "tagged_commit": "058ef5500998dabeb719ff02c7bd20f5897f3a66",
+    "published_at": "2026-10-08T08:42:17Z",
+    "draft": false,
+    "prerelease": false,
+    "ci_run_id": 37751222292,
+    "ci_conclusion": "success"
   }
 }
