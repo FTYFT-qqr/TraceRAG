@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-08",
+  "scope": "V0.2 007/008 修复工作区完整 Python 回归；与 259 项历史批次分开",
+  "commands": [
+    "D:/TraceRAG/.venv/Scripts/python.exe -m pytest -p no:cacheprovider -q --junitxml=docs/评测数据/版本0.2/008_完成度复查_2026-10-08/自动测试.xml",
+    "PYTHONPATH=D:/TraceRAG/.planning/2026-10-06-tracerag-007/streamlit165 D:/TraceRAG/.venv/Scripts/python.exe -m pytest -p no:cacheprovider -q --junitxml=docs/评测数据/版本0.2/008_完成度复查_2026-10-08/自动测试_streamlit165.xml"
+  ],
+  "environment": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "pytest": "8.4.2",
+    "streamlit_default": "1.64.0",
+    "fastapi": "0.141.1",
+    "pip_check": "No broken requirements found"
+  },
+  "runs": [
+    {
+      "streamlit": "1.64.0",
+      "tests": 260,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_seconds": 7.163,
+      "third_party_deprecation_warnings": 2,
+      "xml_path": "自动测试.xml",
+      "xml_sha256": "7ebffdfd09ab03674fbd8716b885c441fa13e95947ad7d776603983056daa499"
+    },
+    {
+      "streamlit": "1.65.0",
+      "tests": 260,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_seconds": 7.763,
+      "third_party_deprecation_warnings": 2,
+      "xml_path": "自动测试_streamlit165.xml",
+      "xml_sha256": "ad7487c3a87d58282178248b2f7fe61709b011cca7488ad9ea9ccb4a700c1f53"
+    }
+  ],
+  "source_identity": {
+    "base_commit": "5666a0ef817b99ca6f14d0e3219a596217d9be87",
+    "working_tree_contains_uncommitted_repairs": true,
+    "source_file_count": 92,
+    "source_sha256": "28ebfe777e98b7d829d66dd3451a11adb97222633680fffe62db1c98c6aa42af",
+    "manifest_path": "源码指纹.json"
+  },
+  "container_evidence": {
+    "image_tag": "tracerag-008-release:20261008",
+    "image_id": "sha256:8b6d8a29a1fe10728141953876c00a8bc956ceb1e292097023701683b3b4faf1",
+    "docker_version": "29.8.1",
+    "checks": 10,
+    "passed": true,
+    "source_file_count": 92,
+    "host_sha256": "28ebfe777e98b7d829d66dd3451a11adb97222633680fffe62db1c98c6aa42af",
+    "image_sha256": "28ebfe777e98b7d829d66dd3451a11adb97222633680fffe62db1c98c6aa42af",
+    "mismatches": 0,
+    "cleanup_errors": [],
+    "report_path": "容器验收/容器工程验收.json",
+    "build_log_path": "镜像构建.log",
+    "build_log_sha256": "9f1254691a626fb7e08d52c2e6d95885c2fee952ac4a0297142c43f491e748a5"
+  }
+}

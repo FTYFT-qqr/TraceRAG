@@ -119,7 +119,8 @@ def _labelled(widgets: Any, label: str) -> Any:
 def _ask(app: AppTest) -> None:
     """提交一个问题，建立等待失效的旧回答。"""
 
-    app.text_area[0].set_value("当前资料是什么？").run()
+    # 表单字段和提交按钮需在同一次 AppTest 运行中发送，兼容 Streamlit 1.64/1.65。
+    app.text_area[0].set_value("当前资料是什么？")
     _labelled(app.button, "查找答案").click().run()
     assert not app.exception
     assert app.session_state["answer_record"]["result"]["answer"] == "当前资料有依据。[1]"

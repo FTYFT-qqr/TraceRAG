@@ -3,11 +3,11 @@
   "scope": "V0.2 007 第一优先第 2 项：前端操作验收",
   "source_sha256": {
     "app/ui_workspace.py": "75eda39a4361969a7bd4fc4a1884fa280f18c1050400e110bbacc0283e3e8d05",
-    "tests/test_ui_workspace_007.py": "b4090bb2ac2168e1dea60f5321883681832769f4acc4c0a26e12a39d8c70610e"
+    "tests/test_ui_workspace_007.py": "cc4dc3aeb742d99b6e13bae09d5817727a95bc1146c0e8602edfb040918a7351"
   },
   "automated_component_run": {
     "command": ".\\.venv\\Scripts\\python.exe -m pytest -q tests/test_ui.py tests/test_ui_workspace_007.py",
-    "result": "8 passed in 3.47s",
+    "result": "8 passed in 3.00s",
     "isolation": "Streamlit AppTest + 内存模拟 API；未读写正式知识库，未调用模型",
     "covered": [
       "首次上传显示新增片段并清理旧答案",

@@ -71,22 +71,30 @@ def stop(process: subprocess.Popen) -> None:
 
 
 def source_identity() -> dict:
-    """记录本轮实际源码及提交标识，区分未提交工作区与历史版本。"""
-    tracked = [ROOT / "pyproject.toml", ROOT / "Dockerfile", ROOT / "requirements-release.txt"]
-    tracked.extend(sorted((ROOT / "app").rglob("*.py")))
-    tracked.extend([ROOT / "scripts" / "delivery_smoke.py", ROOT / "scripts" / "delivery_provider.py"])
+    """以实际文件哈希标识代码；Git 缺席时仍保留可核对的源码身份。"""
+    tracked = [
+        ROOT / "pyproject.toml", ROOT / "Dockerfile", ROOT / "requirements-release.txt",
+        ROOT / "samples" / "demo" / "工程演示设备.txt",
+    ]
+    for directory in ("app", "scripts"):
+        tracked.extend(sorted((ROOT / directory).rglob("*.py")))
     fingerprints = {
         path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in tracked if path.is_file()
     }
     digest = hashlib.sha256(json.dumps(fingerprints, sort_keys=True).encode("utf-8")).hexdigest()
-    revision = subprocess.run(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
-        text=True, timeout=10, check=False,
-    )
+    try:
+        # 精简镜像没有 Git 与 .git；提交号只是附加信息，不能决定工程验收能否运行。
+        revision = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
+            text=True, timeout=10, check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        revision = None
     return {
-        "git_head": revision.stdout.strip() if revision.returncode == 0 else None,
+        "git_head": revision.stdout.strip() if revision is not None and revision.returncode == 0 else None,
         "source_sha256": digest,
+        "source_file_count": len(fingerprints),
         "files_sha256": fingerprints,
         "working_tree_may_have_changes": True,
     }

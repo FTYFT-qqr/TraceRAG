@@ -1,5 +1,6 @@
 """验证发布版本一致性、Docker文件排除规则和固定协议的输入输出。"""
 
+import hashlib
 import json
 import os
 import subprocess
@@ -14,7 +15,7 @@ from app import __version__
 from app.config import Settings
 from app.main import create_app
 from scripts.delivery_provider import app as provider
-from scripts.delivery_smoke import stop
+from scripts.delivery_smoke import source_identity, stop
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,6 +69,23 @@ def test_delivery_cli_handles_legacy_windows_output_encoding() -> None:
     )
     assert completed.returncode == 0, completed.stderr.decode("utf-8", errors="replace")
     assert "新的独立报告目录" in completed.stdout.decode("utf-8")
+
+
+def test_source_identity_without_git_keeps_file_fingerprints(monkeypatch) -> None:
+    """精简容器缺少 Git 时仍用实际源码哈希标识本次验收代码。"""
+    def missing_git(*args, **kwargs):
+        """模拟精简镜像没有 Git 可执行文件的实际故障。"""
+        raise FileNotFoundError("git")
+
+    monkeypatch.setattr("scripts.delivery_smoke.subprocess.run", missing_git)
+    identity = source_identity()
+    assert identity["git_head"] is None
+    assert identity["source_file_count"] == len(identity["files_sha256"])
+    assert "scripts/evaluate_v02.py" in identity["files_sha256"]
+    assert "scripts/delivery_smoke.py" in identity["files_sha256"]
+    assert identity["source_sha256"] == hashlib.sha256(
+        json.dumps(identity["files_sha256"], sort_keys=True).encode("utf-8")
+    ).hexdigest()
 
 
 def test_delivery_stop_releases_child_working_directory(tmp_path: Path) -> None:
